@@ -1,4 +1,4 @@
-# sniper-js 前端错误日志无侵入搜集和上报
+# sniperjs 前端错误日志无侵入搜集和上报
 
 简单可依赖的自动搜集前端错误并上报，支持小程序（微信、百度、支付宝、头条、快应用）、浏览器、Nodejs 、RN。
 
@@ -13,22 +13,22 @@
 # install
 
 ```
-npm install sniper-js
+npm install sniperjs
 ```
 
 # Getting started
 
-> sniper-js 需在所有库加载之前完成初始化
+> sniperjs 需在所有库加载之前完成初始化
 
 1. 引用对应端的的SDK。
 2. 实例化。
 
-### 引用
+### 引用（目前只支持微信小程序）
 ```
 // 微信小程序
-import Sniper from '@sniper-js/miniwx'; 
+import Sniper from '@sniperjs/miniwx'; 
 // 浏览器端
-import Sniper from '@sniper-js/brower'; 
+import Sniper from '@sniperjs/brower'; 
 ```
 
 ### 实例化
@@ -57,7 +57,7 @@ new Sniper({
 # 开发
 ```
 # 克隆仓库
-git clone https://github.com/taotao9125/mreporter.git
+git clone https://github.com/taotao9125/sniperjs.git
 
 # 安装依赖
 npm install
