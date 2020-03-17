@@ -1,0 +1,17 @@
+{
+    "license": "MIT",
+    "version": "1.0.0",
+    "nanachi_project": true,
+    "name": "qunar",
+    "nanachi": {
+        "alias": {
+            "@assets": "source/assets",
+            "@common": "source/common"
+        }
+    },
+    "dependencies": {
+        "@sniper-js/core": "^0.0.1",
+        "@sniper-js/miniwx": "^0.0.1",
+        "@sniper-js/utils": "^0.0.1"
+    }
+}

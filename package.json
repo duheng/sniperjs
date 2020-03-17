@@ -1,0 +1,33 @@
+{
+  "name": "sniper",
+  "version": "0.0.1",
+  "description": "mini program bug reporter",
+  "main": "./src/index.js",
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "dev": "rollup --config rollup.config.js --watch",
+    "lint:fix": "eslint --fix ./packages/**/src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taotao9125/mreporter.git"
+  },
+  "author": "blue.yang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/taotao9125/mreporter/issues"
+  },
+  "homepage": "https://github.com/taotao9125/mreporter#readme",
+  "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "lerna": "^3.5.1",
+    "rollup": "^2.0.6",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-eslint": "^7.0.0"
+  }
+}
