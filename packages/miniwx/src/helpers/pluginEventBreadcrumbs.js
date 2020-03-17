@@ -1,4 +1,4 @@
-import { isFunction } from '@sniper-js/utils';
+import { isFunction } from '@sniperjs/utils';
 
 
 function filterEventProps(e) {

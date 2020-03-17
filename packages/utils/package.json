@@ -1,5 +1,5 @@
 {
-  "name": "@sniper-js/utils",
+  "name": "@sniperjs/utils",
   "version": "0.0.1",
   "description": "",
   "main": "./lib/index.esm.js",

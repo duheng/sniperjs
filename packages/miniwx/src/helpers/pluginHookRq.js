@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import {
   isFunction, getNow, getAgent, noop,
-} from '@sniper-js/utils';
+} from '@sniperjs/utils';
 
 function makeParam(obj) {
   return {

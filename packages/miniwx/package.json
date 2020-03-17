@@ -1,5 +1,5 @@
 {
-  "name": "@sniper-js/miniwx",
+  "name": "@sniperjs/miniwx",
   "version": "0.0.1",
   "description": "",
   "main": "./lib/index.esm.js",
@@ -10,7 +10,7 @@
   "author": "blue.yang",
   "license": "MIT",
   "dependencies": {
-    "@sniper-js/core": "^0.0.1",
-    "@sniper-js/utils": "^0.0.1"
+    "@sniperjs/core": "^0.0.1",
+    "@sniperjs/utils": "^0.0.1"
   }
 }

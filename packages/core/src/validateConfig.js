@@ -3,7 +3,7 @@ import {
   isArray,
   isBoolean,
   isFunction,
-} from '@sniper-js/utils';
+} from '@sniperjs/utils';
 
 
 function throwErr(err) {

@@ -4,7 +4,7 @@ import React from '@react';
 
 import './pages/index/index';
 
-import Reporter from '@sniper-js/miniwx';
+import Reporter from '@sniperjs/miniwx';
 
 var x = new Reporter({
     url: 'https://beta.bayeasy.cn/api/wxapp/company/agreement'

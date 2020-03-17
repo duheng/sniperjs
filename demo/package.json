@@ -10,8 +10,8 @@
         }
     },
     "dependencies": {
-        "@sniper-js/core": "^0.0.1",
-        "@sniper-js/miniwx": "^0.0.1",
-        "@sniper-js/utils": "^0.0.1"
+        "@sniperjs/core": "^0.0.1",
+        "@sniperjs/miniwx": "^0.0.1",
+        "@sniperjs/utils": "^0.0.1"
     }
 }

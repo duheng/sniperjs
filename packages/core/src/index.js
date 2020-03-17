@@ -1,7 +1,7 @@
 
 import {
   isRegExp, isFunction, isBoolean, compose, extend,
-} from '@sniper-js/utils';
+} from '@sniperjs/utils';
 import validateConfig from './validateConfig';
 
 const logMap = Symbol('log map');

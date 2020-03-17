@@ -1,5 +1,5 @@
 {
-  "name": "@sniper-js/core",
+  "name": "@sniperjs/core",
   "version": "0.0.1",
   "description": "",
   "main": "./lib/index.esm.js",
@@ -10,6 +10,6 @@
   "author": "blue.yang",
   "license": "MIT",
   "dependencies": {
-    "@sniper-js/utils": "^0.0.1"
+    "@sniperjs/utils": "^0.0.1"
   }
 }

@@ -1,4 +1,4 @@
-import Core from '@sniper-js/core';
+import Core from '@sniperjs/core';
 import pluginHookApp from './helpers/pluginHookApp';
 import pluginHookRq from './helpers/pluginHookRq';
 // import pluginHookConsole from './helpers/pluginHookConsole';

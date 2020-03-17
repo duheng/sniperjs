@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import {
   getNow, getAgent,
-} from '@sniper-js/utils';
+} from '@sniperjs/utils';
 import { parseScriptRuntimeError, parseUnhandleRejectError } from './parseError';
 
 
