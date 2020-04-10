@@ -47,10 +47,11 @@ const pluginHookApp = {
           agent: getAgent(),
           msg: {},
           routes: getRoutes(),
-          time: getNow(),
+          time: getNow()
         };
 
         // promise 拒因必须为Error实例，才认为这是个错误  Promise.reject(new Error())
+        // 否则只能代表一个reject状态
         if (originParam.reason instanceof Error) {
           param.msg = parseUnhandleRejectError(originParam.reason.stack);
           param.msg.type = 'Promise rejected Error';
