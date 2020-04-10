@@ -7,7 +7,7 @@ import './pages/index/index';
 import Reporter from '@sniperjs/miniwx';
 
 var x = new Reporter({
-    url: 'https://beta.bayeasy.cn/api/wxapp/company/agreement'
+    url: 'http://127.0.0.1:3000/mini/statistics'
 });
 
 // var fundebug = require('./fundebug.1.3.1.min.js');

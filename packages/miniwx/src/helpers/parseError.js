@@ -15,17 +15,24 @@ const errorTypeReg = new RegExp(
 ); 
 
 function parseScriptRuntimeError(stack) {
-  let line; let col; let file;
+  let line = '', col = '', file = '';
   const errInfoList = stack.split(/\n\s+/);
   const errMsg = errInfoList[0];
   const errStack = errInfoList.slice(1);
   const type = errMsg.match(errorTypeReg)[0].replace(/:$/, '');
   const value = errMsg.split(/\n/).pop().split(':')[1].trim();
+
   // 有可能没有stack信息，如在app.js生命周期里面throw error
   if (errStack.length) {
-    [line, col] = errStack[0].match(/:(\d+:\d+)/)[1].split(':');
-    file = errStack[0]
-      .match(/https?:.+:\d+:\d+/)[0]
+    // :(\d+:\d+) =>  :29:13
+    // eslint-disable-next-line
+    [line = '', col = ''] = (/:(\d+:\d+)/.exec(errStack[0])[1] || '')
+    .split(':');
+
+    // \w+:\/\/+    => weapp:///
+    // https?:\/\/  => http:// or https://
+    // eslint-disable-next-line
+    file = (  /(\w+:\/\/+|https?:\/\/).+:\d+:\d+/.exec(errStack[0])[0] || '')
       .replace(/:\d+:\d+$/, '');
   }
   return {
@@ -50,5 +57,5 @@ function parseUnhandleRejectError(stack) {
 export {
   parseScriptRuntimeError,
   parseRquestError,
-  parseUnhandleRejectError,
+  parseUnhandleRejectError
 };

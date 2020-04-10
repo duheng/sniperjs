@@ -17,13 +17,17 @@ function generateConfig(pkgDirName) {
         input: `${PKGDIR}/${pkgDirName}/src/index.js`,
         output: [
             {
-                file: `${PKGDIR}/${pkgDirName}/lib/index.esm.js`,
+                file: `${PKGDIR}/${pkgDirName}/esm/index.esm.js`,
                 format: 'esm'
+            },
+            {
+                file: `${PKGDIR}/${pkgDirName}/cjs/index.cjs.js`,
+                format: 'cjs'
             }
         ],
         plugins: [
             babelPlugin({
-                exclude: 'node_modules/**',
+                exclude: 'node_modules/**'
                 // plugins: [
                 //     '@babel/plugin-proposal-object-rest-spread'
                 // ]

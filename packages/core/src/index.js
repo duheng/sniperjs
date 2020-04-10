@@ -1,6 +1,6 @@
 
 import {
-  isRegExp, isFunction, isBoolean, compose, extend,
+  isRegExp, isFunction, isBoolean, compose, extend
 } from '@sniperjs/utils';
 import validateConfig from './validateConfig';
 
@@ -26,7 +26,7 @@ class Core {
         // 2.如果return false, 则不用内置http上报, 此时可以在这里自定义自己的http上报方式
         //   比如以后浏览器端，可以自定义 ajax 上报还是用图片上报
         return log;
-      },
+      }
     };
     this.setRequested = false;
     this.delayTimer = -1;
@@ -121,7 +121,7 @@ class Core {
       // 抽样上报
       this.processByRandom.bind(this),
       // 规则忽略上报
-      this.processByFilterIgore.bind(this),
+      this.processByFilterIgore.bind(this)
     ];
 
 
@@ -131,12 +131,12 @@ class Core {
       }
       this.delayTimer = setTimeout(() => {
         this.sendLog(
-          compose.apply(this, processTask)(curLogQueue),
+          compose.apply(this, processTask)(curLogQueue)
         );
       }, this.config.delay);
     } else {
       this.sendLog(
-        compose.apply(this, processTask)(curLogQueue),
+        compose.apply(this, processTask)(curLogQueue)
       );
     }
   }
@@ -161,8 +161,8 @@ class Core {
       url: this.config.url,
       method: 'POST',
       data: {
-        log: ret,
-      },
+        log: ret
+      }
     });
   }
 

@@ -50,30 +50,30 @@ class P extends React.Component {
     componentDidMount() {
         // eslint-disable-next-line
       //console.error('2323423');
-
       function p() {
         return new Promise((rel, rej) => {
-            rej(new Error('sdfsdfs'));
+            rej('sfsdf');
         });
     }
 
     p();
 
-        //console.log(abc);
-       wx.request({
-            url: 'https://beta.bayeasy.cn/api/wxapp/company/agreement2',
-            method: 'POST',
-            timeout: 5000,
-            data: {
-                a: 1,
-                b: 2,
-                c: 3
-            },
-            header: {
-                'content-type': 'application/json'
-            }
+
+        console.log(abc);
+    //    wx.request({
+    //         url: 'https://beta.bayeasy.cn/api/wxapp/company/agreement2',
+    //         method: 'POST',
+    //         timeout: 5000,
+    //         data: {
+    //             a: 1,
+    //             b: 2,
+    //             c: 3
+    //         },
+    //         header: {
+    //             'content-type': 'application/json'
+    //         }
             
-       });
+    //    });
 
 
         

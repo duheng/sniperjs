@@ -2,6 +2,7 @@ import { isFunction } from '@sniperjs/utils';
 
 
 function filterEventProps(e) {
+  console.log(e);
   return Object.keys(e).reduce((accu, curKey) => {
     const accuCopy = { ...accu };
     if (curKey === 'type' || curKey === 'currentTarget' || curKey === 'target') {
@@ -34,7 +35,7 @@ const pluginEventBreadcrumbs = {
     };
     // eslint-disable-next-line
     return Page;
-  },
+  }
 };
 
 export default pluginEventBreadcrumbs;

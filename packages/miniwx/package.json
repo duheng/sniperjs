@@ -2,8 +2,8 @@
   "name": "@sniperjs/miniwx",
   "version": "0.0.1",
   "description": "",
-  "main": "./lib/index.esm.js",
-  "module": "./lib/index.esm.js",
+  "main": "./esm/index.esm.js",
+  "module": "./cjs/index.cjs.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

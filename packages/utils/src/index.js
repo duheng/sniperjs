@@ -89,10 +89,30 @@ function getAgent() {
   return 'UNKNOWN_APP';
 }
 
+function getGlobal() {
+  if (wx) {
+    return wx;
+  }
+  if (swan) {
+    return swan;
+  }
+  if (my) {
+    return my;
+  }
+  if (tt) {
+    return tt;
+  }
+  if (qq) {
+    return qq;
+  }
+  return {};
+}
+
 
 export {
   getNow,
   getAgent,
+  getGlobal,
   extend,
   noop,
   compose,
@@ -105,5 +125,5 @@ export {
   isFunction,
   isRegExp,
   isDev,
-  isNumber,
+  isNumber
 };

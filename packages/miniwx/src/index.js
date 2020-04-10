@@ -3,6 +3,7 @@ import pluginHookApp from './helpers/pluginHookApp';
 import pluginHookRq from './helpers/pluginHookRq';
 // import pluginHookConsole from './helpers/pluginHookConsole';
 import pluginEventBreadcrumbs from './helpers/pluginEventBreadcrumbs';
+import pluginOnMemoryWarning from './helpers/pluginOnMemoryWarning';
 import reqeust from './helpers/request';
 
 class Reportor extends Core {
@@ -21,9 +22,10 @@ class Reportor extends Core {
     this.use(pluginHookRq);
     // UI 事件记录
     this.use(pluginEventBreadcrumbs);
+
+    this.use(pluginOnMemoryWarning);
     // 代理 console.error
     // this.use(pluginHookConsole);
-
     this.setRequest(reqeust);
   }
 }

@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import {
-  getNow, getAgent,
+  getNow, getAgent
 } from '@sniperjs/utils';
 import { parseScriptRuntimeError, parseUnhandleRejectError } from './parseError';
 
@@ -9,7 +9,7 @@ function getRoutes() {
   // eslint-disable-next-line prefer-const
   let defaultRouteInfo = {
     route: '',
-    query: {},
+    query: {}
   };
   const pages = getCurrentPages();
   let curPage = {};
@@ -34,7 +34,7 @@ const pluginHookApp = {
           agent: getAgent(),
           msg: {},
           routes: getRoutes(),
-          time: getNow(),
+          time: getNow()
         };
         param.msg = parseScriptRuntimeError(originParam);
         core.addLog(param);
@@ -52,7 +52,7 @@ const pluginHookApp = {
 
         // promise 拒因必须为Error实例，才认为这是个错误  Promise.reject(new Error())
         // 否则只能代表一个reject状态
-        if (originParam.reason instanceof Error) {
+        if (originParam.reason && originParam.reason instanceof Error) {
           param.msg = parseUnhandleRejectError(originParam.reason.stack);
           param.msg.type = 'Promise rejected Error';
           core.addLog(param);
@@ -64,7 +64,7 @@ const pluginHookApp = {
       return originApp(configCopy);
     };
     return App;
-  },
+  }
 };
 
 export default pluginHookApp;

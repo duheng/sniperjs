@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import {
-  isFunction, getNow, getAgent, noop,
+  isFunction, getNow, getAgent, getGlobal, noop
 } from '@sniperjs/utils';
 
 function makeParam(obj) {
@@ -12,11 +12,11 @@ function makeParam(obj) {
       // value: ''
     },
     time: getNow(),
-    ...obj,
+    ...obj
   };
 }
 
-// 错误上报本身的 url;
+// 忽略错误上报本身的 url;
 function isRorterRequest(url) {
   const reg = new RegExp(url);
   return reg.test(this.config.url);
@@ -24,15 +24,16 @@ function isRorterRequest(url) {
 
 const pluginHookRq = {
   init(core) {
-    const originRequest = wx.request;
-    Object.defineProperty(wx, 'request', {
+    const globalObj = getGlobal();
+    const originRequest = globalObj.request;
+    Object.defineProperty(globalObj, 'request', {
       writable: true,
       enumerable: true,
       configurable: true,
-      value: originRequest,
+      value: originRequest
     });
 
-    wx.request = function request(config) {
+    globalObj.request = function request(config) {
       const configCopy = { ...config };
       const originFail = config.fail || noop;
       const originSuc = config.success || noop;
@@ -53,8 +54,8 @@ const pluginHookRq = {
             ...collectConfigProp,
             type: 'Request Error',
             statusCode: '',
-            err,
-          },
+            err
+          }
         });
 
         if (!isRorterRequest.call(core, configCopy.url)) {
@@ -62,7 +63,7 @@ const pluginHookRq = {
           core.report();
         }
 
-        return originFail.call(wx, err);
+        return originFail.call(globalObj, err);
       };
       configCopy.success = function success(res) {
         const { statusCode } = res;
@@ -71,17 +72,17 @@ const pluginHookRq = {
             msg: {
               ...collectConfigProp,
               type: 'Request Error',
-              statusCode,
-            },
+              statusCode
+            }
           });
           core.addLog(param);
           core.report();
         }
-        return originSuc.call(wx, res);
+        return originSuc.call(globalObj, res);
       };
-      originRequest.call(wx, configCopy);
+      originRequest.call(globalObj, configCopy);
     };
-  },
+  }
 };
 
 export default pluginHookRq;

@@ -109,3 +109,5 @@ dist
 
 # build lib
 lib
+esm
+cjs
