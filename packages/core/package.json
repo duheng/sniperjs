@@ -1,6 +1,6 @@
 {
   "name": "@sniperjs/core",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha.0",
   "description": "",
   "main": "./esm/index.esm.js",
   "module": "./cjs/index.cjs.js",
@@ -10,6 +10,6 @@
   "author": "blue.yang",
   "license": "MIT",
   "dependencies": {
-    "@sniperjs/utils": "^0.0.1"
+    "@sniperjs/utils": "^0.0.1-alpha.0"
   }
 }

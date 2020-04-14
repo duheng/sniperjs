@@ -1,6 +1,6 @@
 {
   "name": "@sniperjs/miniwx",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha.0",
   "description": "",
   "main": "./esm/index.esm.js",
   "module": "./cjs/index.cjs.js",
@@ -10,7 +10,7 @@
   "author": "blue.yang",
   "license": "MIT",
   "dependencies": {
-    "@sniperjs/core": "^0.0.1",
-    "@sniperjs/utils": "^0.0.1"
+    "@sniperjs/core": "^0.0.1-alpha.0",
+    "@sniperjs/utils": "^0.0.1-alpha.0"
   }
 }
