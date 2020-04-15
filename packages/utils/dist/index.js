@@ -159,11 +159,11 @@ function getRoutes() {
   if (pages.length) {
     curPage = pages[pages.length - 1];
     const {
-      route,
-      query = {}
+      route = '',
+      options = {}
     } = curPage;
     defaultRouteInfo.path = route;
-    defaultRouteInfo.query = query;
+    defaultRouteInfo.query = options;
   }
 
   return defaultRouteInfo;

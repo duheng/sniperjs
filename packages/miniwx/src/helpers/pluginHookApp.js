@@ -23,7 +23,7 @@ const pluginHookApp = {
         // 否则只能代表一个reject状态
         if (originParam.reason && originParam.reason instanceof Error) {
           const log = getLog(parseUnhandleRejectError(originParam.reason.stac));
-          log.type = 'Promise rejected Error';          
+          log.type = 'PromiseRejectedError';          
           core.addLog(log);
           core.report();
         }

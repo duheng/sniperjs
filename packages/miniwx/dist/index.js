@@ -68,7 +68,7 @@ const pluginHookApp = {
         // 否则只能代表一个reject状态
         if (originParam.reason && originParam.reason instanceof Error) {
           const log = utils.getLog(parseUnhandleRejectError(originParam.reason.stac));
-          log.type = 'Promise rejected Error';
+          log.type = 'PromiseRejectedError';
           core.addLog(log);
           core.report();
         }
@@ -183,7 +183,7 @@ function Request(config) {
   wx.request(config);
 }
 
-var version = "0.0.1-alpha.0";
+var version = "0.0.1-alpha.2";
 
 class Reportor extends Core {
   constructor(opts = {}) {
