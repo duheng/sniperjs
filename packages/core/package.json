@@ -1,6 +1,6 @@
 {
   "name": "@sniperjs/core",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.1-alpha.7",
   "description": "",
   "main": "./dist/index.js",
   "files": [
@@ -12,6 +12,6 @@
   "author": "blue.yang",
   "license": "MIT",
   "dependencies": {
-    "@sniperjs/utils": "^0.0.1-alpha.2"
+    "@sniperjs/utils": "^0.0.1-alpha.7"
   }
 }
