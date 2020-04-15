@@ -18,17 +18,21 @@ npm install @sniperjs/miniwx
 
 # 使用方式
 
-> sniperjs 需在所有库加载之前完成初始化
+> sniperjs 需在入口文件 App() 函数调用之前之前完成实例化
 
 1. 引用对应端的的SDK。
 2. 实例化。
 
 ### 引用（目前只支持微信小程序）
 ```
+// app.js
+
 // 微信小程序
 import Sniper from '@sniperjs/miniwx'; 
+
 // 浏览器端
 import Sniper from '@sniperjs/brower'; 
+
 ```
 
 ### 实例化
@@ -36,6 +40,9 @@ import Sniper from '@sniperjs/brower';
 new Sniper({
     url: 'your request api'
 });
+
+// your app code
+App();
 ```
 
 ### 日志格式
