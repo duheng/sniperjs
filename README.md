@@ -41,23 +41,25 @@ new Sniper({
 ### 日志格式
 ```
 {
-	"log": [{
-		"agent": "WX_MINI_APP",
-		"msg": {
-			"line": "91",
-			"col": "9",
-			"file": "/pages/index/index.js:91:9",
-			"stack": "thirdScriptError\n{(intermediate value)}.y is not a function; [Component] Event Handler Error @ pages/index/index#bound \nTypeError: {(intermediate value)}.y is not a function\nxxxx",
-			"type": "TypeError",
-			"value": " {(intermediate value)}.y is not a function"
-		},
-		"routes": {
-			"route": "pages/index/index",
+	"agent": "WX_MINI_APP",
+	"system": {
+		
+	},
+	"logs": [{
+		"stack": "thirdScriptError\nabc is not defined;at \"pages/index/index\" page lifeCycleMethod onReady function\nReferenceError: abc is not defined\n    at Ctor.componentDidMount (http://127.0.0.1:20424/appservice/pages/index/index.js:72:17)\n    at Se.onReady (http://127.0.0.1:20424/appservice/ReactWX.js:3084:11)\n    at Se.<anonymous> (http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:1674902)\n    at Se.p.__callPageLifeTime__ (http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:1674647)\n    at http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:1698166\n    at Function.<anonymous> (http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:1698955)\n    at http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:1666024\n    at http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:726686\n    at http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:724745\n    at n (http://127.0.0.1:20424/appservice/__dev__/asdebug.js:1:27894)",
+		"line": "72",
+		"col": "17",
+		"file": "http://127.0.0.1:20424/appservice/pages/index/index.js",
+		"type": "ReferenceError",
+		"value": "abc is not defined",
+		"time": 1586930000288,
+		"pageRoute": {
+			"path": "pages/index/index",
 			"query": {}
 		},
-		"time": 1584673351668,
 		"breadcrumbs": []
 	}]
+}
 }
 ```
 
