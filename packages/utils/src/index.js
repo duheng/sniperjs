@@ -69,7 +69,6 @@ function noop() {
 
 }
 
-
 function getAgent() {
   if (wx) {
     return 'WX_MINI_APP';
@@ -85,6 +84,9 @@ function getAgent() {
   }
   if (qq) {
     return 'QQ_MINI_APP';
+  }
+  if (quick) {
+    return 'QUICK_APP';
   }
   return 'UNKNOWN_APP';
 }
@@ -108,11 +110,72 @@ function getGlobal() {
   return {};
 }
 
+function getSystemInfo() {
+ // 这里做个缓存
+ const globalObj = getGlobal();
+ const key = '__sniper__internal__data__';
+ if (
+  globalObj[key]
+  && !isEmptyObject(globalObj[key].systemInfo || {})
+ ) {
+   return globalObj[key].systemInfo;
+ }
+ try {
+   const systemInfo = globalObj.getSystemInfoSync();
+   globalObj[key] = globalObj[key] || {};
+   globalObj[key].systemInfo = systemInfo;
+   return systemInfo;
+ } catch (err) {
+   return {};
+ }
+}
+
+function getRoutes() {
+  // eslint-disable-next-line prefer-const
+  let defaultRouteInfo = {
+    path: '',
+    query: {}
+  };
+  const pages = getCurrentPages();
+  let curPage = {};
+  if (pages.length) {
+    curPage = pages[pages.length - 1];
+    const { route, query = { } } = curPage;
+    defaultRouteInfo.path = route;
+    defaultRouteInfo.query = query;
+  }
+  return defaultRouteInfo;
+}
+
+function getLog(log) {
+  const defaultLog = {
+      stack: '',
+      line: '',
+      col: '',
+      file: '',
+      type: '',
+      value: '',
+      time: getNow(),
+      pageRoute: getRoutes()
+  };
+  return Object.assign(defaultLog, log);
+}
+
+function getMeta() {
+  return {
+    agent: getAgent(),
+    system: getSystemInfo()
+  };
+}
 
 export {
   getNow,
   getAgent,
   getGlobal,
+  getSystemInfo,
+  getRoutes,
+  getLog,
+  getMeta,
   extend,
   noop,
   compose,

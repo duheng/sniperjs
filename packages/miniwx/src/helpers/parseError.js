@@ -19,7 +19,7 @@ function parseScriptRuntimeError(stack) {
   const errInfoList = stack.split(/\n\s+/);
   const errMsg = errInfoList[0];
   const errStack = errInfoList.slice(1);
-  const type = errMsg.match(errorTypeReg)[0].replace(/:$/, '');
+  const type = errMsg.match(errorTypeReg)[0].replace(/:$/, '') || '';
   const value = errMsg.split(/\n/).pop().split(':')[1].trim();
 
   // 有可能没有stack信息，如在app.js生命周期里面throw error
@@ -33,12 +33,12 @@ function parseScriptRuntimeError(stack) {
     // https?:\/\/  => http:// or https://
     // eslint-disable-next-line
     file = (  /(\w+:\/\/+|https?:\/\/).+:\d+:\d+/.exec(errStack[0])[0] || '')
-      .replace(/:\d+:\d+$/, '');
+      .replace(/:\d+:\d+$/, '') || '';
   }
   return {
-    line  : line || '',
-    col   : col  || '',
-    file  : file || '',
+    line,
+    col,
+    file,
     stack,
     type,
     value

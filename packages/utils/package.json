@@ -2,8 +2,10 @@
   "name": "@sniperjs/utils",
   "version": "0.0.1-alpha.0",
   "description": "",
-  "main": "./esm/index.esm.js",
-  "module": "./cjs/index.cjs.js",
+  "files": [
+    "./dist"
+  ],
+  "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

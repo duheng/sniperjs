@@ -1,20 +1,7 @@
 /* eslint-disable no-undef */
 import {
-  isFunction, getNow, getAgent, getGlobal, noop
+  isFunction, getGlobal, noop, getLog
 } from '@sniperjs/utils';
-
-function makeParam(obj) {
-  return {
-    agent: getAgent(),
-    msg: {
-      // url
-      // type: 'Request Error',
-      // value: ''
-    },
-    time: getNow(),
-    ...obj
-  };
-}
 
 // 忽略错误上报本身的 url;
 function isRorterRequest(url) {
@@ -49,17 +36,14 @@ const pluginHookRq = {
         }, {});
 
       configCopy.fail = function fail(err) {
-        const param = makeParam({
-          msg: {
-            ...collectConfigProp,
-            type: 'Request Error',
-            statusCode: '',
-            err
-          }
+        const log = getLog({
+          err,
+          type: 'RequestError',
+          ...collectConfigProp
         });
 
         if (!isRorterRequest.call(core, configCopy.url)) {
-          core.addLog(param);
+          core.addLog(log);
           core.report();
         }
 
@@ -68,14 +52,12 @@ const pluginHookRq = {
       configCopy.success = function success(res) {
         const { statusCode } = res;
         if (!isRorterRequest.call(core, configCopy.url) && ![200, 302, 304].includes(statusCode)) {
-          const param = makeParam({
-            msg: {
-              ...collectConfigProp,
-              type: 'Request Error',
-              statusCode
-            }
+          const log = getLog({
+            statusCode,
+            type: 'RequestError',
+            ...collectConfigProp
           });
-          core.addLog(param);
+          core.addLog(log);
           core.report();
         }
         return originSuc.call(globalObj, res);

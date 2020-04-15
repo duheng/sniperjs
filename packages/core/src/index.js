@@ -1,6 +1,6 @@
 
 import {
-  isRegExp, isFunction, isBoolean, compose, extend
+  isRegExp, isFunction, isBoolean, compose, extend, getMeta
 } from '@sniperjs/utils';
 import validateConfig from './validateConfig';
 
@@ -28,7 +28,7 @@ class Core {
         return log;
       }
     };
-    this.setRequested = false;
+    this.applyRequested = false;
     this.delayTimer = -1;
   }
 
@@ -75,9 +75,9 @@ class Core {
   // 是否重复，非http错误的时在stack里面取字符串做为重复的key
   isRepeat(log) {
     // http错误
-    const logKeyName = log.msg.type === 'Request Error'
-      ? `${log.msg.url}/${log.msg.statusCode}`
-      : log.msg.stack.replace(/\n|\s/g, '').substring(0, 100);
+    const logKeyName = log.type === 'RequestError'
+      ? `${log.url}/${log.statusCode}`
+      : log.stack.replace(/\n|\s/g, '').substring(0, 100);
     this[logMap][logKeyName] = (this[logMap][logKeyName] || 0) + 1;
     return this[logMap][logKeyName] > this.config.repeat;
   }
@@ -155,13 +155,13 @@ class Core {
 
     this.clearLog();
 
-
     // 默认上报
     this.request({
       url: this.config.url,
       method: 'POST',
       data: {
-        log: ret
+        ...getMeta(),
+        logs: ret
       }
     });
   }
@@ -170,10 +170,10 @@ class Core {
     plugin.init(this, ...args);
   }
 
-  setRequest(request) {
-    if (this.setRequested) return false;
+  applyRequest(request) {
+    if (this.applyRequested) return false;
     this.request = request;
-    this.setRequested = true;
+    this.applyRequested = true;
     return true;
   }
 

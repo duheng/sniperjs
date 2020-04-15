@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const babelPlugin = require('rollup-plugin-babel');
-const { eslint } = require('rollup-plugin-eslint');
+const json = require('@rollup/plugin-json');
+//const { eslint } = require('rollup-plugin-eslint');
 const cwd = process.cwd();
 const PKGDIR = './packages';
 
@@ -16,16 +17,17 @@ function generateConfig(pkgDirName) {
     return {
         input: `${PKGDIR}/${pkgDirName}/src/index.js`,
         output: [
+            // {
+            //     file: `${PKGDIR}/${pkgDirName}/esm/index.esm.js`,
+            //     format: 'esm'
+            // },
             {
-                file: `${PKGDIR}/${pkgDirName}/esm/index.esm.js`,
-                format: 'esm'
-            },
-            {
-                file: `${PKGDIR}/${pkgDirName}/cjs/index.cjs.js`,
+                file: `${PKGDIR}/${pkgDirName}/dist/index.js`,
                 format: 'cjs'
             }
         ],
         plugins: [
+            json(),
             babelPlugin({
                 exclude: 'node_modules/**'
                 // plugins: [

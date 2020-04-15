@@ -1,15 +1,16 @@
 import Core from '@sniperjs/core';
 import pluginHookApp from './helpers/pluginHookApp';
 import pluginHookRq from './helpers/pluginHookRq';
-// import pluginHookConsole from './helpers/pluginHookConsole';
-import pluginEventBreadcrumbs from './helpers/pluginEventBreadcrumbs';
+// import pluginEventBreadcrumbs from './helpers/pluginEventBreadcrumbs';
 import pluginOnMemoryWarning from './helpers/pluginOnMemoryWarning';
 import reqeust from './helpers/request';
+import { version } from '../package.json';
 
 class Reportor extends Core {
-  // static version: Version,
+  
   constructor(opts = {}) {
     super(opts);
+    this.version = version;
     // 合并参数
     this.mergeConfig(opts);
     this.init();
@@ -20,13 +21,12 @@ class Reportor extends Core {
     this.use(pluginHookApp);
     // 劫持 Request
     this.use(pluginHookRq);
-    // UI 事件记录
-    this.use(pluginEventBreadcrumbs);
+    // TODO 
+    // this.use(pluginEventBreadcrumbs);
 
+    // 内存监听
     this.use(pluginOnMemoryWarning);
-    // 代理 console.error
-    // this.use(pluginHookConsole);
-    this.setRequest(reqeust);
+    this.applyRequest(reqeust);
   }
 }
 
