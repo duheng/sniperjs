@@ -1,6 +1,6 @@
 {
   "name": "@sniperjs/miniwx",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "description": "",
   "main": "./dist/index.js",
   "files": [
@@ -12,7 +12,7 @@
   "author": "blue.yang",
   "license": "MIT",
   "dependencies": {
-    "@sniperjs/core": "^0.0.1-alpha.1",
-    "@sniperjs/utils": "^0.0.1-alpha.1"
+    "@sniperjs/core": "^0.0.1-alpha.2",
+    "@sniperjs/utils": "^0.0.1-alpha.2"
   }
 }
