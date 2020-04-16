@@ -19,14 +19,26 @@ const pluginHookApp = {
       };
 
       configCopy.onUnhandledRejection = (originParam) => {
-        // promise 拒因必须为Error实例，才认为这是个错误  Promise.reject(new Error())
-        // 否则只能代表一个reject状态
+        let log = {};
+        const PromiseType = 'PromiseRejectedError';
         if (originParam.reason && originParam.reason instanceof Error) {
-          const log = getLog(parseUnhandleRejectError(originParam.reason.stac));
-          log.type = 'PromiseRejectedError';          
-          core.addLog(log);
-          core.report();
+          log = getLog(
+            Object.assign(
+              parseUnhandleRejectError(originParam.reason.stack), 
+              {
+                type: PromiseType
+              }
+            )
+          );
+        } else {
+          log = getLog({
+            value: originParam.reason,
+            type: PromiseType
+          });
         }
+
+        core.addLog(log);
+        core.report();
         return originUnRj && originUnRj.call(wx, originParam);
       };
 
