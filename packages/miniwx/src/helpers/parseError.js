@@ -15,36 +15,40 @@ const errorTypeReg = new RegExp(
 ); 
 
 function parseScriptRuntimeError(stack) {
-  let line = '', col = '', file = '';
-  const errInfoList = stack.split(/\n\s+/);
-  const errMsg = errInfoList[0];
-  const errStack = errInfoList.slice(1);
-  const type = errMsg.match(errorTypeReg)[0].replace(/:$/, '') || '';
-  const value = errMsg.split(/\n/).pop().split(':')[1].trim();
+  try {
+    let line = '', col = '', file = '';
+    const errInfoList = stack.split(/\n\s+/);
+    const errMsg = errInfoList[0];
+    const errStack = errInfoList.slice(1);
+    const type = errMsg.match(errorTypeReg)[0].replace(/:$/, '') || '';
+    const value = errMsg.split(/\n/).pop().split(':')[1].trim();
 
-  // 有可能没有stack信息，如在app.js生命周期里面throw error
-  if (errStack.length) {
-    // :(\d+:\d+) =>  :29:13
-    // eslint-disable-next-line
-    [line = '', col = ''] = (/:(\d+:\d+)/.exec(errStack[0])[1] || '')
-    .split(':');
+    // 有可能没有stack信息，如在app.js生命周期里面throw error
+    if (errStack.length) {
+      // :(\d+:\d+) =>  :29:13
+      // eslint-disable-next-line
+      [line = '', col = ''] = (/:(\d+:\d+)/.exec(errStack[0])[1] || '')
+      .split(':');
 
-    // \w+:\/\/+    => weapp:///
-    // https?:\/\/  => http:// or https://
-    // eslint-disable-next-line
-    file = (  /(\w+:\/\/+|https?:\/\/).+:\d+:\d+/.exec(errStack[0])[0] || '')
-      .replace(/:\d+:\d+$/, '') || '';
+      // \w+:\/\/+    => weapp:///
+      // https?:\/\/  => http:// or https://
+      // eslint-disable-next-line
+      file = (  /(\w+:\/\/+|https?:\/\/).+:\d+:\d+/.exec(errStack[0])[0] || '')
+        .replace(/:\d+:\d+$/, '') || '';
+    }
+    return {
+      line,
+      col,
+      file,
+      stack,
+      type,
+      value
+    };
+  } catch (err) {
+    return {};
   }
-  return {
-    line,
-    col,
-    file,
-    stack,
-    type,
-    value
-  };
+  
 }
-
 
 function parseRquestError() {
 

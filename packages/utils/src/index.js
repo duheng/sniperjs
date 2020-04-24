@@ -161,10 +161,32 @@ function getLog(log) {
   return Object.assign(defaultLog, log);
 }
 
+function getNet() {
+  const globalObj = getGlobal();
+  return new Promise(function(rel) {
+    globalObj.getNetworkType({
+      success (res) {
+        const networkType = res.networkType;
+        rel(networkType);
+      }
+    });
+  });
+ 
+}
+
+
 function getMeta() {
+  let net = '';
+  // try {
+  //   // eslint-disable-next-line
+  //  net = getNet();
+  // } catch(err) {
+  //   // eslint-disable-next-line
+  // }
   return {
     agent: getAgent(),
-    system: getSystemInfo()
+    system: getSystemInfo(),
+    net: net
   };
 }
 

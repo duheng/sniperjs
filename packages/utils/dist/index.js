@@ -184,9 +184,17 @@ function getLog(log) {
 }
 
 function getMeta() {
+  let net = ''; // try {
+  //   // eslint-disable-next-line
+  //  net = getNet();
+  // } catch(err) {
+  //   // eslint-disable-next-line
+  // }
+
   return {
     agent: getAgent(),
-    system: getSystemInfo()
+    system: getSystemInfo(),
+    net: net
   };
 }
 

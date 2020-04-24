@@ -12,33 +12,37 @@ const errorTypeReg = new RegExp('(' + ['EvalError:', 'InternalError:', 'RangeErr
 ].join('|') + ')', 'mi');
 
 function parseScriptRuntimeError(stack) {
-  let line = '',
-      col = '',
-      file = '';
-  const errInfoList = stack.split(/\n\s+/);
-  const errMsg = errInfoList[0];
-  const errStack = errInfoList.slice(1);
-  const type = errMsg.match(errorTypeReg)[0].replace(/:$/, '') || '';
-  const value = errMsg.split(/\n/).pop().split(':')[1].trim(); // 有可能没有stack信息，如在app.js生命周期里面throw error
+  try {
+    let line = '',
+        col = '',
+        file = '';
+    const errInfoList = stack.split(/\n\s+/);
+    const errMsg = errInfoList[0];
+    const errStack = errInfoList.slice(1);
+    const type = errMsg.match(errorTypeReg)[0].replace(/:$/, '') || '';
+    const value = errMsg.split(/\n/).pop().split(':')[1].trim(); // 有可能没有stack信息，如在app.js生命周期里面throw error
 
-  if (errStack.length) {
-    // :(\d+:\d+) =>  :29:13
-    // eslint-disable-next-line
-    [line = '', col = ''] = (/:(\d+:\d+)/.exec(errStack[0])[1] || '').split(':'); // \w+:\/\/+    => weapp:///
-    // https?:\/\/  => http:// or https://
-    // eslint-disable-next-line
+    if (errStack.length) {
+      // :(\d+:\d+) =>  :29:13
+      // eslint-disable-next-line
+      [line = '', col = ''] = (/:(\d+:\d+)/.exec(errStack[0])[1] || '').split(':'); // \w+:\/\/+    => weapp:///
+      // https?:\/\/  => http:// or https://
+      // eslint-disable-next-line
 
-    file = (/(\w+:\/\/+|https?:\/\/).+:\d+:\d+/.exec(errStack[0])[0] || '').replace(/:\d+:\d+$/, '') || '';
+      file = (/(\w+:\/\/+|https?:\/\/).+:\d+:\d+/.exec(errStack[0])[0] || '').replace(/:\d+:\d+$/, '') || '';
+    }
+
+    return {
+      line,
+      col,
+      file,
+      stack,
+      type,
+      value
+    };
+  } catch (err) {
+    return {};
   }
-
-  return {
-    line,
-    col,
-    file,
-    stack,
-    type,
-    value
-  };
 }
 
 function parseUnhandleRejectError(stack) {
@@ -185,12 +189,43 @@ const pluginOnMemoryWarning = {
 
 };
 
+// 1: {errMsg: "navigateTo:xxx"}
+// 2: Promise {<rejected>: {…}}
+// 微信小程序安卓真机无法捕捉到 promise.reject, 在真机中的log是console.warn抛出, 劫持此方法
+
+const pluginPatchPromise = {
+  init(core) {
+    const {
+      brand,
+      system
+    } = utils.getSystemInfo();
+
+    if (brand !== 'devtools' && /android/.test(system.toLowerCase())) {
+      const originWarn = console.warn;
+
+      console.warn = function (...args) {
+        if (/unhandledRejection/.test(args[0])) {
+          const log = utils.getLog({
+            value: args[1].errMsg || args[1],
+            type: 'PromiseRejectedError'
+          });
+          core.addLog(log);
+          core.report();
+        }
+
+        originWarn.apply(null, args);
+      };
+    }
+  }
+
+};
+
 /* eslint-disable no-undef */
 function Request(config) {
   wx.request(config);
 }
 
-var version = "0.0.1-alpha.7";
+var version = "0.0.1";
 
 class Reportor extends Core {
   constructor(opts = {}) {
@@ -207,7 +242,8 @@ class Reportor extends Core {
 
     this.use(pluginHookRq); // TODO 
     // this.use(pluginEventBreadcrumbs);
-    // 内存监听
+
+    this.use(pluginPatchPromise); // 内存监听
 
     this.use(pluginOnMemoryWarning);
     this.applyRequest(Request);
