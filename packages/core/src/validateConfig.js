@@ -2,7 +2,8 @@ import {
   isNumber,
   isArray,
   isBoolean,
-  isFunction
+  isFunction,
+  isString
 } from '@sniperjs/utils';
 
 
@@ -17,6 +18,24 @@ const strategies = {
       }
     },
     msgRequred: 'SNIPER ERROR: 配置中 url 字段必填.'
+  },
+  appVersion: {
+    validate(val) {
+      if (!val) return;
+      if (!isString(val)) {
+        throwErr(this.msgTypeErr);
+      }
+    },
+    msgTypeErr: 'SNIPER ERROR: 配置中 appVersion 字段类型需为 String.'
+  },
+  env: {
+    validate(val) {
+      if (!val) return;
+      if (!isString(val)) {
+        throwErr(this.msgTypeErr);
+      }
+    },
+    msgTypeErr: 'SNIPER ERROR: 配置中 env 字段类型需为 String.'
   },
   repeat: {
     validate(val) {

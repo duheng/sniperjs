@@ -46,6 +46,12 @@ function isNumber(target) {
   return toString.call(target) === '[object Number]' && !isNaN(target);
 }
 
+function isPromise(object) {
+  if (Promise && Promise.resolve) {
+    return Promise.resolve(object) == object;
+  }
+}
+
 function isDev(env) {
   return /^dev/.test(env);
 }
@@ -193,8 +199,9 @@ function getMeta() {
 
   return {
     agent: getAgent(),
-    system: getSystemInfo(),
-    net: net
+    system: Object.assign({}, getSystemInfo(), {
+      net: net
+    })
   };
 }
 
@@ -214,6 +221,7 @@ exports.isEmptyObject = isEmptyObject;
 exports.isFunction = isFunction;
 exports.isNumber = isNumber;
 exports.isPlainObject = isPlainObject;
+exports.isPromise = isPromise;
 exports.isRegExp = isRegExp;
 exports.isString = isString;
 exports.isUndefined = isUndefined;

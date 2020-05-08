@@ -225,7 +225,7 @@ function Request(config) {
   wx.request(config);
 }
 
-var version = "0.0.1";
+var version = "0.0.2";
 
 class Reportor extends Core {
   constructor(opts = {}) {
