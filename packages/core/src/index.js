@@ -1,6 +1,6 @@
 
 import {
-  isRegExp, isFunction, isBoolean, compose, extend, getMeta
+  isRegExp, isFunction, isBoolean, compose, extend, getMeta, isPromise
 } from '@sniperjs/utils';
 import validateConfig from './validateConfig';
 
@@ -21,6 +21,8 @@ class Core {
       appkey: '', // 以后商业化要用到的
       random: 1, // 随机抽样上报 (0, 1]
       delay: 1000, // 延迟, 合并上报
+      appVersion: '', // 应用Version
+      env: '',    // 环境
       beforeReport(log) {
         // 1.可在这里劫持上报的数据, 比如添加userid, session等等
         // 2.如果return false, 则不用内置http上报, 此时可以在这里自定义自己的http上报方式
@@ -141,28 +143,50 @@ class Core {
     }
   }
 
+  gLog(log) {
+    const { appVersion, env } = this.config;
+    return {
+      ...getMeta(),
+      appVersion,
+      env,
+      logs: log
+    };
+  }
+
   sendLog(logQueue) {
     // tip: 超过重复上报的次数后log不会入队
     const log = logQueue.slice();
     if (!log.length) return;
 
-    const ret = isFunction(this.config.beforeReport) && this.config.beforeReport.call(this, log);
+    const data = this.gLog(log);
+    const ret = isFunction(this.config.beforeReport) && this.config.beforeReport.call(this, data);
 
-    if (isBoolean(ret) && ret === false) {
-      // 用户阻止默认上报后，可在 beforeReport 可自定义 request 上报
-      return;
+    // 异步回调
+    if (isPromise(ret)) {
+      ret.then((res) => {
+        if (isBoolean(res) && res === false) {
+          // 用户阻止默认上报后，可在 beforeReport 可自定义 request 上报
+          return;
+        }
+        this.startReport(data);
+      });
+    } else {
+      if (isBoolean(ret) && ret === false) {
+        // 用户阻止默认上报后，可在 beforeReport 可自定义 request 上报
+        return;
+      }
+      this.startReport(data);
     }
+    
+  }
 
+  startReport(data) {
     this.clearLog();
-
     // 默认上报
     this.request({
       url: this.config.url,
       method: 'POST',
-      data: {
-        ...getMeta(),
-        logs: ret
-      }
+      data
     });
   }
 

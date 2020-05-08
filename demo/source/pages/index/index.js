@@ -81,17 +81,28 @@ class P extends React.Component {
     }
     onTap(e) {
         
-        if (mmm === 3) {
-            var x = {
-                y: null
-            }
-            console.log(x.y());
-        }
-        mmm++;
+        // if (mmm === 3) {
+        //     var x = {
+        //         y: null
+        //     }
+        //     console.log(x.y());
+        // }
+        // mmm++;
+
+        wx.request({
+            url: 'https://www.soukuche/a/b/c',
+            header: {
+                a: 1,
+                b: 2
+            },
+            timeout: '3000'
+        });
         
     }
     onTap2() {
         console.log(123);
+
+        
     }
     render() {
         console.log(this.state.anyVar, '!!')

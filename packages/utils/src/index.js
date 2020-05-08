@@ -40,6 +40,12 @@ function isNumber(target) {
   return toString.call(target) === '[object Number]' && !isNaN(target);
 }
 
+function isPromise(object){
+  if(Promise && Promise.resolve){
+    return Promise.resolve(object) == object;
+  }
+}
+
 function isDev(env) {
   return /^dev/.test(env);
 }
@@ -185,8 +191,9 @@ function getMeta() {
   // }
   return {
     agent: getAgent(),
-    system: getSystemInfo(),
-    net: net
+    system: Object.assign({}, getSystemInfo(), {
+      net: net
+    })
   };
 }
 
@@ -210,5 +217,6 @@ export {
   isFunction,
   isRegExp,
   isDev,
-  isNumber
+  isNumber,
+  isPromise
 };
