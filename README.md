@@ -4,9 +4,9 @@
 
 # 特性
 1. 无侵入搜集 Js 报错。
-2. 自动搜集 http 错误。
-3. 自动捕捉 promise rejection。
-4. 还原报错时用户操作历史。
+2. 自动搜集 Http 错误。
+3. 自动捕捉 Promise rejection。
+4. 还原报错时用户操作历史。 [pending]
 5. 自定义上报方式。
    
 
@@ -30,9 +30,6 @@ npm install @sniperjs/miniwx
 // 微信小程序
 import Sniper from '@sniperjs/miniwx'; 
 
-// 浏览器端
-import Sniper from '@sniperjs/brower'; 
-
 ```
 
 ### 实例化
@@ -49,12 +46,11 @@ App();
 ```
 {
 	"agent": "WX_MINI_APP",
+	"env": "",
+	"appVersion": "",
 	"system": {
 
 	},
-	"uid": "",
-	"net": "",
-	"otherField": "",
 	"logs": [{
 		"stack": "thirdScriptError\nabc is not defined;at \"pages/index/index\" page lifeCycleMethod onReady function\nReferenceError: abc is not defined\n    at Ctor.componentDidMount (http://127.0.0.1:20424/appservice/pages/index/index.js:72:17)\n    at Se.onReady (http://127.0.0.1:20424/appservice/ReactWX.js:3084:11)\n    at Se.<anonymous> (http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:1674902)\n    at Se.p.__callPageLifeTime__ (http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:1674647)\n    at http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:1698166\n    at Function.<anonymous> (http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:1698955)\n    at http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:1666024\n    at http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:726686\n    at http://127.0.0.1:20424/appservice/__dev__/WAService.js:2:724745\n    at n (http://127.0.0.1:20424/appservice/__dev__/asdebug.js:1:27894)",
 		"line": "72",
@@ -76,11 +72,13 @@ App();
 
 | 参数 | 说明 | 类型   | 默认值 | 必选 |
 | --- | --- | --- | --- | --- |
-| url | 上报接口地址  | String  | 空字符串  | 是  |
-| ignoreErrors | 上报错误类型忽略 | Array<RegExp\|String> | 空数组 | 否  |
+| url | 上报接口地址  | String  | ''  | 是  |
+| ignoreErrors | 上报错误类型忽略 | Array<RegExp\|String> | [] | 否  |
 | random | 随机上报 | Number | 1 | 否  |
 | repeat | 重复记录次数、超过该记录的错误不上报 | Number | 5 | 否 |
 | delay | 延迟后合并上报 | Number | 1000（毫秒） | 否 |
+| env | 环境变量 | String | '' | 否 |
+| appVersion | 你的应用版本 | String | '' | 否 |
 | autoBreadcrumbs | 是否上报用户操作历史 | Boolean | true | 否 |
 | breadcrumbsMax | 最多记录最近几次用户操作记录 | Number | 5 | 否  |
 | beforeReport | 上报前回调函数，可在这里劫持上报日志做处理，或者在这里自定义上报方式 |  Function| function(log){return log}  |否  |
