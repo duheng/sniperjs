@@ -10,5 +10,9 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "jiguoxing",
-    "license": "MIT"
+    "license": "MIT",
+    "dependencies": {
+        "@sniperjs/core": "^0.0.3-alpha.0",
+        "@sniperjs/utils": "^0.0.3-alpha.0"
+    }
 }
