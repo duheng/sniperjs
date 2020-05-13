@@ -168,14 +168,14 @@ class Core {
           // 用户阻止默认上报后，可在 beforeReport 可自定义 request 上报
           return;
         }
-        this.startReport(data);
+        this.startReport(res);
       });
     } else {
       if (isBoolean(ret) && ret === false) {
         // 用户阻止默认上报后，可在 beforeReport 可自定义 request 上报
         return;
       }
-      this.startReport(data);
+      this.startReport(ret);
     }
     
   }
