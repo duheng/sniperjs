@@ -1,41 +1,22 @@
 import Core from '@sniperjs/core';
-import hooRequest from '../helpers/hookXMLHttpRequest';
-import hookFetch from '../helpers/hookFetch';
-import {
-    theEventLoad,
-    theEventError,
-    theEventUnhandledrejection,
-    theEventPopstate,
-    theEventClick,
-    theEventHashchange,
-} from '../helpers/handlers';
+import hooRequest from '../hook/hookXMLHttpRequest';
+import hookFetch from '../hook/hookFetch';
+import hookOnPopstate from '../hook/hookOnPopstate';
+import hookHistoryState from '../hook/hookHistoryState';
+import addEventListener from '../helpers/addEventListener';
 
 class WebReportor extends Core {
     constructor(opts = {}) {
         super(opts);
         this.init();
     }
-  
+
     init() {
-        const initEvent = {
-            load: { fn: theEventLoad },
-            error: { fn: theEventError },
-            unhandledrejection: { fn: theEventUnhandledrejection },
-            popstate: { fn: theEventPopstate },
-            click: { fn: theEventClick },
-            hashchange: { fn: theEventHashchange },
-        };
-
-        // 监听函数不要使用匿名函数, 可以减低内存、自动回收
-        Object.keys(initEvent).forEach((key) => {
-            const event = initEvent[key];
-            window.addEventListener(key, event.fn, true);
-        });
-
-        // // 劫持 XMLHttpRequest
-        hooRequest();
-        // // 劫持 fetch
-        hookFetch();
+        this.use(addEventListener);
+        this.use(hooRequest);
+        this.use(hookFetch);
+        this.use(hookOnPopstate);
+        this.use(hookHistoryState);
     }
 }
 

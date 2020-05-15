@@ -6,6 +6,55 @@
 
   utils = utils && Object.prototype.hasOwnProperty.call(utils, 'default') ? utils['default'] : utils;
 
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  function ownKeys(object, enumerableOnly) {
+    var keys = Object.keys(object);
+
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
+    }
+
+    return keys;
+  }
+
+  function _objectSpread2(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+
+      if (i % 2) {
+        ownKeys(Object(source), true).forEach(function (key) {
+          _defineProperty(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys(Object(source)).forEach(function (key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+
+    return target;
+  }
+
   function throwErr(err) {
     throw new Error(err);
   }
@@ -274,11 +323,11 @@
         appVersion,
         env
       } = this.config;
-      return { ...utils.getMeta(),
+      return _objectSpread2(_objectSpread2({}, utils.getMeta()), {}, {
         appVersion,
         env,
         logs: log
-      };
+      });
     }
 
     sendLog(logQueue) {
@@ -366,132 +415,360 @@
   var dist = Core;
 
   // 如果返回过长，会被截断，最长1000个字符
-  var hooRequest = (() => {
-    if ('function' == typeof window.XMLHttpRequest) {
-      var begin = 0,
-          page = '';
-      var __oXMLHttpRequest_ = window.XMLHttpRequest;
-      window['__oXMLHttpRequest_'] = __oXMLHttpRequest_;
+  var hooRequest = {
+    init() {
+      if ('function' == typeof window.XMLHttpRequest) {
+        var page = '';
+        var __oXMLHttpRequest_ = window.XMLHttpRequest;
+        window['__oXMLHttpRequest_'] = __oXMLHttpRequest_;
 
-      window.XMLHttpRequest = function (t) {
-        var xhr = new __oXMLHttpRequest_(t);
-        if (!xhr.addEventListener) return xhr;
-        var open = xhr.open,
-            send = xhr.send;
+        window.XMLHttpRequest = function (t) {
+          var xhr = new __oXMLHttpRequest_(t);
+          if (!xhr.addEventListener) return xhr;
+          var open = xhr.open,
+              send = xhr.send;
 
-        xhr.open = function (method, url) {
-          var a = 1 === arguments.length ? [arguments[0]] : Array.apply(null, arguments);
-          url = url;
-          page = parseUrl(url);
-          open.apply(xhr, a);
-        };
-
-        xhr.send = function () {
-          begin = Date.now();
-          var a = 1 === arguments.length ? [arguments[0]] : Array.apply(null, arguments);
-          send.apply(xhr, a);
-        };
-
-        xhr.onreadystatechange = function () {
-          if (page && 4 === xhr.readyState) {
-            var time = Date.now() - begin;
-
-            if (xhr.status >= 200 && xhr.status <= 299) {
-              var status = xhr.status || 200;
-
-              if ('function' == typeof xhr.getResponseHeader) {
-                var r = xhr.getResponseHeader('Content-Type');
-                if (r && !/(text)|(json)/.test(r)) return;
-              }
-
-              handleApi(page, !0, time, status, xhr.responseText.substr(0, Config.maxLength) || '', begin);
-            } else {
-              handleApi(page, !1, time, status || 'FAILED', xhr.responseText.substr(0, Config.maxLength) || '', begin);
-            }
-          }
-        };
-
-        return xhr;
-      };
-    }
-  });
-
-  var hookFetch = (() => {
-    if ('function' == typeof window.fetch) {
-      var __oFetch_ = window.fetch;
-      window['__oFetch_'] = __oFetch_;
-
-      window.fetch = function (t, o) {
-        var a = 1 === arguments.length ? [arguments[0]] : Array.apply(null, arguments);
-        var begin = Date.now(),
-            url = (t && 'string' != typeof t ? t.url : t) || '',
+          xhr.open = function (method, url) {
+            var a = 1 === arguments.length ? [arguments[0]] : Array.apply(null, arguments);
+            url = url;
             page = parseUrl(url);
-        if (!page) return __oFetch_.apply(window, a);
-        return __oFetch_.apply(window, a).then(function (e) {
-          var response = e.clone(),
-              headers = response.headers;
+            open.apply(xhr, a);
+          };
 
-          if (headers && 'function' === typeof headers.get) {
-            var ct = headers.get('content-type');
-            if (ct && !/(text)|(json)/.test(ct)) return e;
-          }
+          xhr.send = function () {
+            var a = 1 === arguments.length ? [arguments[0]] : Array.apply(null, arguments);
+            send.apply(xhr, a);
+          };
 
-          var time = Date.now() - begin;
-          response.text().then(function (res) {
-            if (response.ok) {
-              handleApi(page, !0, time, status, res.substr(0, 1000) || '', begin);
-            } else {
-              handleApi(page, !1, time, status, res.substr(0, 1000) || '', begin);
+          xhr.onreadystatechange = function () {
+            if (page && 4 === xhr.readyState) {
+
+              if (xhr.status >= 200 && xhr.status <= 299) {
+
+                if ('function' == typeof xhr.getResponseHeader) {
+                  var r = xhr.getResponseHeader('Content-Type');
+                  if (r && !/(text)|(json)/.test(r)) return;
+                } // 成功上报
+
+              }
             }
+          };
+
+          return xhr;
+        };
+      }
+    }
+
+  };
+
+  var hookFetch = {
+    init() {
+      if ('function' == typeof window.fetch) {
+        var __oFetch_ = window.fetch;
+        window['__oFetch_'] = __oFetch_;
+
+        window.fetch = function (t, o) {
+          var a = 1 === arguments.length ? [arguments[0]] : Array.apply(null, arguments);
+          var url = (t && 'string' != typeof t ? t.url : t) || '',
+              page = parseUrl(url);
+          if (!page) return __oFetch_.apply(window, a);
+          return __oFetch_.apply(window, a).then(function (e) {
+            var response = e.clone(),
+                headers = response.headers;
+
+            if (headers && 'function' === typeof headers.get) {
+              var ct = headers.get('content-type');
+              if (ct && !/(text)|(json)/.test(ct)) return e;
+            }
+            response.text().then(function (res) {
+              if (response.ok) ;
+            });
+            return e;
           });
-          return e;
-        });
+        };
+      }
+    }
+
+  };
+
+  var hookOnPopstate = {
+    init(core) {
+      window['__q_onpopstate_'] = window.onpopstate;
+
+      window.onpopstate = function () {
+        for (var r = arguments.length, a = new Array(r), o = 0; o < r; o++) a[o] = arguments[o];
+
+        let page =  location.pathname.toLowerCase(); // TODO 上报
+
+        if (window.__q_onpopstate_) return window.__q_onpopstate_.apply(this, a);
       };
     }
-  });
 
-  // 页面加载前
-  const url = window.location.href;
-  console.log('开始加载, 当前 url', url);
+  };
 
-  function theEventLoad(e) {
-    console.log('load: ', e);
+  const parseReportLog = list => {
+    const arr = [+new Date(), 'web', 'h5'];
+    return arr.concat(list).join('*');
+  };
+
+  const getElmPath = e => {
+    const maxDeep = 5;
+    if (!e || 1 !== e.nodeType) return '';
+    var ret = [],
+        deepLength = 0,
+        elm = '';
+    ret.push(`(${e.innerText.substr(0, 50)})`);
+
+    for (var t = e || null; t && deepLength++ < maxDeep && !('html' === (elm = normalTarget(t)));) {
+      ret.push(elm), t = t.parentNode;
+    }
+
+    return ret.reverse().join(' > ');
+  };
+
+  const getCommonAttribute = () => {
+    const winSearch = window.location.search.replace('?', '');
+    const versionSearch = winSearch.split('&').map(item => {
+      const data = {},
+            arr = item.split('=');
+      data[arr[0]] = arr[1];
+      return data;
+    }).filter(d => {
+      return d['version'];
+    });
+    return {
+      url: encodeURIComponent(window.location.href),
+      ua: window.navigator.userAgent || '',
+      send_time: +new Date(),
+      cookie: document.cookie || '',
+      user_type: 'h5',
+      // appH5 or h5
+      version: versionSearch.length ? versionSearch[0]['version'] : '1'
+    };
+  };
+
+  const normalTarget = function (e) {
+    var t,
+        n,
+        r,
+        a,
+        i,
+        o = [];
+    if (!e || !e.tagName) return '';
+
+    if (o.push(e.tagName.toLowerCase()), e.id && o.push('#'.concat(e.id)), (t = e.className) && '[object String]' === Object.prototype.toString.call(t)) {
+      for (n = t.split(/\s+/), i = 0; i < n.length; i++) {
+        // className包含active的不加入路径
+        if (n[i].indexOf('active') < 0) o.push('.'.concat(n[i]));
+      }
+    }
+
+    var s = ['type', 'name', 'title', 'alt', 'src'];
+
+    for (i = 0; i < s.length; i++) r = s[i], (a = e.getAttribute(r)) && o.push('['.concat(r, '="').concat(a, '"]'));
+
+    return o.join('');
+  };
+
+  const fnToString = function (e) {
+    return function () {
+      return e + '() { [native code] }';
+    };
+  };
+
+  const parseUrl$1 = function (e) {
+    return e && 'string' == typeof e ? e.replace(/^(https?:)?\/\//, '').replace(/\?.*$/, '') : '';
+  };
+
+  var hookHistoryState = {
+    init() {
+      function doHook(e) {
+        var t = history[e];
+        'function' == typeof t && (history[e] = function (n, i, s) {
+          var c = 1 === arguments.length ? [arguments[0]] : Array.apply(null, arguments),
+              u = location.href,
+              f = t.apply(history, c);
+          if (!s || 'string' != typeof s) return f;
+          if (s === u) return f;
+
+          try {
+            var l = u.split('#'),
+                h = s.split('#'),
+                p = parseUrl$1(l[0]),
+                d = parseUrl$1(h[0]),
+                g = l[1] && l[1].replace(/^\/?(.*)/, '$1'),
+                v = h[1] && h[1].replace(/^\/?(.*)/, '$1');
+            p !== d ? dispatchCustomEvent('historystatechanged', d) : g !== v && dispatchCustomEvent('historystatechanged', v);
+          } catch (m) {
+            console.error('[retcode] error in ' + e + ': ' + m);
+          }
+
+          return f;
+        }, history[e].toString = fnToString(e));
+      }
+
+      ['pushState', 'replaceState'].forEach(e => doHook(e));
+    }
+
+  };
+
+  function _defineProperty$1(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
   }
 
-  function theEventError(msg, url, row, col, error) {
-    // ErrorEvent 捕获异常, Event 资源错误
-    if (error instanceof ErrorEvent) {
-      console.log('捕获异常: ', error);
-    } else {
-      console.log('资源错误: ', error);
+  function ownKeys$1(object, enumerableOnly) {
+    var keys = Object.keys(object);
+
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
     }
+
+    return keys;
+  }
+
+  function _objectSpread2$1(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+
+      if (i % 2) {
+        ownKeys$1(Object(source), true).forEach(function (key) {
+          _defineProperty$1(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys$1(Object(source)).forEach(function (key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+
+    return target;
+  }
+
+  function theEventLoad() {
+    const url = encodeURIComponent(window.location.href);
+    const commonAttr = getCommonAttribute();
+    const endLog = parseReportLog([`web_end:${JSON.stringify(commonAttr)}`]),
+          pageToLog = parseReportLog(['to_url', 'unknown', url]);
+    console.log(endLog);
+    console.log(pageToLog);
+  }
+
+  function theEventUnload() {
+    const url = encodeURIComponent(window.location.href);
+    const pageFromLog = parseReportLog(['from_url', url, 'unknown']);
+    console.log(pageFromLog);
+  }
+
+  function theEventError(error) {
+    // ErrorEvent 捕获异常, Event 资源错误
+    const commonAttr = getCommonAttribute();
+    let msg = '',
+        errcode = '';
+
+    if (error instanceof ErrorEvent) {
+      msg = error.message;
+      errcode = 'error';
+    } else {
+      const thePath = getElmPath(error.target);
+      msg = '资源错误: ' + thePath;
+      errcode = 'resource_error';
+    }
+
+    const data = _objectSpread2$1(_objectSpread2$1({}, commonAttr), {
+      errcode,
+      errmsg: msg
+    });
+
+    const errLog = parseReportLog([`web_error:${JSON.stringify(data)}`]);
+    console.log('errLog: ', errLog);
   } // promise异常
 
 
   function theEventUnhandledrejection(e) {
     e.preventDefault();
-    console.log('Unhandledrejection: ', e.reason);
+    const commonAttr = getCommonAttribute();
+
+    const data = _objectSpread2$1(_objectSpread2$1({}, commonAttr), {
+      errcode: 'unhandledrejection',
+      errmsg: e.reason.stack
+    });
+
+    const errLog = parseReportLog([`web_error:${JSON.stringify(data)}`]);
+    console.log('errLog: ', errLog);
   }
 
-  function theEventPopstate(e) {
-    console.log('popstate: ', e);
-  }
+  function theEventClick(event) {
+    var target;
 
-  function theEventClick(e) {
-    console.log('click: ', e);
+    try {
+      target = event.target;
+    } catch (err) {
+      target = '<unknown>';
+    }
+
+    if (target.nodeName === 'HTML' || target.nodeName === 'TEXTAREA') return;
+    if (target.length === 0) return;
+    const thePath = getElmPath(target);
+    if (!thePath) return;
+    const commonAttr = getCommonAttribute();
+    let contentText;
+
+    switch (target.nodeName) {
+      case 'DIV':
+        contentText = target.textContent;
+        break;
+
+      case 'IMG':
+        contentText = target.src;
+        break;
+
+      case 'INPUT':
+        contentText = target.defaultValue;
+        break;
+
+      default:
+        contentText = null;
+    }
+
+    const repLog = _objectSpread2$1(_objectSpread2$1({}, commonAttr), {
+      path: thePath,
+      element_id: target.id || target.className || target.innerHTML || target.name || null,
+      text: contentText
+    });
+
+    console.log(repLog); // this.addLog(repLog);
   }
 
   function theEventHashchange(e) {
     console.log('Hashchange', e);
   }
 
-  class WebReportor extends dist {
-    constructor(opts = {}) {
-      super(opts);
-      this.init();
-    }
+  function theEventHistorystatechanged(e) {
+    console.log('theEventHistorystatechanged', e);
+  }
 
-    init() {
+  var addEventListener = {
+    init(core) {
+      // 页面加载前
+      const startLog = parseReportLog([`web_start: ${JSON.stringify(getCommonAttribute())}`]);
+      console.log('开始加载: ', startLog);
       const initEvent = {
         load: {
           fn: theEventLoad
@@ -502,25 +779,40 @@
         unhandledrejection: {
           fn: theEventUnhandledrejection
         },
-        popstate: {
-          fn: theEventPopstate
-        },
         click: {
           fn: theEventClick
         },
         hashchange: {
           fn: theEventHashchange
+        },
+        unload: {
+          fn: theEventUnload
+        },
+        historystatechanged: {
+          fn: theEventHistorystatechanged
         }
       }; // 监听函数不要使用匿名函数, 可以减低内存、自动回收
 
       Object.keys(initEvent).forEach(key => {
         const event = initEvent[key];
-        window.addEventListener(key, event.fn, true);
-      }); // // 劫持 XMLHttpRequest
+        window.addEventListener(key, event.fn.bind(core), true);
+      });
+    }
 
-      hooRequest(); // // 劫持 fetch
+  };
 
-      hookFetch();
+  class WebReportor extends dist {
+    constructor(opts = {}) {
+      super(opts);
+      this.init();
+    }
+
+    init() {
+      this.use(addEventListener);
+      this.use(hooRequest);
+      this.use(hookFetch);
+      this.use(hookOnPopstate);
+      this.use(hookHistoryState);
     }
 
   }
