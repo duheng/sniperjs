@@ -1,10 +1,10 @@
 {
   "name": "@sniperjs/core",
-  "version": "0.0.4-alpha.5",
+  "version": "0.0.4-alpha.6",
   "description": "",
   "main": "./dist/index.js",
   "files": [
-    "./dist/**"
+    "dist"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
