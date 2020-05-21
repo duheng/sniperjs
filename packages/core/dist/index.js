@@ -291,7 +291,7 @@ class Core {
           return;
         }
 
-        this.startReport(data);
+        this.startReport(res);
       });
     } else {
       if (utils.isBoolean(ret) && ret === false) {
@@ -299,7 +299,7 @@ class Core {
         return;
       }
 
-      this.startReport(data);
+      this.startReport(ret);
     }
   }
 

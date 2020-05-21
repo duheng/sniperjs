@@ -41,7 +41,10 @@ function parseScriptRuntimeError(stack) {
       value
     };
   } catch (err) {
-    return {};
+    return {
+      stack,
+      type: 'Error'
+    };
   }
 }
 
@@ -225,7 +228,7 @@ function Request(config) {
   wx.request(config);
 }
 
-var version = "0.0.2";
+var version = "0.0.3-alpha.0";
 
 class Reportor extends Core {
   constructor(opts = {}) {
