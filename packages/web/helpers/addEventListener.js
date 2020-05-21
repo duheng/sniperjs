@@ -1,13 +1,10 @@
-import {
-    theEventLoad,
-    theEventError,
-    theEventUnhandledrejection,
-    theEventClick,
-    theEventHashchange,
-    theEventUnload,
-    theEventHistorystatechanged,
-} from './handlers';
-
+import theEventLoad from './events/theEventLoad';
+import theEventError from './events/theEventError';
+import theEventUnhandledrejection from './events/theEventUnhandledrejection';
+import theEventClick from './events/theEventClick';
+import theEventHashchange from './events/theEventHashchange';
+import theEventUnload from './events/theEventUnload';
+import theEventHistorystatechanged from './events/theEventHistorystatechanged';
 import { parseReportLog, getCommonAttribute } from '../helpers/utils';
 
 export default {
