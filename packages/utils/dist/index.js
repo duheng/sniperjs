@@ -1,7 +1,3 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
 /* eslint-disable no-undef */
 const {
   toString
@@ -205,24 +201,4 @@ function getMeta() {
   };
 }
 
-exports.compose = compose;
-exports.extend = extend;
-exports.getAgent = getAgent;
-exports.getGlobal = getGlobal;
-exports.getLog = getLog;
-exports.getMeta = getMeta;
-exports.getNow = getNow;
-exports.getRoutes = getRoutes;
-exports.getSystemInfo = getSystemInfo;
-exports.isArray = isArray;
-exports.isBoolean = isBoolean;
-exports.isDev = isDev;
-exports.isEmptyObject = isEmptyObject;
-exports.isFunction = isFunction;
-exports.isNumber = isNumber;
-exports.isPlainObject = isPlainObject;
-exports.isPromise = isPromise;
-exports.isRegExp = isRegExp;
-exports.isString = isString;
-exports.isUndefined = isUndefined;
-exports.noop = noop;
+export { compose, extend, getAgent, getGlobal, getLog, getMeta, getNow, getRoutes, getSystemInfo, isArray, isBoolean, isDev, isEmptyObject, isFunction, isNumber, isPlainObject, isPromise, isRegExp, isString, isUndefined, noop };

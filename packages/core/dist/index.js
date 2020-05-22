@@ -1,6 +1,4 @@
-'use strict';
-
-var utils = require('@sniperjs/utils');
+import { isString, isNumber, isArray, isBoolean, isFunction, extend, isRegExp, compose, getMeta, isPromise } from '@sniperjs/utils';
 
 function throwErr(err) {
   throw new Error(err);
@@ -20,7 +18,7 @@ const strategies = {
     validate(val) {
       if (!val) return;
 
-      if (!utils.isString(val)) {
+      if (!isString(val)) {
         throwErr(this.msgTypeErr);
       }
     },
@@ -31,7 +29,7 @@ const strategies = {
     validate(val) {
       if (!val) return;
 
-      if (!utils.isString(val)) {
+      if (!isString(val)) {
         throwErr(this.msgTypeErr);
       }
     },
@@ -40,7 +38,7 @@ const strategies = {
   },
   repeat: {
     validate(val) {
-      if (!utils.isNumber(val)) {
+      if (!isNumber(val)) {
         throwErr(this.msgTypeErr);
       }
     },
@@ -49,7 +47,7 @@ const strategies = {
   },
   ignoreErrors: {
     validate(val) {
-      if (!utils.isArray(val)) {
+      if (!isArray(val)) {
         throwErr(this.msgTypeErr);
       }
     },
@@ -58,7 +56,7 @@ const strategies = {
   },
   autoBreadcrumbs: {
     validate(val) {
-      if (!utils.isBoolean(val)) {
+      if (!isBoolean(val)) {
         throwErr(this.msgTypeErr);
       }
     },
@@ -67,7 +65,7 @@ const strategies = {
   },
   breadcrumbsMax: {
     validate(val) {
-      if (!utils.isNumber(val)) {
+      if (!isNumber(val)) {
         throwErr(this.msgTypeErr);
       }
     },
@@ -76,7 +74,7 @@ const strategies = {
   },
   random: {
     validate(val) {
-      if (!utils.isNumber(val)) {
+      if (!isNumber(val)) {
         throwErr(this.msgTypeErr);
       } else if (!(val > 0 && val <= 1)) {
         throwErr(this.msgRangeErr);
@@ -88,7 +86,7 @@ const strategies = {
   },
   delay: {
     validate(val) {
-      if (!utils.isNumber(val)) {
+      if (!isNumber(val)) {
         throwErr(this.msgTypeErr);
       }
     },
@@ -97,7 +95,7 @@ const strategies = {
   },
   beforeReport: {
     validate(val) {
-      if (!utils.isFunction(val)) {
+      if (!isFunction(val)) {
         throwErr(this.msgTypeErr);
       }
     },
@@ -169,7 +167,7 @@ class Core {
 
   mergeConfig(opts) {
     validateConfig(opts);
-    this.config = utils.extend(this.config, opts);
+    this.config = extend(this.config, opts);
   }
 
   addBreadCrumb(breadcrumb) {
@@ -229,7 +227,7 @@ class Core {
       ignoreErrors
     } = this.config;
     if (!ignoreErrors.length) return queue;
-    const source = ignoreErrors.filter(rule => utils.isRegExp(rule)).map(rule => `(${rule.source})`); // 合并成一个正则
+    const source = ignoreErrors.filter(rule => isRegExp(rule)).map(rule => `(${rule.source})`); // 合并成一个正则
 
     const bigRegExp = new RegExp(source.join('|'), 'i');
     return queue.filter(log => !bigRegExp.test(log.msg.type));
@@ -238,7 +236,7 @@ class Core {
   processMergeBreadcrumbs(log) {
     const retLog = log;
 
-    if (utils.isBoolean(this.config.autoBreadcrumbs) && this.config.autoBreadcrumbs) {
+    if (isBoolean(this.config.autoBreadcrumbs) && this.config.autoBreadcrumbs) {
       retLog.breadcrumbs = this.getBreadCrumbs().slice(0);
       this.clearBreadCrumbs();
     }
@@ -258,10 +256,10 @@ class Core {
       }
 
       this.delayTimer = setTimeout(() => {
-        this.sendLog(utils.compose.apply(this, processTask)(curLogQueue));
+        this.sendLog(compose.apply(this, processTask)(curLogQueue));
       }, this.config.delay);
     } else {
-      this.sendLog(utils.compose.apply(this, processTask)(curLogQueue));
+      this.sendLog(compose.apply(this, processTask)(curLogQueue));
     }
   }
 
@@ -270,7 +268,7 @@ class Core {
       appVersion,
       env
     } = this.config;
-    return { ...utils.getMeta(),
+    return { ...getMeta(),
       appVersion,
       env,
       logs: log
@@ -282,11 +280,11 @@ class Core {
     const log = logQueue.slice();
     if (!log.length) return;
     const data = this.gLog(log);
-    const ret = utils.isFunction(this.config.beforeReport) && this.config.beforeReport.call(this, data); // 异步回调
+    const ret = isFunction(this.config.beforeReport) && this.config.beforeReport.call(this, data); // 异步回调
 
-    if (utils.isPromise(ret)) {
+    if (isPromise(ret)) {
       ret.then(res => {
-        if (utils.isBoolean(res) && res === false) {
+        if (isBoolean(res) && res === false) {
           // 用户阻止默认上报后，可在 beforeReport 可自定义 request 上报
           return;
         }
@@ -294,7 +292,7 @@ class Core {
         this.startReport(res);
       });
     } else {
-      if (utils.isBoolean(ret) && ret === false) {
+      if (isBoolean(ret) && ret === false) {
         // 用户阻止默认上报后，可在 beforeReport 可自定义 request 上报
         return;
       }
@@ -348,7 +346,7 @@ class Core {
 
   wrapFnArgs(args = []) {
     return args.map(arg => {
-      if (utils.isFunction(arg)) {
+      if (isFunction(arg)) {
         const wrapedFn = this.wrapFn(arg);
         return wrapedFn;
       }
@@ -359,4 +357,4 @@ class Core {
 
 }
 
-module.exports = Core;
+export default Core;

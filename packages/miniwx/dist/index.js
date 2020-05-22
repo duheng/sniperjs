@@ -1,9 +1,5 @@
-'use strict';
-
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var Core = _interopDefault(require('@sniperjs/core'));
-var utils = require('@sniperjs/utils');
+import Core from '@sniperjs/core';
+import { getLog, getGlobal, noop, isFunction, getSystemInfo } from '@sniperjs/utils';
 
 /* eslint-disable key-spacing */
 
@@ -64,7 +60,7 @@ const pluginHookApp = {
       };
 
       configCopy.onError = originParam => {
-        const log = utils.getLog(parseScriptRuntimeError(originParam));
+        const log = getLog(parseScriptRuntimeError(originParam));
         core.addLog(log);
         core.report();
         return originOnError && originOnError.call(wx, originParam);
@@ -75,11 +71,11 @@ const pluginHookApp = {
         const PromiseType = 'PromiseRejectedError';
 
         if (originParam.reason && originParam.reason instanceof Error) {
-          log = utils.getLog(Object.assign(parseUnhandleRejectError(originParam.reason.stack), {
+          log = getLog(Object.assign(parseUnhandleRejectError(originParam.reason.stack), {
             type: PromiseType
           }));
         } else {
-          log = utils.getLog({
+          log = getLog({
             value: originParam.reason,
             type: PromiseType
           });
@@ -107,7 +103,7 @@ function isRorterRequest(url) {
 
 const pluginHookRq = {
   init(core) {
-    const globalObj = utils.getGlobal();
+    const globalObj = getGlobal();
     const originRequest = globalObj.request;
     Object.defineProperty(globalObj, 'request', {
       writable: true,
@@ -119,14 +115,14 @@ const pluginHookRq = {
     globalObj.request = function request(config) {
       const configCopy = { ...config
       };
-      const originFail = config.fail || utils.noop;
-      const originSuc = config.success || utils.noop; // 搜集wx.request所有除callback的配置。
+      const originFail = config.fail || noop;
+      const originSuc = config.success || noop; // 搜集wx.request所有除callback的配置。
 
       const collectConfigProp = Object.keys(config).reduce((accu, curKey) => {
         const accuCopy = { ...accu
         };
 
-        if (!utils.isFunction(config[curKey])) {
+        if (!isFunction(config[curKey])) {
           accuCopy[curKey] = config[curKey];
         }
 
@@ -134,7 +130,7 @@ const pluginHookRq = {
       }, {});
 
       configCopy.fail = function fail(err) {
-        const log = utils.getLog({
+        const log = getLog({
           err,
           type: 'RequestError',
           ...collectConfigProp
@@ -154,7 +150,7 @@ const pluginHookRq = {
         } = res;
 
         if (!isRorterRequest.call(core, configCopy.url) && ![200, 302, 304].includes(statusCode)) {
-          const log = utils.getLog({
+          const log = getLog({
             statusCode,
             type: 'RequestError',
             ...collectConfigProp
@@ -174,7 +170,7 @@ const pluginHookRq = {
 
 const pluginOnMemoryWarning = {
   init(core) {
-    const globalObj = utils.getGlobal();
+    const globalObj = getGlobal();
     const originHandler = globalObj.onMemoryWarning;
     Object.defineProperty(globalObj, 'onMemoryWarning', {
       writable: true,
@@ -201,14 +197,14 @@ const pluginPatchPromise = {
     const {
       brand,
       system
-    } = utils.getSystemInfo();
+    } = getSystemInfo();
 
     if (brand !== 'devtools' && /android/.test(system.toLowerCase())) {
       const originWarn = console.warn;
 
       console.warn = function (...args) {
         if (/unhandledRejection/.test(args[0])) {
-          const log = utils.getLog({
+          const log = getLog({
             value: args[1].errMsg || args[1],
             type: 'PromiseRejectedError'
           });
@@ -228,7 +224,7 @@ function Request(config) {
   wx.request(config);
 }
 
-var version = "0.0.3-alpha.0";
+var version = "0.0.4-alpha.6";
 
 class Reportor extends Core {
   constructor(opts = {}) {
@@ -254,4 +250,4 @@ class Reportor extends Core {
 
 }
 
-module.exports = Reportor;
+export default Reportor;
