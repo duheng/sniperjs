@@ -45,7 +45,10 @@ function parseScriptRuntimeError(stack) {
       value
     };
   } catch (err) {
-    return {};
+    return {
+      stack,
+      type: 'Error'
+    };
   }
   
 }

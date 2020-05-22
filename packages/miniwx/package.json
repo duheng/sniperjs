@@ -1,10 +1,10 @@
 {
   "name": "@sniperjs/miniwx",
-  "version": "0.0.3-alpha.0",
+  "version": "0.0.4-alpha.6",
   "description": "",
   "main": "./dist/index.js",
   "files": [
-    "./dist/**"
+    "dist"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,7 +12,7 @@
   "author": "blue.yang",
   "license": "MIT",
   "dependencies": {
-    "@sniperjs/core": "^0.0.3-alpha.0",
-    "@sniperjs/utils": "^0.0.3-alpha.0"
+    "@sniperjs/core": "^0.0.4-alpha.6",
+    "@sniperjs/utils": "^0.0.4-alpha.6"
   }
 }

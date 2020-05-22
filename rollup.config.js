@@ -23,7 +23,7 @@ function generateConfig(pkgDirName) {
             // },
             {
                 file: `${PKGDIR}/${pkgDirName}/dist/index.js`,
-                format: 'cjs'
+                format: 'esm'
             }
         ],
         plugins: [
