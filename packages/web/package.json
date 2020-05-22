@@ -13,6 +13,7 @@
     "license": "MIT",
     "dependencies": {
         "@sniperjs/core": "^0.0.3-alpha.0",
-        "@sniperjs/utils": "^0.0.3-alpha.0"
+        "@sniperjs/utils": "^0.0.3-alpha.0",
+        "reqwest": "^2.0.5"
     }
 }
