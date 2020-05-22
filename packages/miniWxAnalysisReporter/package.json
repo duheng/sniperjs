@@ -1,0 +1,18 @@
+{
+  "name": "@sniperjs/mini_wx_analysis_reporter",
+  "version": "0.0.4-alpha.6",
+  "description": "",
+  "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "blue.yang",
+  "license": "MIT",
+  "dependencies": {
+    "@sniperjs/core": "^0.0.4-alpha.6",
+    "@sniperjs/utils": "^0.0.4-alpha.6"
+  }
+}
