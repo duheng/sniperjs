@@ -1,6 +1,6 @@
 {
   "name": "@sniperjs/error-reporter",
-  "version": "0.0.4-alpha.6",
+  "version": "0.0.4-alpha.7",
   "description": "",
   "main": "./dist/index.js",
   "files": [
@@ -12,6 +12,6 @@
   "author": "blue.yang",
   "license": "MIT",
   "dependencies": {
-    "@sniperjs/utils": "^0.0.4-alpha.6"
+    "@sniperjs/utils": "^0.0.4-alpha.7"
   }
 }
