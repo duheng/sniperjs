@@ -47,6 +47,8 @@ function _objectSpread2(target) {
   return target;
 }
 
+/* eslint-disable no-empty */
+
 /* eslint-disable no-undef */
 const {
   toString
@@ -126,55 +128,67 @@ function compose(...fns) {
 function noop() {}
 
 function getAgent() {
-  if (wx) {
-    return 'WX_MINI_APP';
-  }
+  try {
+    if (window && window.history) {
+      return 'WEB_APP';
+    }
 
-  if (swan) {
-    return 'BAIDU_MINI_APP';
-  }
+    if (wx) {
+      return 'WX_MINI_APP';
+    }
 
-  if (my) {
-    return 'ALIPAY_MINI_APP';
-  }
+    if (swan) {
+      return 'BAIDU_MINI_APP';
+    }
 
-  if (tt) {
-    return 'TT_MINI_APP';
-  }
+    if (my) {
+      return 'ALIPAY_MINI_APP';
+    }
 
-  if (qq) {
-    return 'QQ_MINI_APP';
-  }
+    if (tt) {
+      return 'TT_MINI_APP';
+    }
 
-  if (quick) {
-    return 'QUICK_APP';
-  }
+    if (qq) {
+      return 'QQ_MINI_APP';
+    }
 
-  return 'UNKNOWN_APP';
+    if (quick) {
+      return 'QUICK_APP';
+    }
+  } catch (err) {
+    return 'UNKNOWN_APP';
+  }
 }
 
 function getGlobal() {
-  if (wx) {
-    return wx;
-  }
+  try {
+    if (window && window.history) {
+      return window;
+    }
 
-  if (swan) {
-    return swan;
-  }
+    if (wx) {
+      return wx;
+    }
 
-  if (my) {
-    return my;
-  }
+    if (swan) {
+      return swan;
+    }
 
-  if (tt) {
-    return tt;
-  }
+    if (my) {
+      return my;
+    }
 
-  if (qq) {
-    return qq;
-  }
+    if (tt) {
+      return tt;
+    }
 
-  return {};
+    if (qq) {
+      return qq;
+    }
+  } catch (err) {
+    return {};
+  }
 }
 
 function getSystemInfo() {

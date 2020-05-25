@@ -1,6 +1,6 @@
 
 import {
-    isFunction, isBoolean, compose, extend, getMeta, isPromise
+    isFunction, isBoolean, extend, getMeta, isPromise
   } from '@sniperjs/utils';
   import validateConfig from './validateConfig';
   

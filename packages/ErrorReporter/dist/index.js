@@ -324,7 +324,7 @@ class ErrorReporter {
     });
   }
 
-  sendLog(logQueue) {
+  sendLog(logQueue = []) {
     // tip: 超过重复上报的次数后log不会入队
     const log = logQueue.slice();
     if (!log.length) return;

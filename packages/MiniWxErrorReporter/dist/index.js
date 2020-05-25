@@ -267,7 +267,7 @@ function Request(config) {
   wx.request(config);
 }
 
-var version = "0.0.4-alpha.7";
+var version = "0.0.4-alpha.8";
 
 class Reportor extends ErrorReporter {
   constructor(opts = {}) {
