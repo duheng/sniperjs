@@ -1,6 +1,55 @@
 import ErrorReporter from '@sniperjs/error-reporter';
 import { getLog, getGlobal, noop, isFunction, getSystemInfo } from '@sniperjs/utils';
 
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
 /* eslint-disable key-spacing */
 
 /* eslint-disable no-multi-spaces */
@@ -48,7 +97,6 @@ function parseUnhandleRejectError(stack) {
   return parseScriptRuntimeError(stack);
 }
 
-/* eslint-disable no-undef */
 const pluginHookApp = {
   init(core) {
     const originApp = App;
@@ -56,8 +104,8 @@ const pluginHookApp = {
     App = function App(config) {
       const originOnError = config.onError;
       const originUnRj = config.onUnhandledRejection;
-      const configCopy = { ...config
-      };
+
+      const configCopy = _objectSpread2({}, config);
 
       configCopy.onError = originParam => {
         const log = getLog(parseScriptRuntimeError(originParam));
@@ -94,8 +142,6 @@ const pluginHookApp = {
 
 };
 
-/* eslint-disable no-undef */
-
 function isRorterRequest(url) {
   const reg = new RegExp(url);
   return reg.test(this.config.url);
@@ -113,14 +159,13 @@ const pluginHookRq = {
     });
 
     globalObj.request = function request(config) {
-      const configCopy = { ...config
-      };
+      const configCopy = _objectSpread2({}, config);
+
       const originFail = config.fail || noop;
       const originSuc = config.success || noop; // 搜集wx.request所有除callback的配置。
 
       const collectConfigProp = Object.keys(config).reduce((accu, curKey) => {
-        const accuCopy = { ...accu
-        };
+        const accuCopy = _objectSpread2({}, accu);
 
         if (!isFunction(config[curKey])) {
           accuCopy[curKey] = config[curKey];
@@ -130,11 +175,10 @@ const pluginHookRq = {
       }, {});
 
       configCopy.fail = function fail(err) {
-        const log = getLog({
+        const log = getLog(_objectSpread2({
           err,
-          type: 'RequestError',
-          ...collectConfigProp
-        });
+          type: 'RequestError'
+        }, collectConfigProp));
 
         if (!isRorterRequest.call(core, configCopy.url)) {
           core.addLog(log);
@@ -150,11 +194,10 @@ const pluginHookRq = {
         } = res;
 
         if (!isRorterRequest.call(core, configCopy.url) && ![200, 302, 304].includes(statusCode)) {
-          const log = getLog({
+          const log = getLog(_objectSpread2({
             statusCode,
-            type: 'RequestError',
-            ...collectConfigProp
-          });
+            type: 'RequestError'
+          }, collectConfigProp));
           core.addLog(log);
           core.report();
         }
@@ -224,7 +267,7 @@ function Request(config) {
   wx.request(config);
 }
 
-var version = "0.0.4-alpha.6";
+var version = "0.0.4-alpha.7";
 
 class Reportor extends ErrorReporter {
   constructor(opts = {}) {
