@@ -2,7 +2,6 @@
   "name": "sniper",
   "version": "0.0.1",
   "description": "mini program bug reporter",
-  "main": "./src/index.js",
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "dev": "rollup --config rollup.config.js --watch",

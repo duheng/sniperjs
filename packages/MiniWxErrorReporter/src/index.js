@@ -1,4 +1,4 @@
-import Core from '@sniperjs/core';
+import ErrorReporter from '@sniperjs/error-reporter';
 import pluginHookApp from './helpers/pluginHookApp';
 import pluginHookRq from './helpers/pluginHookRq';
 // import pluginEventBreadcrumbs from './helpers/pluginEventBreadcrumbs';
@@ -7,7 +7,7 @@ import pluginPatchPromise from './helpers/pluginPatchPromise';
 import reqeust from './helpers/request';
 import { version } from '../package.json';
 
-class Reportor extends Core {
+class Reportor extends ErrorReporter {
   
   constructor(opts = {}) {
     super(opts);

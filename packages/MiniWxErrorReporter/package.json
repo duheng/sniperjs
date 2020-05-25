@@ -1,5 +1,5 @@
 {
-  "name": "@sniperjs/core",
+  "name": "@sniperjs/miniwx-error-reporter",
   "version": "0.0.4-alpha.6",
   "description": "",
   "main": "./dist/index.js",
@@ -10,5 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "blue.yang",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@sniperjs/error-reporter": "^0.0.4-alpha.6",
+    "@sniperjs/utils": "^0.0.4-alpha.6"
+  }
 }

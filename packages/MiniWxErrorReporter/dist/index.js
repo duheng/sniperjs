@@ -1,4 +1,4 @@
-import Core from '@sniperjs/core';
+import ErrorReporter from '@sniperjs/error-reporter';
 import { getLog, getGlobal, noop, isFunction, getSystemInfo } from '@sniperjs/utils';
 
 /* eslint-disable key-spacing */
@@ -226,7 +226,7 @@ function Request(config) {
 
 var version = "0.0.4-alpha.6";
 
-class Reportor extends Core {
+class Reportor extends ErrorReporter {
   constructor(opts = {}) {
     super(opts);
     this.version = version; // 合并参数

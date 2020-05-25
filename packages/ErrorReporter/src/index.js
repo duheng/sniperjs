@@ -6,7 +6,7 @@ import validateConfig from './validateConfig';
 
 const logMap = Symbol('log map');
 
-class Core {
+class ErrorReporter {
   constructor() {
     this.logQueue = [];
     this.breadcrumbs = [];
@@ -232,4 +232,4 @@ class Core {
   }
 }
 
-export default Core;
+export default ErrorReporter;
