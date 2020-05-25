@@ -23,8 +23,8 @@ function generateConfig(pkgDirName) {
             // },
             {
                 file: `${PKGDIR}/${pkgDirName}/dist/index.js`,
-                format: 'cjs',
-            },
+                format: 'esm'
+            }
         ],
         plugins: [
             json(),
@@ -39,7 +39,7 @@ function generateConfig(pkgDirName) {
     };
 }
 
-function generateWebConfig(isBrowser) {
+function generateWebConfig(isBrowser, pkgDirName) {
     return {
         input: `${PKGDIR}/${pkgDirName}/src/index.js`,
         output: [
@@ -67,8 +67,8 @@ function generateWebConfig(isBrowser) {
 }
 
 const CONFIG = pkgDirsNames.map((cName) => {
-    const isWeb = pkgDirName === 'web';
-    return isWeb ? generateWebConfig(true) : generateConfig(cName);
+    const isWeb = cName === 'WebReporter';
+    return isWeb ? generateWebConfig(true, cName) : generateConfig(cName);
 });
 
 module.exports = CONFIG;

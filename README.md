@@ -13,7 +13,7 @@
 # 安装
 
 ```
-npm install @sniperjs/miniwx
+npm install @sniperjs/miniwx-error-reporter
 ```
 
 # 使用方式
@@ -28,13 +28,13 @@ npm install @sniperjs/miniwx
 // app.js
 
 // 微信小程序
-import Sniper from '@sniperjs/miniwx'; 
+import ErrorReporter from '@sniperjs/miniwx-error-reporter'; 
 
 ```
 
 ### 实例化
 ```
-new Sniper({
+new ErrorReporter({
     url: 'your request api'
 });
 

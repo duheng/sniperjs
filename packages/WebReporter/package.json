@@ -1,0 +1,19 @@
+{
+    "name": "@sniperjs/web-reporter",
+    "version": "0.0.1-alpha.0",
+    "description": "web 自动埋点",
+    "main": "./dist/index.js",
+    "files": [
+        "./dist/**"
+    ],
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "jiguoxing",
+    "license": "MIT",
+    "dependencies": {
+        "@sniperjs/behavior-reporter": "^0.0.4-alpha.7",
+        "@sniperjs/utils": "^0.0.4-alpha.7",
+        "reqwest": "^2.0.5"
+    }
+}

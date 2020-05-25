@@ -1,6 +1,51 @@
-'use strict';
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
 
-Object.defineProperty(exports, '__esModule', { value: true });
+  return obj;
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
 
 /* eslint-disable no-undef */
 const {
@@ -61,9 +106,7 @@ function getNow() {
 }
 
 function extend(target, source) {
-  return { ...target,
-    ...source
-  };
+  return _objectSpread2({}, target, {}, source);
 }
 
 function compose(...fns) {
@@ -205,24 +248,4 @@ function getMeta() {
   };
 }
 
-exports.compose = compose;
-exports.extend = extend;
-exports.getAgent = getAgent;
-exports.getGlobal = getGlobal;
-exports.getLog = getLog;
-exports.getMeta = getMeta;
-exports.getNow = getNow;
-exports.getRoutes = getRoutes;
-exports.getSystemInfo = getSystemInfo;
-exports.isArray = isArray;
-exports.isBoolean = isBoolean;
-exports.isDev = isDev;
-exports.isEmptyObject = isEmptyObject;
-exports.isFunction = isFunction;
-exports.isNumber = isNumber;
-exports.isPlainObject = isPlainObject;
-exports.isPromise = isPromise;
-exports.isRegExp = isRegExp;
-exports.isString = isString;
-exports.isUndefined = isUndefined;
-exports.noop = noop;
+export { compose, extend, getAgent, getGlobal, getLog, getMeta, getNow, getRoutes, getSystemInfo, isArray, isBoolean, isDev, isEmptyObject, isFunction, isNumber, isPlainObject, isPromise, isRegExp, isString, isUndefined, noop };
