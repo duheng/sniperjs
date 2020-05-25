@@ -5,8 +5,8 @@ const json = require('@rollup/plugin-json');
 //const { eslint } = require('rollup-plugin-eslint');
 const cwd = process.cwd();
 const PKGDIR = './packages';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 const pkgDirsNames = fs.readdirSync(PKGDIR).filter((cName) => {
     const abPath = path.join(cwd, `packages/${cName}`);
@@ -28,6 +28,7 @@ function generateConfig(pkgDirName) {
         ],
         plugins: [
             json(),
+            resolve(),
             babelPlugin({
                 exclude: 'node_modules/**',
                 plugins: ['@babel/plugin-proposal-object-rest-spread'],
