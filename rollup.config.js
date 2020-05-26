@@ -26,6 +26,11 @@ function generateConfig(pkgDirName) {
                 format: 'esm'
             }
         ],
+        external: [
+            '@sniperjs/error-reporter',
+            '@sniperjs/miniwx-error-reporter',
+            '@sniperjs/utils'
+        ],
         plugins: [
             json(),
             resolve(),
