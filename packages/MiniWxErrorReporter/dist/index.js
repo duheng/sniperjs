@@ -56,7 +56,7 @@ function _objectSpread2(target) {
 const errorTypeReg = new RegExp('(' + ['EvalError:', 'InternalError:', 'RangeError:', 'ReferenceError:', 'SyntaxError:', 'TypeError:', 'URIError:', 'Error:' // new Error
 ].join('|') + ')', 'mi');
 
-function parseScriptRuntimeError(stack) {
+function parseScriptRuntimeError(stack = '') {
   try {
     let line = '',
         col = '',

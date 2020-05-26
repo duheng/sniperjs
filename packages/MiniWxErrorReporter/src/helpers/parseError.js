@@ -14,7 +14,7 @@ const errorTypeReg = new RegExp(
   'mi'
 ); 
 
-function parseScriptRuntimeError(stack) {
+function parseScriptRuntimeError(stack='') {
   try {
     let line = '', col = '', file = '';
     const errInfoList = stack.split(/\n\s+/);
