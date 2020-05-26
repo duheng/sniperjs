@@ -13,14 +13,11 @@ const pkgDirsNames = fs.readdirSync(PKGDIR).filter((cName) => {
     return fs.statSync(abPath).isDirectory();
 });
 
+
 function generateConfig(pkgDirName) {
     return {
         input: `${PKGDIR}/${pkgDirName}/src/index.js`,
         output: [
-            // {
-            //     file: `${PKGDIR}/${pkgDirName}/esm/index.esm.js`,
-            //     format: 'esm'
-            // },
             {
                 file: `${PKGDIR}/${pkgDirName}/dist/index.js`,
                 format: 'esm'
@@ -31,12 +28,9 @@ function generateConfig(pkgDirName) {
             resolve(),
             babelPlugin({
                 exclude: 'node_modules/**',
-                plugins: ['@babel/plugin-proposal-object-rest-spread'],
-            }),
-            // eslint({
-            //     extends: 'airbnb'
-            // })
-        ],
+                plugins: ['@babel/plugin-proposal-object-rest-spread']
+            })
+        ]
     };
 }
 
@@ -47,23 +41,21 @@ function generateWebConfig(isBrowser, pkgDirName) {
             {
                 file: `${PKGDIR}/${pkgDirName}/dist/index.js`,
                 format: isBrowser ? 'umd' : 'cjs',
-                name: 'Sniperjs',
-            },
+                name: 'SniperWebReporter'
+            }
         ],
         plugins: [
             json(),
+            resolve(),
             babelPlugin({
                 exclude: 'node_modules/**',
                 plugins: [
                     '@babel/plugin-proposal-object-rest-spread',
-                    '@babel/plugin-transform-classes',
-                ],
+                    '@babel/plugin-transform-classes'
+                ]
             }),
-            resolve({
-                browser: isBrowser,
-            }),
-            commonjs(),
-        ],
+            commonjs()
+        ]
     };
 }
 

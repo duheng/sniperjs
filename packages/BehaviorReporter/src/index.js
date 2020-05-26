@@ -41,7 +41,6 @@ import {
   
     clearLog() {
       this.logQueue = [];
-      this.resetLogMap();
       return this;
     }
   

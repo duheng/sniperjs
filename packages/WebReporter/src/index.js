@@ -4,9 +4,13 @@ import BehaviorReporter from '@sniperjs/behavior-reporter';
 import hookOnPopstate from '../hook/hookOnPopstate';
 import hookHistoryState from '../hook/hookHistoryState';
 import addEventListener from '../helpers/addEventListener';
+import reqeust from '../helpers/request';
+
 class WebReportor extends BehaviorReporter {
-    constructor() {
-        super();
+    constructor(opts={}) {
+        super(opts);
+        // 合并参数
+        this.mergeConfig(opts);
         this.init();
     }
 
@@ -16,7 +20,9 @@ class WebReportor extends BehaviorReporter {
         // this.use(hookFetch);
         this.use(hookOnPopstate);
         this.use(hookHistoryState);
+        this.applyRequest(reqeust);
     }
 }
+
 
 export default WebReportor;

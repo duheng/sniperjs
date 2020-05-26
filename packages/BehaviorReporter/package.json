@@ -12,6 +12,6 @@
   "author": "blue.yang",
   "license": "MIT",
   "dependencies": {
-    "@sniperjs/utils": "^0.0.4-alpha.7"
+    "@sniperjs/utils": "^0.0.4-alpha.8"
   }
 }
