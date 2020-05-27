@@ -97,6 +97,14 @@ function parseUnhandleRejectError(stack) {
   return parseScriptRuntimeError(stack);
 }
 
+function centraTry(cb) {
+  try {
+    return cb && cb();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 const pluginHookApp = {
   init(core) {
     const originApp = App;
@@ -108,29 +116,33 @@ const pluginHookApp = {
       const configCopy = _objectSpread2({}, config);
 
       configCopy.onError = originParam => {
-        const log = getLog(parseScriptRuntimeError(originParam));
-        core.addLog(log);
-        core.report();
+        centraTry(() => {
+          const log = getLog(parseScriptRuntimeError(originParam));
+          core.addLog(log);
+          core.report();
+        });
         return originOnError && originOnError.call(wx, originParam);
       };
 
       configCopy.onUnhandledRejection = originParam => {
-        let log = {};
-        const PromiseType = 'PromiseRejectedError';
+        centraTry(() => {
+          let log = {};
+          const PromiseType = 'PromiseRejectedError';
 
-        if (originParam.reason && originParam.reason instanceof Error) {
-          log = getLog(Object.assign(parseUnhandleRejectError(originParam.reason.stack), {
-            type: PromiseType
-          }));
-        } else {
-          log = getLog({
-            value: originParam.reason,
-            type: PromiseType
-          });
-        }
+          if (originParam.reason && originParam.reason instanceof Error) {
+            log = getLog(Object.assign(parseUnhandleRejectError(originParam.reason.stack), {
+              type: PromiseType
+            }));
+          } else {
+            log = getLog({
+              value: originParam.reason,
+              type: PromiseType
+            });
+          }
 
-        core.addLog(log);
-        core.report();
+          core.addLog(log);
+          core.report();
+        });
         return originUnRj && originUnRj.call(wx, originParam);
       };
 
@@ -175,16 +187,16 @@ const pluginHookRq = {
       }, {});
 
       configCopy.fail = function fail(err) {
-        const log = getLog(_objectSpread2({
-          err,
-          type: 'RequestError'
-        }, collectConfigProp));
-
-        if (!isRorterRequest.call(core, configCopy.url)) {
-          core.addLog(log);
-          core.report();
-        }
-
+        centraTry(() => {
+          if (!isRorterRequest.call(core, configCopy.url)) {
+            const log = getLog(_objectSpread2({
+              err,
+              type: 'RequestError'
+            }, collectConfigProp));
+            core.addLog(log);
+            core.report();
+          }
+        });
         return originFail.call(globalObj, err);
       };
 
@@ -192,16 +204,16 @@ const pluginHookRq = {
         const {
           statusCode
         } = res;
-
-        if (!isRorterRequest.call(core, configCopy.url) && ![200, 302, 304].includes(statusCode)) {
-          const log = getLog(_objectSpread2({
-            statusCode,
-            type: 'RequestError'
-          }, collectConfigProp));
-          core.addLog(log);
-          core.report();
-        }
-
+        centraTry(() => {
+          if (!isRorterRequest.call(core, configCopy.url) && ![200, 302, 304].includes(statusCode)) {
+            const log = getLog(_objectSpread2({
+              statusCode,
+              type: 'RequestError'
+            }, collectConfigProp));
+            core.addLog(log);
+            core.report();
+          }
+        });
         return originSuc.call(globalObj, res);
       };
 
