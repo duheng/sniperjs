@@ -1,6 +1,6 @@
 {
   "name": "@sniperjs/utils",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "files": [
     "dist"
@@ -10,6 +10,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "blue.yang",
-  "license": "MIT",
-  "dependencies": {}
+  "license": "MIT"
 }
