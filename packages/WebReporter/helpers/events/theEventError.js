@@ -1,6 +1,6 @@
 import { getElmPath, getCommonAttribute, parseReportLog } from '../utils';
 
-export default (error) => {
+export default function (error) {
     // ErrorEvent 捕获异常, Event 资源错误
     const commonAttr = getCommonAttribute();
     let msg = '',

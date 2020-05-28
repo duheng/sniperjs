@@ -1,10 +1,10 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('@sniperjs/behavior-reporter')) :
-  typeof define === 'function' && define.amd ? define(['@sniperjs/behavior-reporter'], factory) :
-  (global = global || self, global.SniperWebReporter = factory(global.BehaviorReporter));
-}(this, (function (BehaviorReporter) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('@sniperjs/core/src')) :
+  typeof define === 'function' && define.amd ? define(['@sniperjs/core/src'], factory) :
+  (global = global || self, global.SniperWebReporter = factory(global.src));
+}(this, (function (src) { 'use strict';
 
-  BehaviorReporter = BehaviorReporter && Object.prototype.hasOwnProperty.call(BehaviorReporter, 'default') ? BehaviorReporter['default'] : BehaviorReporter;
+  src = src && Object.prototype.hasOwnProperty.call(src, 'default') ? src['default'] : src;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -108,6 +108,19 @@
     return _setPrototypeOf(o, p);
   }
 
+  function _isNativeReflectConstruct() {
+    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+    if (Reflect.construct.sham) return false;
+    if (typeof Proxy === "function") return true;
+
+    try {
+      Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   function _assertThisInitialized(self) {
     if (self === void 0) {
       throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
@@ -123,6 +136,558 @@
 
     return _assertThisInitialized(self);
   }
+
+  function _createSuper(Derived) {
+    var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+    return function () {
+      var Super = _getPrototypeOf(Derived),
+          result;
+
+      if (hasNativeReflectConstruct) {
+        var NewTarget = _getPrototypeOf(this).constructor;
+
+        result = Reflect.construct(Super, arguments, NewTarget);
+      } else {
+        result = Super.apply(this, arguments);
+      }
+
+      return _possibleConstructorReturn(this, result);
+    };
+  }
+
+  function _defineProperty$1(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  function ownKeys$1(object, enumerableOnly) {
+    var keys = Object.keys(object);
+
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
+    }
+
+    return keys;
+  }
+
+  function _objectSpread2$1(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+
+      if (i % 2) {
+        ownKeys$1(Object(source), true).forEach(function (key) {
+          _defineProperty$1(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys$1(Object(source)).forEach(function (key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+
+    return target;
+  }
+
+  function _defineProperty$1$1(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  function ownKeys$1$1(object, enumerableOnly) {
+    var keys = Object.keys(object);
+
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
+    }
+
+    return keys;
+  }
+
+  function _objectSpread2$1$1(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+
+      if (i % 2) {
+        ownKeys$1$1(Object(source), true).forEach(function (key) {
+          _defineProperty$1$1(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys$1$1(Object(source)).forEach(function (key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
+      }
+    }
+
+    return target;
+  }
+  /* eslint-disable no-empty */
+
+  /* eslint-disable no-undef */
+
+
+  const {
+    toString
+  } = Object.prototype;
+
+  function isPlainObject(target) {
+    return toString.call(target) === '[object Object]';
+  }
+
+  function isString(target) {
+    return toString.call(target) === '[object String]';
+  }
+
+  function isArray(target) {
+    return toString.call(target) === '[object Array]';
+  }
+
+  function isEmptyObject(target) {
+    if (!isPlainObject(target)) return false;
+    return Object.keys(target).length > 0;
+  }
+
+  function isBoolean(target) {
+    return toString.call(target) === '[object Boolean]';
+  }
+
+  function isFunction(target) {
+    return typeof target === 'function';
+  }
+
+  function isNumber(target) {
+    // eslint-disable-next-line no-restricted-globals
+    return toString.call(target) === '[object Number]' && !isNaN(target);
+  }
+
+  function isPromise(object) {
+    if (Promise && Promise.resolve) {
+      return Promise.resolve(object) == object;
+    }
+  }
+
+  function extend(target, source) {
+    return _objectSpread2$1$1(_objectSpread2$1$1({}, target), source);
+  }
+
+  function getAgent() {
+    try {
+      if (window && window.history) {
+        return 'WEB_APP';
+      }
+
+      if (wx) {
+        return 'WX_MINI_APP';
+      }
+
+      if (swan) {
+        return 'BAIDU_MINI_APP';
+      }
+
+      if (my) {
+        return 'ALIPAY_MINI_APP';
+      }
+
+      if (tt) {
+        return 'TT_MINI_APP';
+      }
+
+      if (qq) {
+        return 'QQ_MINI_APP';
+      }
+
+      if (quick) {
+        return 'QUICK_APP';
+      }
+    } catch (err) {
+      return 'UNKNOWN_APP';
+    }
+  }
+
+  function getGlobal() {
+    try {
+      if (window && window.history) {
+        return window;
+      }
+
+      if (wx) {
+        return wx;
+      }
+
+      if (swan) {
+        return swan;
+      }
+
+      if (my) {
+        return my;
+      }
+
+      if (tt) {
+        return tt;
+      }
+
+      if (qq) {
+        return qq;
+      }
+    } catch (err) {
+      return {};
+    }
+  }
+
+  function getSystemInfo() {
+    // 这里做个缓存
+    const globalObj = getGlobal();
+    const key = '__sniper__internal__data__';
+
+    if (globalObj[key] && !isEmptyObject(globalObj[key].systemInfo || {})) {
+      return globalObj[key].systemInfo;
+    }
+
+    try {
+      const systemInfo = globalObj.getSystemInfoSync();
+      globalObj[key] = globalObj[key] || {};
+      globalObj[key].systemInfo = systemInfo;
+      return systemInfo;
+    } catch (err) {
+      return {};
+    }
+  }
+
+  function getMeta() {
+    let net = ''; // try {
+    //   // eslint-disable-next-line
+    //  net = getNet();
+    // } catch(err) {
+    //   // eslint-disable-next-line
+    // }
+
+    if (getAgent() === 'WEB_APP') {
+      return _getWebMeta();
+    }
+
+    return {
+      agent: getAgent(),
+      system: Object.assign({}, getSystemInfo(), {
+        net: net
+      })
+    };
+  }
+
+  function _getWebMeta() {
+    const uType = !!hysdk ? 'appH5' : 'h5';
+    const winSearch = window.location.search.replace('?', '');
+    const versionSearch = winSearch.split('&').map(item => {
+      const data = {},
+            arr = item.split('=');
+      data[arr[0]] = arr[1];
+      return data;
+    }).filter(d => {
+      return d['version'];
+    });
+    return {
+      p: uType,
+      logType: 'ue',
+      c: {
+        ua: window.navigator.userAgent || '',
+        send_time: +new Date(),
+        cookie: document.cookie,
+        user_type: uType,
+        version: versionSearch.length ? versionSearch[0]['version'] : '1'
+      }
+    };
+  }
+
+  function throwErr(err) {
+    throw new Error(err);
+  }
+
+  const strategies = {
+    url: {
+      validate(val) {
+        if (!val) {
+          throwErr(this.msgRequred);
+        }
+      },
+
+      msgRequred: 'SNIPER ERROR: 配置中 url 字段必填.'
+    },
+    appVersion: {
+      validate(val) {
+        if (!val) return;
+
+        if (!isString(val)) {
+          throwErr(this.msgTypeErr);
+        }
+      },
+
+      msgTypeErr: 'SNIPER ERROR: 配置中 appVersion 字段类型需为 String.'
+    },
+    env: {
+      validate(val) {
+        if (!val) return;
+
+        if (!isString(val)) {
+          throwErr(this.msgTypeErr);
+        }
+      },
+
+      msgTypeErr: 'SNIPER ERROR: 配置中 env 字段类型需为 String.'
+    },
+    repeat: {
+      validate(val) {
+        if (!isNumber(val)) {
+          throwErr(this.msgTypeErr);
+        }
+      },
+
+      msgTypeErr: 'SNIPER ERROR: 配置中 repeat 字段类型需为 Number.'
+    },
+    ignoreErrors: {
+      validate(val) {
+        if (!isArray(val)) {
+          throwErr(this.msgTypeErr);
+        }
+      },
+
+      msgTypeErr: 'SNIPER ERROR: 配置中 ignoreErrors 字段类型需为 Array.'
+    },
+    autoBreadcrumbs: {
+      validate(val) {
+        if (!isBoolean(val)) {
+          throwErr(this.msgTypeErr);
+        }
+      },
+
+      msgTypeErr: 'SNIPER ERROR: 配置中 autoBreadcrumbs 字段类型需为 Array.'
+    },
+    breadcrumbsMax: {
+      validate(val) {
+        if (!isNumber(val)) {
+          throwErr(this.msgTypeErr);
+        }
+      },
+
+      msgTypeErr: 'SNIPER ERROR: 配置中 breadcrumbsMax 字段类型需为 Number.'
+    },
+    random: {
+      validate(val) {
+        if (!isNumber(val)) {
+          throwErr(this.msgTypeErr);
+        } else if (!(val > 0 && val <= 1)) {
+          throwErr(this.msgRangeErr);
+        }
+      },
+
+      msgTypeErr: 'SNIPER ERROR: 配置中 breadcrumbsMax 字段类型需为 Number.',
+      msgRangeErr: 'SNIPER ERROR: 配置中 breadcrumbsMax 字段范围需满足 (0, 1]'
+    },
+    delay: {
+      validate(val) {
+        if (!isNumber(val)) {
+          throwErr(this.msgTypeErr);
+        }
+      },
+
+      msgTypeErr: 'SNIPER ERROR: 配置中 delay 字段类型需为 Number.'
+    },
+    beforeReport: {
+      validate(val) {
+        if (!isFunction(val)) {
+          throwErr(this.msgTypeErr);
+        }
+      },
+
+      msgTypeErr: 'SNIPER ERROR: 配置中 beforeReport 字段类型需为 Function.'
+    }
+  };
+
+  function proxyValidate() {
+    const proxyObj = {};
+    return new Proxy(proxyObj, {
+      set(target, key, val) {
+        strategies[key].validate(val); // eslint-disable-next-line no-param-reassign
+
+        target[key] = val;
+        return true;
+      }
+
+    });
+  }
+
+  function validateConfig(config) {
+    const proxy = proxyValidate();
+    Object.keys(config).forEach(prop => {
+      proxy[prop] = config[prop];
+    });
+  }
+
+  let BehaviorReporter = /*#__PURE__*/function () {
+    function BehaviorReporter() {
+      _classCallCheck(this, BehaviorReporter);
+
+      this.logQueue = [];
+      this.config = {
+        url: '',
+        appkey: '',
+        // 以后商业化要用到的
+        delay: 1000,
+        // 延迟, 合并上报
+        appVersion: '',
+        // 应用Version
+        env: '',
+
+        // 环境
+        beforeReport(log) {
+          // 1.可在这里劫持上报的数据, 比如添加userid, session等等
+          // 2.如果return false, 则不用内置http上报, 此时可以在这里自定义自己的http上报方式
+          //   比如以后浏览器端，可以自定义 ajax 上报还是用图片上报
+          return log;
+        }
+
+      };
+      this.applyRequested = false;
+      this.delayTimer = -1;
+    }
+
+    _createClass(BehaviorReporter, [{
+      key: "mergeConfig",
+      value: function mergeConfig(opts) {
+        validateConfig(opts);
+        this.config = extend(this.config, opts);
+      }
+    }, {
+      key: "addLog",
+      value: function addLog(log) {
+        this.logQueue.push(log);
+        return this;
+      }
+    }, {
+      key: "getLog",
+      value: function getLog() {
+        return this.logQueue.slice();
+      }
+    }, {
+      key: "clearLog",
+      value: function clearLog() {
+        this.logQueue = [];
+        return this;
+      }
+    }, {
+      key: "report",
+      value: function report() {
+        const curLogQueue = this.getLog();
+
+        if (this.config.delay > 0) {
+          if (this.delayTimer) {
+            clearTimeout(this.delayTimer);
+          }
+
+          this.delayTimer = setTimeout(() => {
+            this.sendLog(curLogQueue);
+          }, this.config.delay);
+        } else {
+          this.sendLog(curLogQueue);
+        }
+      }
+    }, {
+      key: "gLog",
+      value: function gLog(log) {
+        const {
+          appVersion,
+          env
+        } = this.config;
+        return _objectSpread2$1(_objectSpread2$1({}, getMeta()), {}, {
+          appVersion,
+          env,
+          logs: log
+        });
+      }
+    }, {
+      key: "sendLog",
+      value: function sendLog(logQueue = []) {
+        const log = logQueue.slice();
+        if (!log.length) return;
+        const data = this.gLog(log);
+        const ret = isFunction(this.config.beforeReport) && this.config.beforeReport.call(this, data); // 异步回调
+
+        if (isPromise(ret)) {
+          ret.then(res => {
+            if (isBoolean(res) && res === false) {
+              // 用户阻止默认上报后，可在 beforeReport 可自定义 request 上报
+              return;
+            }
+
+            this.startReport(res);
+          });
+        } else {
+          if (isBoolean(ret) && ret === false) {
+            // 用户阻止默认上报后，可在 beforeReport 可自定义 request 上报
+            return;
+          }
+
+          this.startReport(ret);
+        }
+      }
+    }, {
+      key: "startReport",
+      value: function startReport(data) {
+        this.clearLog(); // 默认上报
+
+        this.request({
+          url: this.config.url,
+          method: 'POST',
+          data
+        });
+      }
+    }, {
+      key: "use",
+      value: function use(plugin, ...args) {
+        plugin.init(this, ...args);
+      }
+    }, {
+      key: "applyRequest",
+      value: function applyRequest(request) {
+        if (this.applyRequested) return false;
+        this.request = request;
+        this.applyRequested = true;
+        return true;
+      }
+    }]);
+
+    return BehaviorReporter;
+  }();
 
   var hookOnPopstate = {
     init(core) {
@@ -160,23 +725,9 @@
   };
 
   const getCommonAttribute = () => {
-    const winSearch = window.location.search.replace('?', '');
-    const versionSearch = winSearch.split('&').map(item => {
-      const data = {},
-            arr = item.split('=');
-      data[arr[0]] = arr[1];
-      return data;
-    }).filter(d => {
-      return d['version'];
-    });
     return {
       url: encodeURIComponent(window.location.href),
-      ua: window.navigator.userAgent || '',
-      send_time: +new Date(),
-      cookie: document.cookie || '',
-      user_type: 'h5',
-      // appH5 or h5
-      version: versionSearch.length ? versionSearch[0]['version'] : '1'
+      time: +new Date()
     };
   };
 
@@ -245,16 +796,17 @@
 
   };
 
-  var theEventLoad = (() => {
+  function theEventLoad () {
     const url = encodeURIComponent(window.location.href);
     const commonAttr = getCommonAttribute();
     const endLog = parseReportLog([`web_end:${JSON.stringify(commonAttr)}`]),
           pageToLog = parseReportLog(['web_to', 'unknown', url]);
-    console.log(endLog);
-    console.log(pageToLog);
-  });
+    this.addLog(endLog);
+    this.addLog(pageToLog);
+    this.report();
+  }
 
-  var theEventError = (error => {
+  function theEventError (error) {
     // ErrorEvent 捕获异常, Event 资源错误
     const commonAttr = getCommonAttribute();
     let msg = '',
@@ -269,27 +821,29 @@
       errcode = 'resource_error';
     }
 
-    const data = _objectSpread2({}, commonAttr, {}, {
+    const data = _objectSpread2(_objectSpread2({}, commonAttr), {
       errcode,
       errmsg: msg
     });
 
     const errLog = parseReportLog([`web_error:${JSON.stringify(data)}`]);
-    console.log('errLog: ', errLog);
-  });
+    this.addLog(errLog);
+    this.report();
+  }
 
-  var theEventUnhandledrejection = (e => {
+  function theEventUnhandledrejection (e) {
     e.preventDefault();
     const commonAttr = getCommonAttribute();
 
-    const data = _objectSpread2({}, commonAttr, {}, {
+    const data = _objectSpread2(_objectSpread2({}, commonAttr), {
       errcode: 'unhandledrejection',
       errmsg: e.reason.stack
     });
 
     const errLog = parseReportLog([`web_error:${JSON.stringify(data)}`]);
-    console.log('errLog: ', errLog);
-  });
+    this.addLog(errLog);
+    this.report();
+  }
 
   function theEventClick (event) {
     var target;
@@ -304,7 +858,6 @@
     if (target.length === 0) return;
     const thePath = getElmPath(target);
     if (!thePath) return;
-    const commonAttr = getCommonAttribute();
     let contentText;
 
     switch (target.nodeName) {
@@ -324,34 +877,37 @@
         contentText = null;
     }
 
-    const repLog = _objectSpread2({}, commonAttr, {}, {
-      path: thePath,
-      element_id: target.id || target.className || target.innerHTML || target.name || null,
-      text: contentText
-    });
-
-    this.addLog(repLog);
-    this.report(); // this.addLog(repLog);
+    const clickLog = parseReportLog(['click', thePath, window.location.href, contentText]);
+    this.addLog(clickLog);
+    this.report();
   }
 
-  var theEventHashchange = (event => {
+  function theEventHashchange (event) {
     const {
       newURL,
       oldURL
     } = event;
     const hashchangeLog = parseReportLog(['web_to', newURL, oldURL]);
-    console.log(hashchangeLog);
-  });
+    this.addLog(hashchangeLog);
+    this.report();
+  }
 
-  var theEventUnload = (() => {
+  function theEventUnload () {
     const url = encodeURIComponent(window.location.href);
     const pageFromLog = parseReportLog(['web_to', url, 'unknown']);
-    console.log(pageFromLog);
-  });
+    this.addLog(pageFromLog);
+    this.report();
+  }
 
-  var theEventHistorystatechanged = (e => {
-    console.log('theEventHistorystatechanged', e);
-  });
+  function theEventHistorystatechanged (event) {
+    const {
+      newURL,
+      oldURL
+    } = event;
+    const hashchangeLog = parseReportLog(['web_to', newURL, oldURL]);
+    this.addLog(hashchangeLog);
+    this.report();
+  }
 
   var addEventListener = {
     init(core) {
@@ -405,36 +961,6 @@
         'content-type': 'application/json'
       }
     });
-  }
-
-  function _createSuper(Derived) {
-    function isNativeReflectConstruct() {
-      if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-      if (Reflect.construct.sham) return false;
-      if (typeof Proxy === "function") return true;
-
-      try {
-        Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
-
-    return function () {
-      var Super = _getPrototypeOf(Derived),
-          result;
-
-      if (isNativeReflectConstruct()) {
-        var NewTarget = _getPrototypeOf(this).constructor;
-
-        result = Reflect.construct(Super, arguments, NewTarget);
-      } else {
-        result = Super.apply(this, arguments);
-      }
-
-      return _possibleConstructorReturn(this, result);
-    };
   }
 
   let WebReportor = /*#__PURE__*/function (_BehaviorReporter) {

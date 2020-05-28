@@ -13,36 +13,35 @@ const pkgDirsNames = fs.readdirSync(PKGDIR).filter((cName) => {
     return fs.statSync(abPath).isDirectory();
 });
 
-
 function generateConfig(pkgDirName) {
     return {
         input: `${PKGDIR}/${pkgDirName}/src/index.js`,
         output: [
             {
                 file: `${PKGDIR}/${pkgDirName}/dist/index.js`,
-                format: 'esm'
-            }
+                format: 'esm',
+            },
         ],
         plugins: [
             json(),
             resolve(),
             babelPlugin({
                 exclude: 'node_modules/**',
-                plugins: ['@babel/plugin-proposal-object-rest-spread']
-            })
-        ]
+                plugins: ['@babel/plugin-proposal-object-rest-spread'],
+            }),
+        ],
     };
 }
 
-function generateWebConfig(isBrowser, pkgDirName) {
+function generateWebConfig({ isBrowser, pkgDirName }) {
     return {
         input: `${PKGDIR}/${pkgDirName}/src/index.js`,
         output: [
             {
                 file: `${PKGDIR}/${pkgDirName}/dist/index.js`,
                 format: isBrowser ? 'umd' : 'cjs',
-                name: 'SniperWebReporter'
-            }
+                name: 'SniperWebReporter',
+            },
         ],
         plugins: [
             json(),
@@ -51,17 +50,22 @@ function generateWebConfig(isBrowser, pkgDirName) {
                 exclude: 'node_modules/**',
                 plugins: [
                     '@babel/plugin-proposal-object-rest-spread',
-                    '@babel/plugin-transform-classes'
-                ]
+                    '@babel/plugin-transform-classes',
+                ],
             }),
-            commonjs()
-        ]
+            commonjs(),
+        ],
     };
 }
 
 const CONFIG = pkgDirsNames.map((cName) => {
     const isWeb = cName === 'WebReporter';
-    return isWeb ? generateWebConfig(true, cName) : generateConfig(cName);
+    return isWeb
+        ? generateWebConfig({
+              isBrowser: true,
+              pkgDirName: cName,
+          })
+        : generateConfig(cName);
 });
 
 module.exports = CONFIG;

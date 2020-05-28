@@ -1,6 +1,6 @@
 import { getElmPath, getCommonAttribute, parseReportLog } from '../utils';
 
-export default (e) => {
+export default function (e) {
     e.preventDefault();
 
     const commonAttr = getCommonAttribute();
@@ -13,7 +13,7 @@ export default (e) => {
     };
 
     const errLog = parseReportLog([`web_error:${JSON.stringify(data)}`]);
-    
+
     this.addLog(errLog);
     this.report();
 };
