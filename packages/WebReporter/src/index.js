@@ -7,7 +7,7 @@ import addEventListener from '../helpers/addEventListener';
 import reqeust from '../helpers/request';
 
 class WebReportor extends BehaviorReporter {
-    constructor(opts={}) {
+    constructor(opts = {}) {
         super(opts);
         // 合并参数
         this.mergeConfig(opts);
@@ -23,6 +23,5 @@ class WebReportor extends BehaviorReporter {
         this.applyRequest(reqeust);
     }
 }
-
 
 export default WebReportor;

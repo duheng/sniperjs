@@ -5,8 +5,7 @@ export default (event) => {
     const { newURL, oldURL } = event;
 
     const hashchangeLog = parseReportLog(['web_to', newURL, oldURL]);
-    console.log();
-    Core.add({
-        content: hashchangeLog
-    })
+
+    this.addLog(hashchangeLog);
+    this.report();
 };

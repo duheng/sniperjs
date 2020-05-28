@@ -1,7 +1,6 @@
-import { getElmPath, getCommonAttribute, parseReportLog } from '../utils';
+import { getElmPath, parseReportLog } from '../utils';
 
-export default function(event) {
-    
+export default function (event) {
     var target;
     try {
         target = event.target;
@@ -17,8 +16,6 @@ export default function(event) {
 
     if (!thePath) return;
 
-    const commonAttr = getCommonAttribute();
-
     let contentText;
     switch (target.nodeName) {
         case 'DIV':
@@ -33,21 +30,14 @@ export default function(event) {
         default:
             contentText = null;
     }
-    const repLog = {
-        ...commonAttr,
-        ...{
-            path: thePath,
-            element_id:
-                target.id ||
-                target.className ||
-                target.innerHTML ||
-                target.name ||
-                null,
-            text: contentText,
-        },
-    };
-    
-    this.addLog(repLog);
+
+    const clickLog = parseReportLog([
+        'click',
+        thePath,
+        window.location.href,
+        contentText,
+    ]);
+
+    this.addLog(clickLog);
     this.report();
-    // this.addLog(repLog);
 }

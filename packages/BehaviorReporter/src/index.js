@@ -1,6 +1,6 @@
 
 import {
-    isFunction, isBoolean, extend, isPromise
+    isFunction, isBoolean, extend, isPromise, getMeta
   } from '@sniperjs/utils';
   import validateConfig from './validateConfig';
   
@@ -62,6 +62,7 @@ import {
     gLog(log) {
       const { appVersion, env } = this.config;
       return {
+        ...getMeta(),
         appVersion,
         env,
         logs: log

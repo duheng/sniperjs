@@ -8,6 +8,7 @@ export default () => {
     const endLog = parseReportLog([`web_end:${JSON.stringify(commonAttr)}`]),
         pageToLog = parseReportLog(['web_to', 'unknown', url]);
 
-    console.log(endLog);
-    console.log(pageToLog);
+    this.addLog(endLog);
+    this.addLog(pageToLog);
+    this.report();
 };

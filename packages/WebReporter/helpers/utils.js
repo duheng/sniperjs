@@ -24,25 +24,9 @@ const getElmPath = (e) => {
 };
 
 const getCommonAttribute = () => {
-    const winSearch = window.location.search.replace('?', '');
-    const versionSearch = winSearch
-        .split('&')
-        .map((item) => {
-            const data = {},
-                arr = item.split('=');
-            data[arr[0]] = arr[1];
-            return data;
-        })
-        .filter((d) => {
-            return d['version'];
-        });
     return {
         url: encodeURIComponent(window.location.href),
-        ua: window.navigator.userAgent || '',
-        send_time: +new Date(),
-        cookie: document.cookie || '',
-        user_type: 'h5', // appH5 or h5
-        version: versionSearch.length ? versionSearch[0]['version'] : '1',
+        time: +new Date()
     };
 };
 

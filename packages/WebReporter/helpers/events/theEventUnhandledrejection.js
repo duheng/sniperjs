@@ -13,5 +13,7 @@ export default (e) => {
     };
 
     const errLog = parseReportLog([`web_error:${JSON.stringify(data)}`]);
-    console.log('errLog: ', errLog);
+    
+    this.addLog(errLog);
+    this.report();
 };
