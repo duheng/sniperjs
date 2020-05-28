@@ -12,6 +12,7 @@
   "author": "blue.yang",
   "license": "MIT",
   "dependencies": {
-    "@sniperjs/utils": "^0.0.6"
+    "@sniperjs/utils": "^0.0.6",
+    "regenerator-runtime": "^0.13.5"
   }
 }

@@ -108,7 +108,7 @@ function getNow() {
 }
 
 function extend(target, source) {
-  return _objectSpread2({}, target, {}, source);
+  return _objectSpread2(_objectSpread2({}, target), source);
 }
 
 function compose(...fns) {
@@ -214,7 +214,8 @@ function getRoutes() {
   // eslint-disable-next-line prefer-const
   let defaultRouteInfo = {
     path: '',
-    query: {}
+    query: {},
+    routeStack: []
   };
   const pages = getCurrentPages();
   let curPage = {};
@@ -226,7 +227,11 @@ function getRoutes() {
       options = {}
     } = curPage;
     defaultRouteInfo.path = route;
-    defaultRouteInfo.query = options;
+    defaultRouteInfo.query = options; // https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/route.html
+
+    defaultRouteInfo.routeStack = pages.map(curPage => {
+      return curPage.route;
+    });
   }
 
   return defaultRouteInfo;
@@ -246,20 +251,28 @@ function getLog(log) {
   return Object.assign(defaultLog, log);
 }
 
-function getMeta() {
-  let net = ''; // try {
-  //   // eslint-disable-next-line
-  //  net = getNet();
-  // } catch(err) {
-  //   // eslint-disable-next-line
-  // }
+function getNet() {
+  const globalObj = getGlobal();
+  return new Promise(function (rel, rej) {
+    globalObj.getNetworkType({
+      success(res) {
+        const networkType = res.networkType;
+        rel(networkType);
+      },
 
+      fail(err) {
+        rej(err);
+      }
+
+    });
+  });
+}
+
+function getMeta() {
   return {
     agent: getAgent(),
-    system: Object.assign({}, getSystemInfo(), {
-      net: net
-    })
+    system: Object.assign({}, getSystemInfo())
   };
 }
 
-export { compose, extend, getAgent, getGlobal, getLog, getMeta, getNow, getRoutes, getSystemInfo, isArray, isBoolean, isDev, isEmptyObject, isFunction, isNumber, isPlainObject, isPromise, isRegExp, isString, isUndefined, noop };
+export { compose, extend, getAgent, getGlobal, getLog, getMeta, getNet, getNow, getRoutes, getSystemInfo, isArray, isBoolean, isDev, isEmptyObject, isFunction, isNumber, isPlainObject, isPromise, isRegExp, isString, isUndefined, noop };

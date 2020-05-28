@@ -1,8 +1,10 @@
 
+import "regenerator-runtime/runtime.js";
 import {
-  isRegExp, isFunction, isBoolean, compose, extend, getMeta, isPromise
+  isRegExp, isFunction, isBoolean, compose, extend, getMeta, isPromise, getNet
 } from '@sniperjs/utils';
 import validateConfig from './validateConfig';
+
 
 const logMap = Symbol('log map');
 
@@ -143,22 +145,33 @@ class ErrorReporter {
     }
   }
 
-  gLog(log) {
+  async gLog(log) {
     const { appVersion, env } = this.config;
+    const metaData = getMeta();
+   
+    try {
+      const net = await getNet();
+      metaData.system.net = net;
+    } catch (err) {
+      // eslint-disable-next-line no-empty
+      console.warn('SNIPER WARN: 网络获取失败.');
+    }
+   
     return {
-      ...getMeta(),
+      ...metaData,
       appVersion,
       env,
       logs: log
     };
   }
 
-  sendLog(logQueue=[]) {
+  async sendLog(logQueue=[]) {
     // tip: 超过重复上报的次数后log不会入队
     const log = logQueue.slice();
     if (!log.length) return;
 
-    const data = this.gLog(log);
+    const data = await this.gLog(log);
+   
     const ret = isFunction(this.config.beforeReport) && this.config.beforeReport.call(this, data);
 
     // 异步回调
