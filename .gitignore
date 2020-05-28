@@ -111,3 +111,5 @@ demo/dist
 lib
 esm
 cjs
+nnc_*
+dist

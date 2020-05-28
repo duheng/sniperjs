@@ -5,70 +5,63 @@ const json = require('@rollup/plugin-json');
 //const { eslint } = require('rollup-plugin-eslint');
 const cwd = process.cwd();
 const PKGDIR = './packages';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 
 const pkgDirsNames = fs.readdirSync(PKGDIR).filter((cName) => {
     const abPath = path.join(cwd, `packages/${cName}`);
     return fs.statSync(abPath).isDirectory();
 });
 
+
 function generateConfig(pkgDirName) {
     return {
         input: `${PKGDIR}/${pkgDirName}/src/index.js`,
         output: [
-            // {
-            //     file: `${PKGDIR}/${pkgDirName}/esm/index.esm.js`,
-            //     format: 'esm'
-            // },
             {
                 file: `${PKGDIR}/${pkgDirName}/dist/index.js`,
-                format: 'cjs',
-            },
+                format: 'esm'
+            }
         ],
         plugins: [
             json(),
+            resolve(),
             babelPlugin({
                 exclude: 'node_modules/**',
-                plugins: ['@babel/plugin-proposal-object-rest-spread'],
-            }),
-            // eslint({
-            //     extends: 'airbnb'
-            // })
-        ],
+                plugins: ['@babel/plugin-proposal-object-rest-spread']
+            })
+        ]
     };
 }
 
-function generateWebConfig(isBrowser) {
+function generateWebConfig(isBrowser, pkgDirName) {
     return {
         input: `${PKGDIR}/${pkgDirName}/src/index.js`,
         output: [
             {
                 file: `${PKGDIR}/${pkgDirName}/dist/index.js`,
                 format: isBrowser ? 'umd' : 'cjs',
-                name: 'Sniperjs',
-            },
+                name: 'SniperWebReporter'
+            }
         ],
         plugins: [
             json(),
+            resolve(),
             babelPlugin({
                 exclude: 'node_modules/**',
                 plugins: [
                     '@babel/plugin-proposal-object-rest-spread',
-                    '@babel/plugin-transform-classes',
-                ],
+                    '@babel/plugin-transform-classes'
+                ]
             }),
-            resolve({
-                browser: isBrowser,
-            }),
-            commonjs(),
-        ],
+            commonjs()
+        ]
     };
 }
 
 const CONFIG = pkgDirsNames.map((cName) => {
-    const isWeb = pkgDirName === 'web';
-    return isWeb ? generateWebConfig(true) : generateConfig(cName);
+    const isWeb = cName === 'WebReporter';
+    return isWeb ? generateWebConfig(true, cName) : generateConfig(cName);
 });
 
 module.exports = CONFIG;
