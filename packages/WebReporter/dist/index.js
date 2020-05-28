@@ -406,7 +406,7 @@
   }
 
   function _getWebMeta() {
-    const uType = !!hysdk ? 'appH5' : 'h5';
+    const uType = !!window['hysdk'] ? 'appH5' : 'h5';
     const winSearch = window.location.search.replace('?', '');
     const versionSearch = winSearch.split('&').map(item => {
       const data = {},
@@ -591,6 +591,7 @@
       key: "addLog",
       value: function addLog(log) {
         this.logQueue.push(log);
+        console.log(this.logQueue);
         return this;
       }
     }, {
@@ -913,7 +914,8 @@
     init(core) {
       // 页面加载前
       const startLog = parseReportLog([`web_start: ${JSON.stringify(getCommonAttribute())}`]);
-      console.log('开始加载: ', startLog);
+      core.addLog(startLog);
+      core.report();
       const initEvent = {
         load: {
           fn: theEventLoad

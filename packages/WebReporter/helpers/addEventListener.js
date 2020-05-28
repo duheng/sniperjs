@@ -14,7 +14,8 @@ export default {
             `web_start: ${JSON.stringify(getCommonAttribute())}`,
         ]);
 
-        console.log('开始加载: ', startLog);
+        core.addLog(startLog);
+        core.report();
 
         const initEvent = {
             load: { fn: theEventLoad },
