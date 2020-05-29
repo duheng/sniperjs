@@ -185,12 +185,13 @@ const pluginHookRq = {
 
         return accuCopy;
       }, {});
+      collectConfigProp.method = collectConfigProp.method || 'get';
 
       configCopy.fail = function fail(err) {
         centraTry(() => {
           if (!isRorterRequest.call(core, configCopy.url)) {
             const log = getLog(_objectSpread2({
-              err,
+              errMsg: err.errMsg || '',
               type: 'RequestError'
             }, collectConfigProp));
             core.addLog(log);
@@ -206,10 +207,12 @@ const pluginHookRq = {
         } = res;
         centraTry(() => {
           if (!isRorterRequest.call(core, configCopy.url) && ![200, 302, 304].includes(statusCode)) {
-            const log = getLog(_objectSpread2({
+            const log = getLog(_objectSpread2(_objectSpread2({
               statusCode,
               type: 'RequestError'
-            }, collectConfigProp));
+            }, collectConfigProp), {}, {
+              errMsg: res.errMsg || ''
+            }));
             core.addLog(log);
             core.report();
           }
