@@ -1,3 +1,54 @@
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
+
+/* eslint-disable no-empty */
+
 /* eslint-disable no-undef */
 const {
   toString
@@ -57,9 +108,7 @@ function getNow() {
 }
 
 function extend(target, source) {
-  return { ...target,
-    ...source
-  };
+  return _objectSpread2(_objectSpread2({}, target), source);
 }
 
 function compose(...fns) {
@@ -79,55 +128,67 @@ function compose(...fns) {
 function noop() {}
 
 function getAgent() {
-  if (wx) {
-    return 'WX_MINI_APP';
-  }
+  try {
+    if (window && window.history) {
+      return 'WEB_APP';
+    }
 
-  if (swan) {
-    return 'BAIDU_MINI_APP';
-  }
+    if (wx) {
+      return 'WX_MINI_APP';
+    }
 
-  if (my) {
-    return 'ALIPAY_MINI_APP';
-  }
+    if (swan) {
+      return 'BAIDU_MINI_APP';
+    }
 
-  if (tt) {
-    return 'TT_MINI_APP';
-  }
+    if (my) {
+      return 'ALIPAY_MINI_APP';
+    }
 
-  if (qq) {
-    return 'QQ_MINI_APP';
-  }
+    if (tt) {
+      return 'TT_MINI_APP';
+    }
 
-  if (quick) {
-    return 'QUICK_APP';
-  }
+    if (qq) {
+      return 'QQ_MINI_APP';
+    }
 
-  return 'UNKNOWN_APP';
+    if (quick) {
+      return 'QUICK_APP';
+    }
+  } catch (err) {
+    return 'UNKNOWN_APP';
+  }
 }
 
 function getGlobal() {
-  if (wx) {
-    return wx;
-  }
+  try {
+    if (window && window.history) {
+      return window;
+    }
 
-  if (swan) {
-    return swan;
-  }
+    if (wx) {
+      return wx;
+    }
 
-  if (my) {
-    return my;
-  }
+    if (swan) {
+      return swan;
+    }
 
-  if (tt) {
-    return tt;
-  }
+    if (my) {
+      return my;
+    }
 
-  if (qq) {
-    return qq;
-  }
+    if (tt) {
+      return tt;
+    }
 
-  return {};
+    if (qq) {
+      return qq;
+    }
+  } catch (err) {
+    return {};
+  }
 }
 
 function getSystemInfo() {
@@ -153,7 +214,8 @@ function getRoutes() {
   // eslint-disable-next-line prefer-const
   let defaultRouteInfo = {
     path: '',
-    query: {}
+    query: {},
+    routeStack: []
   };
   const pages = getCurrentPages();
   let curPage = {};
@@ -165,7 +227,11 @@ function getRoutes() {
       options = {}
     } = curPage;
     defaultRouteInfo.path = route;
-    defaultRouteInfo.query = options;
+    defaultRouteInfo.query = options; // https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/route.html
+
+    defaultRouteInfo.routeStack = pages.map(curPage => {
+      return curPage.route;
+    });
   }
 
   return defaultRouteInfo;
@@ -185,20 +251,28 @@ function getLog(log) {
   return Object.assign(defaultLog, log);
 }
 
-function getMeta() {
-  let net = ''; // try {
-  //   // eslint-disable-next-line
-  //  net = getNet();
-  // } catch(err) {
-  //   // eslint-disable-next-line
-  // }
+function getNet() {
+  const globalObj = getGlobal();
+  return new Promise(function (rel, rej) {
+    globalObj.getNetworkType({
+      success(res) {
+        const networkType = res.networkType;
+        rel(networkType);
+      },
 
+      fail(err) {
+        rej(err);
+      }
+
+    });
+  });
+}
+
+function getMeta() {
   return {
     agent: getAgent(),
-    system: Object.assign({}, getSystemInfo(), {
-      net: net
-    })
+    system: Object.assign({}, getSystemInfo())
   };
 }
 
-export { compose, extend, getAgent, getGlobal, getLog, getMeta, getNow, getRoutes, getSystemInfo, isArray, isBoolean, isDev, isEmptyObject, isFunction, isNumber, isPlainObject, isPromise, isRegExp, isString, isUndefined, noop };
+export { compose, extend, getAgent, getGlobal, getLog, getMeta, getNet, getNow, getRoutes, getSystemInfo, isArray, isBoolean, isDev, isEmptyObject, isFunction, isNumber, isPlainObject, isPromise, isRegExp, isString, isUndefined, noop };

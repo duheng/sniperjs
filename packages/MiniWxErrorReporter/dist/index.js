@@ -1,5 +1,54 @@
-import Core from '@sniperjs/core';
+import ErrorReporter from '@sniperjs/error-reporter';
 import { getLog, getGlobal, noop, isFunction, getSystemInfo } from '@sniperjs/utils';
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) symbols = symbols.filter(function (sym) {
+      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+    });
+    keys.push.apply(keys, symbols);
+  }
+
+  return keys;
+}
+
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function (key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function (key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+
+  return target;
+}
 
 /* eslint-disable key-spacing */
 
@@ -7,7 +56,7 @@ import { getLog, getGlobal, noop, isFunction, getSystemInfo } from '@sniperjs/ut
 const errorTypeReg = new RegExp('(' + ['EvalError:', 'InternalError:', 'RangeError:', 'ReferenceError:', 'SyntaxError:', 'TypeError:', 'URIError:', 'Error:' // new Error
 ].join('|') + ')', 'mi');
 
-function parseScriptRuntimeError(stack) {
+function parseScriptRuntimeError(stack = '') {
   try {
     let line = '',
         col = '',
@@ -48,7 +97,14 @@ function parseUnhandleRejectError(stack) {
   return parseScriptRuntimeError(stack);
 }
 
-/* eslint-disable no-undef */
+function centraTry(cb) {
+  try {
+    return cb && cb();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 const pluginHookApp = {
   init(core) {
     const originApp = App;
@@ -56,33 +112,37 @@ const pluginHookApp = {
     App = function App(config) {
       const originOnError = config.onError;
       const originUnRj = config.onUnhandledRejection;
-      const configCopy = { ...config
-      };
+
+      const configCopy = _objectSpread2({}, config);
 
       configCopy.onError = originParam => {
-        const log = getLog(parseScriptRuntimeError(originParam));
-        core.addLog(log);
-        core.report();
+        centraTry(() => {
+          const log = getLog(parseScriptRuntimeError(originParam));
+          core.addLog(log);
+          core.report();
+        });
         return originOnError && originOnError.call(wx, originParam);
       };
 
       configCopy.onUnhandledRejection = originParam => {
-        let log = {};
-        const PromiseType = 'PromiseRejectedError';
+        centraTry(() => {
+          let log = {};
+          const PromiseType = 'PromiseRejectedError';
 
-        if (originParam.reason && originParam.reason instanceof Error) {
-          log = getLog(Object.assign(parseUnhandleRejectError(originParam.reason.stack), {
-            type: PromiseType
-          }));
-        } else {
-          log = getLog({
-            value: originParam.reason,
-            type: PromiseType
-          });
-        }
+          if (originParam.reason && originParam.reason instanceof Error) {
+            log = getLog(Object.assign(parseUnhandleRejectError(originParam.reason.stack), {
+              type: PromiseType
+            }));
+          } else {
+            log = getLog({
+              value: originParam.reason,
+              type: PromiseType
+            });
+          }
 
-        core.addLog(log);
-        core.report();
+          core.addLog(log);
+          core.report();
+        });
         return originUnRj && originUnRj.call(wx, originParam);
       };
 
@@ -93,8 +153,6 @@ const pluginHookApp = {
   }
 
 };
-
-/* eslint-disable no-undef */
 
 function isRorterRequest(url) {
   const reg = new RegExp(url);
@@ -113,14 +171,13 @@ const pluginHookRq = {
     });
 
     globalObj.request = function request(config) {
-      const configCopy = { ...config
-      };
+      const configCopy = _objectSpread2({}, config);
+
       const originFail = config.fail || noop;
       const originSuc = config.success || noop; // 搜集wx.request所有除callback的配置。
 
       const collectConfigProp = Object.keys(config).reduce((accu, curKey) => {
-        const accuCopy = { ...accu
-        };
+        const accuCopy = _objectSpread2({}, accu);
 
         if (!isFunction(config[curKey])) {
           accuCopy[curKey] = config[curKey];
@@ -130,17 +187,16 @@ const pluginHookRq = {
       }, {});
 
       configCopy.fail = function fail(err) {
-        const log = getLog({
-          err,
-          type: 'RequestError',
-          ...collectConfigProp
+        centraTry(() => {
+          if (!isRorterRequest.call(core, configCopy.url)) {
+            const log = getLog(_objectSpread2({
+              err,
+              type: 'RequestError'
+            }, collectConfigProp));
+            core.addLog(log);
+            core.report();
+          }
         });
-
-        if (!isRorterRequest.call(core, configCopy.url)) {
-          core.addLog(log);
-          core.report();
-        }
-
         return originFail.call(globalObj, err);
       };
 
@@ -148,41 +204,20 @@ const pluginHookRq = {
         const {
           statusCode
         } = res;
-
-        if (!isRorterRequest.call(core, configCopy.url) && ![200, 302, 304].includes(statusCode)) {
-          const log = getLog({
-            statusCode,
-            type: 'RequestError',
-            ...collectConfigProp
-          });
-          core.addLog(log);
-          core.report();
-        }
-
+        centraTry(() => {
+          if (!isRorterRequest.call(core, configCopy.url) && ![200, 302, 304].includes(statusCode)) {
+            const log = getLog(_objectSpread2({
+              statusCode,
+              type: 'RequestError'
+            }, collectConfigProp));
+            core.addLog(log);
+            core.report();
+          }
+        });
         return originSuc.call(globalObj, res);
       };
 
       originRequest.call(globalObj, configCopy);
-    };
-  }
-
-};
-
-const pluginOnMemoryWarning = {
-  init(core) {
-    const globalObj = getGlobal();
-    const originHandler = globalObj.onMemoryWarning;
-    Object.defineProperty(globalObj, 'onMemoryWarning', {
-      writable: true,
-      enumerable: true,
-      configurable: true,
-      value: originHandler
-    });
-
-    globalObj.onMemoryWarning = function onMemoryWarning(cb) {
-      originHandler.call(globalObj, function (res) {
-        cb.call(null, res);
-      });
     };
   }
 
@@ -224,12 +259,9 @@ function Request(config) {
   wx.request(config);
 }
 
-var version = "0.0.4-alpha.6";
-
-class Reportor extends Core {
+class Reportor extends ErrorReporter {
   constructor(opts = {}) {
-    super(opts);
-    this.version = version; // 合并参数
+    super(opts); // 合并参数
 
     this.mergeConfig(opts);
     this.init();
@@ -239,12 +271,8 @@ class Reportor extends Core {
     // 劫持 App onError
     this.use(pluginHookApp); // 劫持 Request
 
-    this.use(pluginHookRq); // TODO 
-    // this.use(pluginEventBreadcrumbs);
-
-    this.use(pluginPatchPromise); // 内存监听
-
-    this.use(pluginOnMemoryWarning);
+    this.use(pluginHookRq);
+    this.use(pluginPatchPromise);
     this.applyRequest(Request);
   }
 
