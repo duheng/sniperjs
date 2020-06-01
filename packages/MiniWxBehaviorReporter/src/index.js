@@ -1,15 +1,12 @@
-import Core from '@sniperjs/core';
+import BehaviorReporter from '@sniperjs/behavior-reporter';
 import pluginHookApp from './helpers/pluginHookApp';
 import pluginHookPage from './helpers/pluginHookPage';
 import reqeust from './helpers/request';
-import { version } from '../package.json';
 
-class MiniWxAnalysis extends Core {
+class MiniWxAnalysis extends BehaviorReporter {
   
   constructor(opts = {}) {
     super(opts);
-    this.version = version;
-    // 合并参数
     this.mergeConfig(opts);
     this.init();
   }

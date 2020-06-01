@@ -2,12 +2,11 @@
 import {
   getLog
 } from '@sniperjs/utils';
-import { parseScriptRuntimeError, parseUnhandleRejectError } from './parseError';
 
 const pluginHookApp = {
   init(core) {
     const originApp = App;
-    App = function App(config) {
+    App = function App(config, y) {
       const oldOnShow = config.oldShow;
       const oldOnHide = config.onHide;
       const configCopy = { ...config };
@@ -17,15 +16,16 @@ const pluginHookApp = {
       //   core.report();
       //   return originOnError && originOnError.call(wx, originParam);
       // };
+      //console.log(config, '===');
 
-      configCopy.onShow = (originParam) => {
-        return oldOnShow && oldOnShow.call(wx, originParam);
-      };
+      // configCopy.onShow = (...originParam) => {
+      //   return oldOnShow && oldOnShow.apply(wx, originParam);
+      // };
 
 
-      configCopy.onHide = (originParam) => {
-        return oldOnHide && oldOnHide.call(wx, originParam);
-      };
+      // configCopy.onHide = (originParam) => {
+      //   return oldOnHide && oldOnHide.call(wx, originParam);
+      // };
 
       // configCopy.onUnhandledRejection = (originParam) => {
       //   let log = {};

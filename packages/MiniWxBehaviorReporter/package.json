@@ -1,5 +1,5 @@
 {
-  "name": "@sniperjs/mini_wx_analysis_reporter",
+  "name": "@sniperjs/miniwx-behavior-reporter",
   "version": "0.0.4-alpha.6",
   "description": "",
   "main": "./dist/index.js",
