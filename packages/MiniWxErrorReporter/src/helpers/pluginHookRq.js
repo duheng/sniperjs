@@ -11,7 +11,6 @@ function isRorterRequest(url) {
 }
 
 
-
 const pluginHookRq = {
   init(core) {
     const globalObj = getGlobal();
@@ -52,7 +51,7 @@ const pluginHookRq = {
             core.report();
           }
         });
-        return originFail.call(globalObj, err);
+        return originFail.call(this, err);
        
       };
       configCopy.success = function success(res) {
@@ -71,7 +70,7 @@ const pluginHookRq = {
           }
         });
 
-        return originSuc.call(globalObj, res);
+        return originSuc.call(this, res);
         
       };
       originRequest.call(globalObj, configCopy);

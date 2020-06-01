@@ -12,18 +12,17 @@ const pluginHookApp = {
       const originOnError = config.onError;
       const originUnRj = config.onUnhandledRejection;
       const configCopy = { ...config };
-      configCopy.onError = (originParam) => {
-     
-       centralTry(() => {
-        const log = getLog(parseScriptRuntimeError(originParam));
-        core.addLog(log);
-        core.report();
-       });
-       return originOnError && originOnError.call(wx, originParam);
-        
-      };
 
-      configCopy.onUnhandledRejection = (originParam) => {
+      configCopy.onError = function(originParam) {
+        centralTry(() => {
+          const log = getLog(parseScriptRuntimeError(originParam));
+          core.addLog(log);
+          core.report();
+         });
+         return originOnError && originOnError.call(this, originParam);
+      };
+     
+      configCopy.onUnhandledRejection = function(originParam) {
         centralTry(() => {
           let log = {};
           const PromiseType = 'PromiseRejectedError';
@@ -45,9 +44,9 @@ const pluginHookApp = {
           core.addLog(log);
           core.report();
         });
-        return originUnRj && originUnRj.call(wx, originParam);
+        return originUnRj && originUnRj.call(this, originParam);
       };
-
+      
       return originApp(configCopy);
     };
     return App;

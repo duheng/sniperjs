@@ -115,16 +115,16 @@ const pluginHookApp = {
 
       const configCopy = _objectSpread2({}, config);
 
-      configCopy.onError = originParam => {
+      configCopy.onError = function (originParam) {
         centraTry(() => {
           const log = getLog(parseScriptRuntimeError(originParam));
           core.addLog(log);
           core.report();
         });
-        return originOnError && originOnError.call(wx, originParam);
+        return originOnError && originOnError.call(this, originParam);
       };
 
-      configCopy.onUnhandledRejection = originParam => {
+      configCopy.onUnhandledRejection = function (originParam) {
         centraTry(() => {
           let log = {};
           const PromiseType = 'PromiseRejectedError';
@@ -143,7 +143,7 @@ const pluginHookApp = {
           core.addLog(log);
           core.report();
         });
-        return originUnRj && originUnRj.call(wx, originParam);
+        return originUnRj && originUnRj.call(this, originParam);
       };
 
       return originApp(configCopy);
@@ -198,7 +198,7 @@ const pluginHookRq = {
             core.report();
           }
         });
-        return originFail.call(globalObj, err);
+        return originFail.call(this, err);
       };
 
       configCopy.success = function success(res) {
@@ -217,7 +217,7 @@ const pluginHookRq = {
             core.report();
           }
         });
-        return originSuc.call(globalObj, res);
+        return originSuc.call(this, res);
       };
 
       originRequest.call(globalObj, configCopy);
