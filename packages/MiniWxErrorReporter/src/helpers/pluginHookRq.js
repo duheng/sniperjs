@@ -10,6 +10,8 @@ function isRorterRequest(url) {
   return reg.test(this.config.url);
 }
 
+
+
 const pluginHookRq = {
   init(core) {
     const globalObj = getGlobal();
@@ -36,12 +38,13 @@ const pluginHookRq = {
           return accuCopy;
         }, {});
 
+      collectConfigProp.method = collectConfigProp.method || 'get';
+
       configCopy.fail = function fail(err) {
-        
         centralTry(() => {
           if (!isRorterRequest.call(core, configCopy.url)) {
             const log = getLog({
-              err,
+              errMsg: err.errMsg || '',
               type: 'RequestError',
               ...collectConfigProp
             });
@@ -53,13 +56,15 @@ const pluginHookRq = {
        
       };
       configCopy.success = function success(res) {
+      
         const { statusCode } = res;
         centralTry(() => {
           if (!isRorterRequest.call(core, configCopy.url) && ![200, 302, 304].includes(statusCode)) {
             const log = getLog({
               statusCode,
               type: 'RequestError',
-              ...collectConfigProp
+              ...collectConfigProp,
+              errMsg: res.errMsg || ''
             });
             core.addLog(log);
             core.report();
