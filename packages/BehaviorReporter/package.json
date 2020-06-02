@@ -1,6 +1,6 @@
 {
   "name": "@sniperjs/behavior-reporter",
-  "version": "0.0.4-alpha.7",
+  "version": "0.1.5-alpha.0",
   "description": "",
   "main": "./dist/index.js",
   "files": [
