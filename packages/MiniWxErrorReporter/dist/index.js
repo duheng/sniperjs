@@ -109,7 +109,9 @@ const pluginHookApp = {
   init(core) {
     const originApp = App;
 
-    App = function App(config) {
+    App = function App(options) {
+      // 主题 App.config在 options.__proto__上
+      const config = Object.getPrototypeOf(options);
       const originOnError = config.onError;
       const originUnRj = config.onUnhandledRejection;
 
@@ -146,7 +148,9 @@ const pluginHookApp = {
         return originUnRj && originUnRj.call(this, originParam);
       };
 
-      return originApp(configCopy);
+      const newOptions = Object.create(config);
+      Object.assign(newOptions, options);
+      return originApp(newOptions);
     };
 
     return App;

@@ -8,7 +8,9 @@ import centralTry from './centralTry';
 const pluginHookApp = {
   init(core) {
     const originApp = App;
-    App = function App(config) {
+    App = function App(options) {
+      // 主题 App.config在 options.__proto__上
+      const config = Object.getPrototypeOf(options);
       const originOnError = config.onError;
       const originUnRj = config.onUnhandledRejection;
       const configCopy = { ...config };
@@ -47,7 +49,12 @@ const pluginHookApp = {
         return originUnRj && originUnRj.call(this, originParam);
       };
       
-      return originApp(configCopy);
+      // 创建新对象，挂在config原型
+      const newOptions = Object.create(config);
+      // 为新对象配置属性
+      Object.assign(newOptions, options);
+
+      return originApp(newOptions);
     };
     return App;
   }
