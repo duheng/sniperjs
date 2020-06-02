@@ -1,5 +1,5 @@
 
-import "regenerator-runtime/runtime.js";
+import regeneratorRuntime from "regenerator-runtime";
 import {
   isRegExp, isFunction, isBoolean, compose, extend, getMeta, isPromise, getNet
 } from '@sniperjs/utils';

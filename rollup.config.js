@@ -33,6 +33,7 @@ function generateConfig(pkgDirName) {
         ],
         plugins: [
             json(),
+            commonjs(),
             resolve(),
             babelPlugin({
                 exclude: 'node_modules/**',
