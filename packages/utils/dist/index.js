@@ -269,9 +269,37 @@ function getNet() {
 }
 
 function getMeta() {
+  if (getAgent() === 'WEB_APP') {
+    return _getWebMeta();
+  }
+
   return {
     agent: getAgent(),
     system: Object.assign({}, getSystemInfo())
+  };
+}
+
+function _getWebMeta() {
+  const uType = !!(window['hysdk'] && window.hysdk.env === 'hy') ? 'appH5' : 'h5';
+  const winSearch = window.location.search.replace('?', '');
+  const versionSearch = winSearch.split('&').map(item => {
+    const data = {},
+          arr = item.split('=');
+    data[arr[0]] = arr[1];
+    return data;
+  }).filter(d => {
+    return d['version'];
+  });
+  return {
+    p: uType,
+    logType: 'ue',
+    c: {
+      ua: window.navigator.userAgent || '',
+      send_time: +new Date(),
+      cookie: document.cookie,
+      user_type: uType,
+      version: versionSearch.length ? versionSearch[0]['version'] : '1'
+    }
   };
 }
 

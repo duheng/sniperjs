@@ -138,7 +138,7 @@
   function _createSuper(Derived) {
     var hasNativeReflectConstruct = _isNativeReflectConstruct();
 
-    return function () {
+    return function _createSuperInternal() {
       var Super = _getPrototypeOf(Derived),
           result;
 
@@ -202,55 +202,6 @@
 
     return target;
   }
-
-  function _defineProperty$1$1(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
-  function ownKeys$1$1(object, enumerableOnly) {
-    var keys = Object.keys(object);
-
-    if (Object.getOwnPropertySymbols) {
-      var symbols = Object.getOwnPropertySymbols(object);
-      if (enumerableOnly) symbols = symbols.filter(function (sym) {
-        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-      });
-      keys.push.apply(keys, symbols);
-    }
-
-    return keys;
-  }
-
-  function _objectSpread2$1$1(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-
-      if (i % 2) {
-        ownKeys$1$1(Object(source), true).forEach(function (key) {
-          _defineProperty$1$1(target, key, source[key]);
-        });
-      } else if (Object.getOwnPropertyDescriptors) {
-        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-      } else {
-        ownKeys$1$1(Object(source)).forEach(function (key) {
-          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-        });
-      }
-    }
-
-    return target;
-  }
   /* eslint-disable no-empty */
 
   /* eslint-disable no-undef */
@@ -297,7 +248,7 @@
   }
 
   function extend(target, source) {
-    return _objectSpread2$1$1(_objectSpread2$1$1({}, target), source);
+    return _objectSpread2$1({}, target, {}, source);
   }
 
   function getAgent() {
@@ -391,10 +342,6 @@
     //   // eslint-disable-next-line
     // }
 
-    if (getAgent() === 'WEB_APP') {
-      return _getWebMeta();
-    }
-
     return {
       agent: getAgent(),
       system: Object.assign({}, getSystemInfo(), {
@@ -403,28 +350,53 @@
     };
   }
 
-  function _getWebMeta() {
-    const uType = !!(window['hysdk'] && window.hysdk.env === 'hy') ? 'appH5' : 'h5';
-    const winSearch = window.location.search.replace('?', '');
-    const versionSearch = winSearch.split('&').map(item => {
-      const data = {},
-            arr = item.split('=');
-      data[arr[0]] = arr[1];
-      return data;
-    }).filter(d => {
-      return d['version'];
-    });
-    return {
-      p: uType,
-      logType: 'ue',
-      c: {
-        ua: window.navigator.userAgent || '',
-        send_time: +new Date(),
-        cookie: document.cookie,
-        user_type: uType,
-        version: versionSearch.length ? versionSearch[0]['version'] : '1'
+  function _defineProperty$2(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  function ownKeys$2(object, enumerableOnly) {
+    var keys = Object.keys(object);
+
+    if (Object.getOwnPropertySymbols) {
+      var symbols = Object.getOwnPropertySymbols(object);
+      if (enumerableOnly) symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+      keys.push.apply(keys, symbols);
+    }
+
+    return keys;
+  }
+
+  function _objectSpread2$2(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i] != null ? arguments[i] : {};
+
+      if (i % 2) {
+        ownKeys$2(Object(source), true).forEach(function (key) {
+          _defineProperty$2(target, key, source[key]);
+        });
+      } else if (Object.getOwnPropertyDescriptors) {
+        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+      } else {
+        ownKeys$2(Object(source)).forEach(function (key) {
+          Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+        });
       }
-    };
+    }
+
+    return target;
   }
 
   function throwErr(err) {
@@ -626,7 +598,7 @@
           appVersion,
           env
         } = this.config;
-        return _objectSpread2$1(_objectSpread2$1({}, getMeta()), {}, {
+        return _objectSpread2$2(_objectSpread2$2({}, getMeta()), {}, {
           appVersion,
           env,
           logs: log
