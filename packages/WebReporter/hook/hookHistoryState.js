@@ -1,4 +1,4 @@
-import { fnToString, parseUrl } from '../helpers/utils';
+import { fnToString, parseUrl, dispatchCustomEvent } from '../helpers/utils';
 
 export default {
     init() {

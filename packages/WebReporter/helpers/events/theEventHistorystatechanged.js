@@ -1,11 +1,9 @@
-import { getElmPath, getCommonAttribute, parseReportLog } from '../utils';
-import Core from '@sniperjs/core/src';
+import { parseReportLog } from '../utils';
 
 export default function (event) {
-    const { newURL, oldURL } = event;
-
-    const hashchangeLog = parseReportLog(['web_to', newURL, oldURL]);
-
+    const { target } = event;
+    
+    const hashchangeLog = parseReportLog(['web_to', 'unknow', target.location.href]);
     this.addLog(hashchangeLog);
     this.report();
-};
+}

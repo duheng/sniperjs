@@ -248,7 +248,7 @@ function getMeta() {
 }
 
 function _getWebMeta() {
-  const uType = !!window['hysdk'] ? 'appH5' : 'h5';
+  const uType = !!(window['hysdk'] && window.hysdk.env === 'hy') ? 'appH5' : 'h5';
   const winSearch = window.location.search.replace('?', '');
   const versionSearch = winSearch.split('&').map(item => {
     const data = {},
@@ -428,7 +428,6 @@ class BehaviorReporter {
 
   addLog(log) {
     this.logQueue.push(log);
-    console.log(this.logQueue);
     return this;
   }
 

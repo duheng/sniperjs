@@ -1,10 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('@sniperjs/core/src')) :
-  typeof define === 'function' && define.amd ? define(['@sniperjs/core/src'], factory) :
-  (global = global || self, global.SniperWebReporter = factory(global.src));
-}(this, (function (src) { 'use strict';
-
-  src = src && Object.prototype.hasOwnProperty.call(src, 'default') ? src['default'] : src;
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global = global || self, global.SniperWebReporter = factory());
+}(this, (function () { 'use strict';
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -406,7 +404,7 @@
   }
 
   function _getWebMeta() {
-    const uType = !!window['hysdk'] ? 'appH5' : 'h5';
+    const uType = !!(window['hysdk'] && window.hysdk.env === 'hy') ? 'appH5' : 'h5';
     const winSearch = window.location.search.replace('?', '');
     const versionSearch = winSearch.split('&').map(item => {
       const data = {},
@@ -591,7 +589,6 @@
       key: "addLog",
       value: function addLog(log) {
         this.logQueue.push(log);
-        console.log(this.logQueue);
         return this;
       }
     }, {
@@ -690,21 +687,6 @@
     return BehaviorReporter;
   }();
 
-  var hookOnPopstate = {
-    init(core) {
-      window['__q_onpopstate_'] = window.onpopstate;
-
-      window.onpopstate = function () {
-        for (var r = arguments.length, a = new Array(r), o = 0; o < r; o++) a[o] = arguments[o];
-
-        let page =  location.pathname.toLowerCase(); // TODO 上报
-
-        if (window.__q_onpopstate_) return window.__q_onpopstate_.apply(this, a);
-      };
-    }
-
-  };
-
   const parseReportLog = list => {
     const arr = [+new Date(), 'web', 'h5'];
     return arr.concat(list).join('*');
@@ -763,6 +745,14 @@
 
   const parseUrl = function (e) {
     return e && 'string' == typeof e ? e.replace(/^(https?:)?\/\//, '').replace(/\?.*$/, '') : '';
+  };
+
+  const dispatchCustomEvent = function (e, t) {
+    var r;
+    window.CustomEvent ? r = new CustomEvent(e, {
+      detail: t
+    }) : ((r = window.document.createEvent('HTMLEvents')).initEvent(e, !1, !0), r.detail = t);
+    window.dispatchEvent(r);
   };
 
   var hookHistoryState = {
@@ -878,7 +868,7 @@
         contentText = null;
     }
 
-    const clickLog = parseReportLog(['click', thePath, window.location.href, contentText]);
+    const clickLog = parseReportLog(['click', thePath, `${window.location.href}：${target.id || target.className}`, contentText]);
     this.addLog(clickLog);
     this.report();
   }
@@ -902,10 +892,9 @@
 
   function theEventHistorystatechanged (event) {
     const {
-      newURL,
-      oldURL
+      target
     } = event;
-    const hashchangeLog = parseReportLog(['web_to', newURL, oldURL]);
+    const hashchangeLog = parseReportLog(['web_to', 'unknow', target.location.href]);
     this.addLog(hashchangeLog);
     this.report();
   }
@@ -955,14 +944,20 @@
       data
     } = config; // eslint-disable-next-line no-undef
 
-    return window.fetch(url, {
-      method,
-      mode: 'cors',
-      body: JSON.stringify(data),
-      headers: {
-        'content-type': 'application/json'
-      }
-    });
+    let xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    xhr.open(method, url, true);
+    xhr.setRequestHeader('content-type', 'application/json;charset=UTF-8');
+    xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+    xhr.setRequestHeader('Access-Control-Allow-Credentials', true);
+
+    try {
+      xhr.send(JSON.stringify(data));
+    } catch (error) {
+      throw error;
+    }
+
+    return xhr;
   }
 
   let WebReportor = /*#__PURE__*/function (_BehaviorReporter) {
@@ -987,10 +982,10 @@
     _createClass(WebReportor, [{
       key: "init",
       value: function init() {
-        this.use(addEventListener); // this.use(hooRequest);
+        // this.use(hooRequest);
         // this.use(hookFetch);
+        this.use(addEventListener); // this.use(hookOnPopstate);
 
-        this.use(hookOnPopstate);
         this.use(hookHistoryState);
         this.applyRequest(Request);
       }

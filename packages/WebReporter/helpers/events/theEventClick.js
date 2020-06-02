@@ -34,7 +34,7 @@ export default function (event) {
     const clickLog = parseReportLog([
         'click',
         thePath,
-        window.location.href,
+        `${window.location.href}：${target.id || target.className}`,
         contentText,
     ]);
 

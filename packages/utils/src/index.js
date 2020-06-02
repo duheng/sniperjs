@@ -209,7 +209,7 @@ function getMeta() {
 }
 
 function _getWebMeta() {
-    const uType = !!window['hysdk'] ? 'appH5' : 'h5';
+    const uType = !!(window['hysdk'] && window.hysdk.env === 'hy') ? 'appH5' : 'h5';
 
     const winSearch = window.location.search.replace('?', '');
     const versionSearch = winSearch
