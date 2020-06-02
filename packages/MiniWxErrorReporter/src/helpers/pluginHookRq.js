@@ -3,6 +3,7 @@ import {
   isFunction, getGlobal, noop, getLog
 } from '@sniperjs/utils';
 
+import centralTry from './centralTry';
 // 忽略错误上报本身的 url;
 function isRorterRequest(url) {
   const reg = new RegExp(url);
@@ -36,31 +37,37 @@ const pluginHookRq = {
         }, {});
 
       configCopy.fail = function fail(err) {
-        const log = getLog({
-          err,
-          type: 'RequestError',
-          ...collectConfigProp
+        
+        centralTry(() => {
+          if (!isRorterRequest.call(core, configCopy.url)) {
+            const log = getLog({
+              err,
+              type: 'RequestError',
+              ...collectConfigProp
+            });
+            core.addLog(log);
+            core.report();
+          }
         });
-
-        if (!isRorterRequest.call(core, configCopy.url)) {
-          core.addLog(log);
-          core.report();
-        }
-
         return originFail.call(globalObj, err);
+       
       };
       configCopy.success = function success(res) {
         const { statusCode } = res;
-        if (!isRorterRequest.call(core, configCopy.url) && ![200, 302, 304].includes(statusCode)) {
-          const log = getLog({
-            statusCode,
-            type: 'RequestError',
-            ...collectConfigProp
-          });
-          core.addLog(log);
-          core.report();
-        }
+        centralTry(() => {
+          if (!isRorterRequest.call(core, configCopy.url) && ![200, 302, 304].includes(statusCode)) {
+            const log = getLog({
+              statusCode,
+              type: 'RequestError',
+              ...collectConfigProp
+            });
+            core.addLog(log);
+            core.report();
+          }
+        });
+
         return originSuc.call(globalObj, res);
+        
       };
       originRequest.call(globalObj, configCopy);
     };

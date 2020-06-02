@@ -22,12 +22,17 @@ function generateConfig(pkgDirName) {
                 format: 'esm',
             },
         ],
+        external: [
+            '@sniperjs/error-reporter',
+            '@sniperjs/miniwx-error-reporter',
+            '@sniperjs/utils'
+        ],
         plugins: [
             json(),
             resolve(),
             babelPlugin({
                 exclude: 'node_modules/**',
-                plugins: ['@babel/plugin-proposal-object-rest-spread'],
+                plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/plugin-transform-async-to-generator'],
             }),
         ],
     };

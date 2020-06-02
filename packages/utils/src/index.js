@@ -149,6 +149,7 @@ function getRoutes() {
     let defaultRouteInfo = {
         path: '',
         query: {},
+        routeStack: [],
     };
     const pages = getCurrentPages();
     let curPage = {};
@@ -157,6 +158,10 @@ function getRoutes() {
         const { route = '', options = {} } = curPage;
         defaultRouteInfo.path = route;
         defaultRouteInfo.query = options;
+        // https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/route.html
+        defaultRouteInfo.routeStack = pages.map((curPage) => {
+            return curPage.route;
+        });
     }
     return defaultRouteInfo;
 }
@@ -177,39 +182,34 @@ function getLog(log) {
 
 function getNet() {
     const globalObj = getGlobal();
-    return new Promise(function (rel) {
+    return new Promise(function (rel, rej) {
         globalObj.getNetworkType({
             success(res) {
                 const networkType = res.networkType;
                 rel(networkType);
+            },
+            fail(err) {
+                rej(err);
             },
         });
     });
 }
 
 function getMeta() {
-    let net = '';
-    // try {
-    //   // eslint-disable-next-line
-    //  net = getNet();
-    // } catch(err) {
-    //   // eslint-disable-next-line
-    // }
-
     if (getAgent() === 'WEB_APP') {
         return _getWebMeta();
     }
 
     return {
         agent: getAgent(),
-        system: Object.assign({}, getSystemInfo(), {
-            net: net,
-        }),
+        system: Object.assign({}, getSystemInfo()),
     };
 }
 
 function _getWebMeta() {
-    const uType = !!(window['hysdk'] && window.hysdk.env === 'hy') ? 'appH5' : 'h5';
+    const uType = !!(window['hysdk'] && window.hysdk.env === 'hy')
+        ? 'appH5'
+        : 'h5';
 
     const winSearch = window.location.search.replace('?', '');
     const versionSearch = winSearch
@@ -244,6 +244,7 @@ export {
     getSystemInfo,
     getRoutes,
     getLog,
+    getNet,
     getMeta,
     extend,
     noop,
