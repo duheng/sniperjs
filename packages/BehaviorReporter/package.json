@@ -1,6 +1,6 @@
 {
   "name": "@sniperjs/behavior-reporter",
-  "version": "0.1.5-alpha.0",
+  "version": "0.1.5-alpha.1",
   "description": "",
   "main": "./dist/index.js",
   "files": [
@@ -13,5 +13,6 @@
   "license": "MIT",
   "dependencies": {
     "@sniperjs/utils": "^0.0.4-alpha.8"
-  }
+  },
+  "gitHead": "eae3e1cbaa1b791671b713fd403e0cb330e1743a"
 }
