@@ -1,6 +1,6 @@
 {
   "name": "@sniperjs/utils",
-  "version": "0.1.5-alpha.3",
+  "version": "0.1.5-alpha.4",
   "description": "",
   "files": [
     "dist"
@@ -11,5 +11,5 @@
   },
   "author": "blue.yang",
   "license": "MIT",
-  "gitHead": "3c3910445616bcadf121dd9d098f59a2a14f5125"
+  "gitHead": "50a532ab0af8c784b82a73eaec8766be32693ff7"
 }
