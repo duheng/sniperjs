@@ -50,7 +50,7 @@ const pluginHookApp = {
       };
       
       // 创建新对象，挂在config原型
-      const newOptions = Object.create(config);
+      const newOptions = Object.create(configCopy);
       // 为新对象配置属性
       Object.assign(newOptions, options);
 
