@@ -161,8 +161,8 @@ const pluginHookApp = {
 };
 
 function isRorterRequest(url) {
-  const reg = new RegExp(url);
-  return reg.test(this.config.url);
+  const is = !(url.indexOf(this.config.url) === -1);
+  return is;
 }
 
 const pluginHookRq = {
@@ -212,7 +212,7 @@ const pluginHookRq = {
           statusCode
         } = res;
         centraTry(() => {
-          if (!isRorterRequest.call(core, configCopy.url) && ![200, 302, 304].includes(statusCode)) {
+          if (!isRorterRequest.call(core, configCopy.url) && !(statusCode >= 200 && statusCode < 300 || [304].includes(statusCode))) {
             const log = getLog(_objectSpread2(_objectSpread2({
               statusCode,
               type: 'RequestError'
