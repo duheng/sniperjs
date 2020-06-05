@@ -67,7 +67,7 @@ const CONFIG = pkgDirsNames.map((cName) => {
     const isWeb = cName === 'WebReporter';
     return isWeb
         ? generateWebConfig({
-              isBrowser: true,
+              isBrowser: false,
               pkgDirName: cName,
           })
         : generateConfig(cName);

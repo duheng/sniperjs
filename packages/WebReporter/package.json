@@ -1,6 +1,6 @@
 {
     "name": "@sniperjs/web-reporter",
-    "version": "0.1.5-alpha.4",
+    "version": "0.1.5-alpha.5",
     "description": "web 自动埋点",
     "main": "./dist/index.js",
     "files": [
@@ -12,10 +12,10 @@
     "author": "jiguoxing",
     "license": "MIT",
     "dependencies": {
-        "@sniperjs/behavior-reporter": "^0.1.5-alpha.4",
-        "@sniperjs/utils": "^0.1.5-alpha.4",
+        "@sniperjs/behavior-reporter": "^0.1.5-alpha.5",
+        "@sniperjs/utils": "^0.1.5-alpha.5",
         "reqwest": "^2.0.5",
         "superagent": "^5.2.2"
     },
-    "gitHead": "50a532ab0af8c784b82a73eaec8766be32693ff7"
+    "gitHead": "f8fc2b54a34a5492f9bdcaa63dde714ac730b809"
 }
