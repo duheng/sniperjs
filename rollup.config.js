@@ -25,14 +25,17 @@ function generateConfig(pkgDirName) {
         external: [
             '@sniperjs/error-reporter',
             '@sniperjs/miniwx-error-reporter',
-            '@sniperjs/utils'
+            '@sniperjs/utils',
         ],
         plugins: [
             json(),
             resolve(),
             babelPlugin({
                 exclude: 'node_modules/**',
-                plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/plugin-transform-async-to-generator'],
+                plugins: [
+                    '@babel/plugin-proposal-object-rest-spread',
+                    '@babel/plugin-transform-async-to-generator',
+                ],
             }),
         ],
     };

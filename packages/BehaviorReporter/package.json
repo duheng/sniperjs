@@ -1,6 +1,6 @@
 {
   "name": "@sniperjs/behavior-reporter",
-  "version": "0.1.5-alpha.5",
+  "version": "0.1.5-alpha.6",
   "description": "",
   "main": "./dist/index.js",
   "files": [
@@ -12,7 +12,7 @@
   "author": "blue.yang",
   "license": "MIT",
   "dependencies": {
-    "@sniperjs/utils": "^0.1.5-alpha.5"
+    "@sniperjs/utils": "^0.1.5-alpha.6"
   },
   "gitHead": "a4cebe9802733b30a338b2baa2157cebaec074b3"
 }
