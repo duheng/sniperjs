@@ -17,6 +17,8 @@ class WebReportor extends BehaviorReporter {
     init() {
         // this.use(hooRequest);
         // this.use(hookFetch);
+        const jiguoxing = 1;
+        console.log(jiguoxing);
         this.use(addEventListener);
         // this.use(hookOnPopstate);
         this.use(hookHistoryState);

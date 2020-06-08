@@ -1,26 +1,32 @@
 'use strict';
 
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  return Constructor;
-}
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { _ownKeys(Object(source), true).forEach(function (key) { _defineProperty2(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { _ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty2(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -70,142 +76,12 @@ function _objectSpread2(target) {
 
   return target;
 }
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function");
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) _setPrototypeOf(subClass, superClass);
-}
-
-function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-    return o.__proto__ || Object.getPrototypeOf(o);
-  };
-  return _getPrototypeOf(o);
-}
-
-function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-
-  return _setPrototypeOf(o, p);
-}
-
-function _isNativeReflectConstruct() {
-  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-  if (Reflect.construct.sham) return false;
-  if (typeof Proxy === "function") return true;
-
-  try {
-    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-function _possibleConstructorReturn(self, call) {
-  if (call && (typeof call === "object" || typeof call === "function")) {
-    return call;
-  }
-
-  return _assertThisInitialized(self);
-}
-
-function _createSuper(Derived) {
-  var hasNativeReflectConstruct = _isNativeReflectConstruct();
-
-  return function _createSuperInternal() {
-    var Super = _getPrototypeOf(Derived),
-        result;
-
-    if (hasNativeReflectConstruct) {
-      var NewTarget = _getPrototypeOf(this).constructor;
-
-      result = Reflect.construct(Super, arguments, NewTarget);
-    } else {
-      result = Super.apply(this, arguments);
-    }
-
-    return _possibleConstructorReturn(this, result);
-  };
-}
-
-function _defineProperty$1(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-function ownKeys$1(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    if (enumerableOnly) symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    });
-    keys.push.apply(keys, symbols);
-  }
-
-  return keys;
-}
-
-function _objectSpread2$1(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i] != null ? arguments[i] : {};
-
-    if (i % 2) {
-      ownKeys$1(Object(source), true).forEach(function (key) {
-        _defineProperty$1(target, key, source[key]);
-      });
-    } else if (Object.getOwnPropertyDescriptors) {
-      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-      ownKeys$1(Object(source)).forEach(function (key) {
-        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-      });
-    }
-  }
-
-  return target;
-}
 /* eslint-disable no-empty */
 
 /* eslint-disable no-undef */
 
 
-const {
-  toString
-} = Object.prototype;
+var toString = Object.prototype.toString;
 
 function isPlainObject(target) {
   return toString.call(target) === '[object Object]';
@@ -244,7 +120,7 @@ function isPromise(object) {
 }
 
 function extend(target, source) {
-  return _objectSpread2$1(_objectSpread2$1({}, target), source);
+  return _objectSpread2(_objectSpread2({}, target), source);
 }
 
 function getAgent() {
@@ -313,15 +189,15 @@ function getGlobal() {
 
 function getSystemInfo() {
   // 这里做个缓存
-  const globalObj = getGlobal();
-  const key = '__sniper__internal__data__';
+  var globalObj = getGlobal();
+  var key = '__sniper__internal__data__';
 
   if (globalObj[key] && !isEmptyObject(globalObj[key].systemInfo || {})) {
     return globalObj[key].systemInfo;
   }
 
   try {
-    const systemInfo = globalObj.getSystemInfoSync();
+    var systemInfo = globalObj.getSystemInfoSync();
     globalObj[key] = globalObj[key] || {};
     globalObj[key].systemInfo = systemInfo;
     return systemInfo;
@@ -342,14 +218,14 @@ function getMeta() {
 }
 
 function _getWebMeta() {
-  const uType = !!(window['hysdk'] && window.hysdk.env === 'hy') ? 'appH5' : 'h5';
-  const winSearch = window.location.search.replace('?', '');
-  const versionSearch = winSearch.split('&').map(item => {
-    const data = {},
-          arr = item.split('=');
+  var uType = !!(window['hysdk'] && window.hysdk.env === 'hy') ? 'appH5' : 'h5';
+  var winSearch = window.location.search.replace('?', '');
+  var versionSearch = winSearch.split('&').map(function (item) {
+    var data = {},
+        arr = item.split('=');
     data[arr[0]] = arr[1];
     return data;
-  }).filter(d => {
+  }).filter(function (d) {
     return d['version'];
   });
   return {
@@ -365,7 +241,7 @@ function _getWebMeta() {
   };
 }
 
-function _defineProperty$2(obj, key, value) {
+function _defineProperty$1(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -380,7 +256,7 @@ function _defineProperty$2(obj, key, value) {
   return obj;
 }
 
-function ownKeys$2(object, enumerableOnly) {
+function ownKeys$1(object, enumerableOnly) {
   var keys = Object.keys(object);
 
   if (Object.getOwnPropertySymbols) {
@@ -394,18 +270,18 @@ function ownKeys$2(object, enumerableOnly) {
   return keys;
 }
 
-function _objectSpread2$2(target) {
+function _objectSpread2$1(target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i] != null ? arguments[i] : {};
 
     if (i % 2) {
-      ownKeys$2(Object(source), true).forEach(function (key) {
-        _defineProperty$2(target, key, source[key]);
+      ownKeys$1(Object(source), true).forEach(function (key) {
+        _defineProperty$1(target, key, source[key]);
       });
     } else if (Object.getOwnPropertyDescriptors) {
       Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
     } else {
-      ownKeys$2(Object(source)).forEach(function (key) {
+      ownKeys$1(Object(source)).forEach(function (key) {
         Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
       });
     }
@@ -418,127 +294,116 @@ function throwErr(err) {
   throw new Error(err);
 }
 
-const strategies = {
+var strategies = {
   url: {
-    validate(val) {
+    validate: function validate(val) {
       if (!val) {
         throwErr(this.msgRequred);
       }
     },
-
     msgRequred: 'SNIPER ERROR: 配置中 url 字段必填.'
   },
   appVersion: {
-    validate(val) {
+    validate: function validate(val) {
       if (!val) return;
 
       if (!isString(val)) {
         throwErr(this.msgTypeErr);
       }
     },
-
     msgTypeErr: 'SNIPER ERROR: 配置中 appVersion 字段类型需为 String.'
   },
   env: {
-    validate(val) {
+    validate: function validate(val) {
       if (!val) return;
 
       if (!isString(val)) {
         throwErr(this.msgTypeErr);
       }
     },
-
     msgTypeErr: 'SNIPER ERROR: 配置中 env 字段类型需为 String.'
   },
   repeat: {
-    validate(val) {
+    validate: function validate(val) {
       if (!isNumber(val)) {
         throwErr(this.msgTypeErr);
       }
     },
-
     msgTypeErr: 'SNIPER ERROR: 配置中 repeat 字段类型需为 Number.'
   },
   ignoreErrors: {
-    validate(val) {
+    validate: function validate(val) {
       if (!isArray(val)) {
         throwErr(this.msgTypeErr);
       }
     },
-
     msgTypeErr: 'SNIPER ERROR: 配置中 ignoreErrors 字段类型需为 Array.'
   },
   autoBreadcrumbs: {
-    validate(val) {
+    validate: function validate(val) {
       if (!isBoolean(val)) {
         throwErr(this.msgTypeErr);
       }
     },
-
     msgTypeErr: 'SNIPER ERROR: 配置中 autoBreadcrumbs 字段类型需为 Array.'
   },
   breadcrumbsMax: {
-    validate(val) {
+    validate: function validate(val) {
       if (!isNumber(val)) {
         throwErr(this.msgTypeErr);
       }
     },
-
     msgTypeErr: 'SNIPER ERROR: 配置中 breadcrumbsMax 字段类型需为 Number.'
   },
   random: {
-    validate(val) {
+    validate: function validate(val) {
       if (!isNumber(val)) {
         throwErr(this.msgTypeErr);
       } else if (!(val > 0 && val <= 1)) {
         throwErr(this.msgRangeErr);
       }
     },
-
     msgTypeErr: 'SNIPER ERROR: 配置中 breadcrumbsMax 字段类型需为 Number.',
     msgRangeErr: 'SNIPER ERROR: 配置中 breadcrumbsMax 字段范围需满足 (0, 1]'
   },
   delay: {
-    validate(val) {
+    validate: function validate(val) {
       if (!isNumber(val)) {
         throwErr(this.msgTypeErr);
       }
     },
-
     msgTypeErr: 'SNIPER ERROR: 配置中 delay 字段类型需为 Number.'
   },
   beforeReport: {
-    validate(val) {
+    validate: function validate(val) {
       if (!isFunction(val)) {
         throwErr(this.msgTypeErr);
       }
     },
-
     msgTypeErr: 'SNIPER ERROR: 配置中 beforeReport 字段类型需为 Function.'
   }
 };
 
 function proxyValidate() {
-  const proxyObj = {};
+  var proxyObj = {};
   return new Proxy(proxyObj, {
-    set(target, key, val) {
+    set: function set(target, key, val) {
       strategies[key].validate(val); // eslint-disable-next-line no-param-reassign
 
       target[key] = val;
       return true;
     }
-
   });
 }
 
 function validateConfig(config) {
-  const proxy = proxyValidate();
-  Object.keys(config).forEach(prop => {
+  var proxy = proxyValidate();
+  Object.keys(config).forEach(function (prop) {
     proxy[prop] = config[prop];
   });
 }
 
-let BehaviorReporter = /*#__PURE__*/function () {
+var BehaviorReporter = /*#__PURE__*/function () {
   function BehaviorReporter() {
     _classCallCheck(this, BehaviorReporter);
 
@@ -552,15 +417,13 @@ let BehaviorReporter = /*#__PURE__*/function () {
       appVersion: '',
       // 应用Version
       env: '',
-
       // 环境
-      beforeReport(log) {
+      beforeReport: function beforeReport(log) {
         // 1.可在这里劫持上报的数据, 比如添加userid, session等等
         // 2.如果return false, 则不用内置http上报, 此时可以在这里自定义自己的http上报方式
         //   比如以后浏览器端，可以自定义 ajax 上报还是用图片上报
         return log;
       }
-
     };
     this.applyRequested = false;
     this.delayTimer = -1;
@@ -592,15 +455,17 @@ let BehaviorReporter = /*#__PURE__*/function () {
   }, {
     key: "report",
     value: function report() {
-      const curLogQueue = this.getLog();
+      var _this = this;
+
+      var curLogQueue = this.getLog();
 
       if (this.config.delay > 0) {
         if (this.delayTimer) {
           clearTimeout(this.delayTimer);
         }
 
-        this.delayTimer = setTimeout(() => {
-          this.sendLog(curLogQueue);
+        this.delayTimer = setTimeout(function () {
+          _this.sendLog(curLogQueue);
         }, this.config.delay);
       } else {
         this.sendLog(curLogQueue);
@@ -609,32 +474,34 @@ let BehaviorReporter = /*#__PURE__*/function () {
   }, {
     key: "gLog",
     value: function gLog(log) {
-      const {
-        appVersion,
-        env
-      } = this.config;
-      return _objectSpread2$2(_objectSpread2$2({}, getMeta()), {}, {
-        appVersion,
-        env,
+      var _this$config = this.config,
+          appVersion = _this$config.appVersion,
+          env = _this$config.env;
+      return _objectSpread2$1(_objectSpread2$1({}, getMeta()), {}, {
+        appVersion: appVersion,
+        env: env,
         logs: log
       });
     }
   }, {
     key: "sendLog",
-    value: function sendLog(logQueue = []) {
-      const log = logQueue.slice();
+    value: function sendLog() {
+      var _this2 = this;
+
+      var logQueue = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var log = logQueue.slice();
       if (!log.length) return;
-      const data = this.gLog(log);
-      const ret = isFunction(this.config.beforeReport) && this.config.beforeReport.call(this, data); // 异步回调
+      var data = this.gLog(log);
+      var ret = isFunction(this.config.beforeReport) && this.config.beforeReport.call(this, data); // 异步回调
 
       if (isPromise(ret)) {
-        ret.then(res => {
+        ret.then(function (res) {
           if (isBoolean(res) && res === false) {
             // 用户阻止默认上报后，可在 beforeReport 可自定义 request 上报
             return;
           }
 
-          this.startReport(res);
+          _this2.startReport(res);
         });
       } else {
         if (isBoolean(ret) && ret === false) {
@@ -653,13 +520,17 @@ let BehaviorReporter = /*#__PURE__*/function () {
       this.request({
         url: this.config.url,
         method: 'POST',
-        data
+        data: data
       });
     }
   }, {
     key: "use",
-    value: function use(plugin, ...args) {
-      plugin.init(this, ...args);
+    value: function use(plugin) {
+      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+
+      plugin.init.apply(plugin, [this].concat(args));
     }
   }, {
     key: "applyRequest",
@@ -674,18 +545,18 @@ let BehaviorReporter = /*#__PURE__*/function () {
   return BehaviorReporter;
 }();
 
-const parseReportLog = list => {
-  const arr = [+new Date(), 'web', 'h5'];
+var parseReportLog = function parseReportLog(list) {
+  var arr = [+new Date(), 'web', 'h5'];
   return arr.concat(list).join('*');
 };
 
-const getElmPath = e => {
-  const maxDeep = 5;
+var getElmPath = function getElmPath(e) {
+  var maxDeep = 5;
   if (!e || 1 !== e.nodeType) return '';
   var ret = [],
       deepLength = 0,
       elm = '';
-  ret.push(`(${e.innerText.substr(0, 50)})`);
+  ret.push("(".concat(e.innerText.substr(0, 50), ")"));
 
   for (var t = e || null; t && deepLength++ < maxDeep && !('html' === (elm = normalTarget(t)));) {
     ret.push(elm), t = t.parentNode;
@@ -694,14 +565,14 @@ const getElmPath = e => {
   return ret.reverse().join(' > ');
 };
 
-const getCommonAttribute = () => {
+var getCommonAttribute = function getCommonAttribute() {
   return {
     url: encodeURIComponent(window.location.href),
     time: +new Date()
   };
 };
 
-const normalTarget = function (e) {
+var normalTarget = function normalTarget(e) {
   var t,
       n,
       r,
@@ -719,22 +590,24 @@ const normalTarget = function (e) {
 
   var s = ['type', 'name', 'title', 'alt', 'src'];
 
-  for (i = 0; i < s.length; i++) r = s[i], (a = e.getAttribute(r)) && o.push('['.concat(r, '="').concat(a, '"]'));
+  for (i = 0; i < s.length; i++) {
+    r = s[i], (a = e.getAttribute(r)) && o.push('['.concat(r, '="').concat(a, '"]'));
+  }
 
   return o.join('');
 };
 
-const fnToString = function (e) {
+var fnToString = function fnToString(e) {
   return function () {
     return e + '() { [native code] }';
   };
 };
 
-const parseUrl = function (e) {
+var parseUrl = function parseUrl(e) {
   return e && 'string' == typeof e ? e.replace(/^(https?:)?\/\//, '').replace(/\?.*$/, '') : '';
 };
 
-const dispatchCustomEvent = function (e, t) {
+var dispatchCustomEvent = function dispatchCustomEvent(e, t) {
   var r;
   window.CustomEvent ? r = new CustomEvent(e, {
     detail: t
@@ -743,7 +616,7 @@ const dispatchCustomEvent = function (e, t) {
 };
 
 var hookHistoryState = {
-  init() {
+  init: function init() {
     function doHook(e) {
       var t = history[e];
       'function' == typeof t && (history[e] = function (n, i, s) {
@@ -769,61 +642,62 @@ var hookHistoryState = {
       }, history[e].toString = fnToString(e));
     }
 
-    ['pushState', 'replaceState'].forEach(e => doHook(e));
+    ['pushState', 'replaceState'].forEach(function (e) {
+      return doHook(e);
+    });
   }
-
 };
 
-function theEventLoad () {
-  const url = encodeURIComponent(window.location.href);
-  const commonAttr = getCommonAttribute();
-  const endLog = parseReportLog([`web_end:${JSON.stringify(commonAttr)}`]),
-        pageToLog = parseReportLog(['web_to', 'unknown', url]);
+function theEventLoad() {
+  var url = encodeURIComponent(window.location.href);
+  var commonAttr = getCommonAttribute();
+  var endLog = parseReportLog(["web_end:".concat(JSON.stringify(commonAttr))]),
+      pageToLog = parseReportLog(['web_to', 'unknown', url]);
   this.addLog(endLog);
   this.addLog(pageToLog);
   this.report();
 }
 
-function theEventError (error) {
+function theEventError(error) {
   // ErrorEvent 捕获异常, Event 资源错误
-  const commonAttr = getCommonAttribute();
-  let msg = '',
+  var commonAttr = getCommonAttribute();
+  var msg = '',
       errcode = '';
 
   if (error instanceof ErrorEvent) {
     msg = error.message;
     errcode = 'error';
   } else {
-    const thePath = getElmPath(error.target);
+    var thePath = getElmPath(error.target);
     msg = '资源错误: ' + thePath;
     errcode = 'resource_error';
   }
 
-  const data = _objectSpread2(_objectSpread2({}, commonAttr), {
-    errcode,
+  var data = _objectSpread(_objectSpread({}, commonAttr), {
+    errcode: errcode,
     errmsg: msg
   });
 
-  const errLog = parseReportLog([`web_error:${JSON.stringify(data)}`]);
+  var errLog = parseReportLog(["web_error:".concat(JSON.stringify(data))]);
   this.addLog(errLog);
   this.report();
 }
 
-function theEventUnhandledrejection (e) {
+function theEventUnhandledrejection(e) {
   e.preventDefault();
-  const commonAttr = getCommonAttribute();
+  var commonAttr = getCommonAttribute();
 
-  const data = _objectSpread2(_objectSpread2({}, commonAttr), {
+  var data = _objectSpread(_objectSpread({}, commonAttr), {
     errcode: 'unhandledrejection',
     errmsg: e.reason.stack
   });
 
-  const errLog = parseReportLog([`web_error:${JSON.stringify(data)}`]);
+  var errLog = parseReportLog(["web_error:".concat(JSON.stringify(data))]);
   this.addLog(errLog);
   this.report();
 }
 
-function theEventClick (event) {
+function theEventClick(event) {
   var target;
 
   try {
@@ -834,9 +708,9 @@ function theEventClick (event) {
 
   if (target.nodeName === 'HTML' || target.nodeName === 'TEXTAREA') return;
   if (target.length === 0) return;
-  const thePath = getElmPath(target);
+  var thePath = getElmPath(target);
   if (!thePath) return;
-  let contentText;
+  var contentText;
 
   switch (target.nodeName) {
     case 'DIV':
@@ -855,44 +729,40 @@ function theEventClick (event) {
       contentText = null;
   }
 
-  const clickLog = parseReportLog(['click', thePath, `${window.location.href}：${target.id || target.className}`, contentText]);
+  var clickLog = parseReportLog(['click', thePath, "".concat(window.location.href, "\uFF1A").concat(target.id || target.className), contentText]);
   this.addLog(clickLog);
   this.report();
 }
 
-function theEventHashchange (event) {
-  const {
-    newURL,
-    oldURL
-  } = event;
-  const hashchangeLog = parseReportLog(['web_to', newURL, oldURL]);
+function theEventHashchange(event) {
+  var newURL = event.newURL,
+      oldURL = event.oldURL;
+  var hashchangeLog = parseReportLog(['web_to', newURL, oldURL]);
   this.addLog(hashchangeLog);
   this.report();
 }
 
-function theEventUnload () {
-  const url = encodeURIComponent(window.location.href);
-  const pageFromLog = parseReportLog(['web_to', url, 'unknown']);
+function theEventUnload() {
+  var url = encodeURIComponent(window.location.href);
+  var pageFromLog = parseReportLog(['web_to', url, 'unknown']);
   this.addLog(pageFromLog);
   this.report();
 }
 
-function theEventHistorystatechanged (event) {
-  const {
-    target
-  } = event;
-  const hashchangeLog = parseReportLog(['web_to', 'unknow', target.location.href]);
+function theEventHistorystatechanged(event) {
+  var target = event.target;
+  var hashchangeLog = parseReportLog(['web_to', 'unknow', target.location.href]);
   this.addLog(hashchangeLog);
   this.report();
 }
 
 var addEventListener = {
-  init(core) {
+  init: function init(core) {
     // 页面加载前
-    const startLog = parseReportLog([`web_start: ${JSON.stringify(getCommonAttribute())}`]);
+    var startLog = parseReportLog(["web_start: ".concat(JSON.stringify(getCommonAttribute()))]);
     core.addLog(startLog);
     core.report();
-    const initEvent = {
+    var initEvent = {
       load: {
         fn: theEventLoad
       },
@@ -916,22 +786,19 @@ var addEventListener = {
       }
     }; // 监听函数不要使用匿名函数, 可以减低内存、自动回收
 
-    Object.keys(initEvent).forEach(key => {
-      const event = initEvent[key];
+    Object.keys(initEvent).forEach(function (key) {
+      var event = initEvent[key];
       window.addEventListener(key, event.fn.bind(core), true);
     });
   }
-
 };
 
 function Request(config) {
-  const {
-    url,
-    method,
-    data
-  } = config; // eslint-disable-next-line no-undef
+  var url = config.url,
+      method = config.method,
+      data = config.data; // eslint-disable-next-line no-undef
 
-  let xhr = new XMLHttpRequest();
+  var xhr = new XMLHttpRequest();
   xhr.withCredentials = true;
   xhr.open(method, url, true);
   xhr.setRequestHeader('content-type', 'application/json;charset=UTF-8');
@@ -947,23 +814,25 @@ function Request(config) {
   return xhr;
 }
 
-let WebReportor = /*#__PURE__*/function (_BehaviorReporter) {
+var WebReportor = /*#__PURE__*/function (_BehaviorReporter) {
   _inherits(WebReportor, _BehaviorReporter);
 
   var _super = _createSuper(WebReportor);
 
-  function WebReportor(opts = {}) {
-    var _this;
+  function WebReportor() {
+    var _this3;
+
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     _classCallCheck(this, WebReportor);
 
-    _this = _super.call(this, opts); // 合并参数
+    _this3 = _super.call(this, opts); // 合并参数
 
-    _this.mergeConfig(opts);
+    _this3.mergeConfig(opts);
 
-    _this.init();
+    _this3.init();
 
-    return _this;
+    return _this3;
   }
 
   _createClass(WebReportor, [{
@@ -971,6 +840,8 @@ let WebReportor = /*#__PURE__*/function (_BehaviorReporter) {
     value: function init() {
       // this.use(hooRequest);
       // this.use(hookFetch);
+      var jiguoxing = 1;
+      console.log(jiguoxing);
       this.use(addEventListener); // this.use(hookOnPopstate);
 
       this.use(hookHistoryState);

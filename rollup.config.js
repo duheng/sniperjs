@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const babelPlugin = require('rollup-plugin-babel');
 const json = require('@rollup/plugin-json');
+import babel2, { getBabelOutputPlugin } from '@rollup/plugin-babel';
 //const { eslint } = require('rollup-plugin-eslint');
 const cwd = process.cwd();
 const PKGDIR = './packages';
@@ -49,25 +50,19 @@ function generateWebConfig({ isBrowser, pkgDirName }) {
                 file: `${PKGDIR}/${pkgDirName}/dist/index.js`,
                 format: isBrowser ? 'umd' : 'cjs',
                 name: 'SniperWebReporter',
+                // https://github.com/rollup/plugins/tree/master/packages/babel#running-babel-on-the-generated-code
+                plugins: [
+                    getBabelOutputPlugin({ presets: ['@babel/preset-env'] }),
+                ],
             },
         ],
-        plugins: [
-            json(),
-            resolve(),
-            babelPlugin({
-                exclude: 'node_modules/**',
-                plugins: [
-                    '@babel/plugin-proposal-object-rest-spread',
-                    '@babel/plugin-transform-classes',
-                ],
-            }),
-            commonjs(),
-        ],
+        plugins: [json(), resolve(), commonjs()],
     };
 }
 
 const CONFIG = pkgDirsNames.map((cName) => {
-    const isWeb = cName === 'WebReporter';
+    const isWeb =
+        cName === 'WebReporter';
     return isWeb
         ? generateWebConfig({
               isBrowser: false,
