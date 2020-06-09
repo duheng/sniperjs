@@ -30,11 +30,11 @@ export default function (event) {
         default:
             contentText = null;
     }
-
+    const url = encodeURIComponent(window.location.href);
     const clickLog = parseReportLog([
         'click',
-        thePath,
-        `${window.location.href}：${target.id || target.className}`,
+        target.id || target.className,
+        `${url}：${thePath}`,
         contentText,
     ]);
 

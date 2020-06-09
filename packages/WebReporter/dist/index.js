@@ -28,8 +28,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var querystring = require('querystring');
-
 function _defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -731,7 +729,8 @@ function theEventClick(event) {
       contentText = null;
   }
 
-  var clickLog = parseReportLog(['click', thePath, "".concat(window.location.href, "\uFF1A").concat(target.id || target.className), contentText]);
+  var url = encodeURIComponent(window.location.href);
+  var clickLog = parseReportLog(['click', target.id || target.className, "".concat(url, "\uFF1A").concat(thePath), contentText]);
   this.addLog(clickLog);
   this.report();
 }
@@ -739,7 +738,7 @@ function theEventClick(event) {
 function theEventHashchange(event) {
   var newURL = event.newURL,
       oldURL = event.oldURL;
-  var hashchangeLog = parseReportLog(['web_to', newURL, oldURL]);
+  var hashchangeLog = parseReportLog(['web_to', encodeURIComponent(newURL), encodeURIComponent(oldURL)]);
   this.addLog(hashchangeLog);
   this.report();
 }
@@ -753,7 +752,7 @@ function theEventUnload() {
 
 function theEventHistorystatechanged(event) {
   var target = event.target;
-  var hashchangeLog = parseReportLog(['web_to', 'unknow', target.location.href]);
+  var hashchangeLog = parseReportLog(['web_to', 'unknow', encodeURIComponent(target.location.href)]);
   this.addLog(hashchangeLog);
   this.report();
 }
@@ -802,7 +801,7 @@ function Request(config) {
   var xhr = new XMLHttpRequest();
   xhr.open(method, url, true);
   xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
-  xhr.send(querystring.stringify(data));
+  xhr.send('ue=' + JSON.stringify(data));
   return xhr;
 }
 
@@ -832,8 +831,6 @@ var WebReportor = /*#__PURE__*/function (_BehaviorReporter) {
     value: function init() {
       // this.use(hooRequest);
       // this.use(hookFetch);
-      var jiguoxing = 1;
-      console.log(jiguoxing);
       this.use(addEventListener); // this.use(hookOnPopstate);
 
       this.use(hookHistoryState);
