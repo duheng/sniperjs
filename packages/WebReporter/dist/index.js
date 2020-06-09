@@ -28,6 +28,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var querystring = require('querystring');
+
 function _defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -796,21 +798,11 @@ var addEventListener = {
 function Request(config) {
   var url = config.url,
       method = config.method,
-      data = config.data; // eslint-disable-next-line no-undef
-
+      data = config.data;
   var xhr = new XMLHttpRequest();
-  xhr.withCredentials = true;
   xhr.open(method, url, true);
-  xhr.setRequestHeader('content-type', 'application/json;charset=UTF-8');
-  xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-  xhr.setRequestHeader('Access-Control-Allow-Credentials', true);
-
-  try {
-    xhr.send(JSON.stringify(data));
-  } catch (error) {
-    throw error;
-  }
-
+  xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+  xhr.send(querystring.stringify(data));
   return xhr;
 }
 
