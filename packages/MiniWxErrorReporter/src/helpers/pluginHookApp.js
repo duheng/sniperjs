@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import {
-  getLog
+  getLog,
+  isPlainObject
 } from '@sniperjs/utils';
 import { parseScriptRuntimeError, parseUnhandleRejectError } from './parseError';
 import centralTry from './centralTry';
@@ -28,6 +29,8 @@ const pluginHookApp = {
         centralTry(() => {
           let log = {};
           const PromiseType = 'PromiseRejectedError';
+          const PageNotFoundType = 'PageNotFound';
+          // reason 是 Error 的实例才上报, 其他类型逻辑上只是代表是拒绝状态而已。
           if (originParam.reason && originParam.reason instanceof Error) {
             log = getLog(
               Object.assign(
@@ -37,14 +40,23 @@ const pluginHookApp = {
                 }
               )
             );
+            core.addLog(log);
+            core.report();
           } else {
-            log = getLog({
-              value: originParam.reason,
-              type: PromiseType
-            });
+            // TODO nanachi进行了一层包装，严格意义上这里应该去劫持navigate，后期处理
+            if (isPlainObject(originParam.reason)) {
+              const msg = originParam.reason.errMsg || '';
+              if (/navigateTo:fail/.test(msg) && /is not found/.test(msg)) {
+                log = getLog({
+                  value: msg,
+                  type: PageNotFoundType
+                });
+                core.addLog(log);
+                core.report();
+              }
+            }
           }
-          core.addLog(log);
-          core.report();
+         
         });
         return originUnRj && originUnRj.call(this, originParam);
       };

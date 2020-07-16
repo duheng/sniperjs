@@ -1,5 +1,5 @@
 import ErrorReporter from '@sniperjs/error-reporter';
-import { getLog, getGlobal, noop, isFunction, getSystemInfo } from '@sniperjs/utils';
+import { getLog, isPlainObject, getGlobal, noop, isFunction, getSystemInfo } from '@sniperjs/utils';
 
 function _defineProperty(obj, key, value) {
   if (key in obj) {
@@ -130,20 +130,29 @@ const pluginHookApp = {
         centraTry(() => {
           let log = {};
           const PromiseType = 'PromiseRejectedError';
+          const PageNotFoundType = 'PageNotFound'; // reason 是 Error 的实例才上报, 其他类型逻辑上只是代表是拒绝状态而已。
 
           if (originParam.reason && originParam.reason instanceof Error) {
             log = getLog(Object.assign(parseUnhandleRejectError(originParam.reason.stack), {
               type: PromiseType
             }));
+            core.addLog(log);
+            core.report();
           } else {
-            log = getLog({
-              value: originParam.reason,
-              type: PromiseType
-            });
-          }
+            // TODO nanachi进行了一层包装，严格意义上这里应该去劫持navigate，后期处理
+            if (isPlainObject(originParam.reason)) {
+              const msg = originParam.reason.errMsg || '';
 
-          core.addLog(log);
-          core.report();
+              if (/navigateTo:fail/.test(msg) && /is not found/.test(msg)) {
+                log = getLog({
+                  value: msg,
+                  type: PageNotFoundType
+                });
+                core.addLog(log);
+                core.report();
+              }
+            }
+          }
         });
         return originUnRj && originUnRj.call(this, originParam);
       }; // 创建新对象，挂在config原型
