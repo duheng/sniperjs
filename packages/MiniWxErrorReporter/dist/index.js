@@ -205,7 +205,7 @@ const pluginHookRq = {
       configCopy.fail = function fail(err) {
         centraTry(() => {
           if (!isRorterRequest.call(core, configCopy.url)) {
-            const errMsg = res.errMsg || '';
+            const errMsg = err.errMsg || '';
 
             if (/fail interrupted/.test(errMsg)) {
               return;
