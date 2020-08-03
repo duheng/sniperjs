@@ -1,6 +1,6 @@
 {
   "name": "@sniperjs/miniwx-error-reporter",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "",
   "main": "./dist/index.js",
   "files": [
@@ -12,7 +12,7 @@
   "author": "blue.yang",
   "license": "MIT",
   "dependencies": {
-    "@sniperjs/error-reporter": "^0.1.9",
-    "@sniperjs/utils": "^0.1.9"
+    "@sniperjs/error-reporter": "^0.1.10",
+    "@sniperjs/utils": "^0.1.10"
   }
 }
