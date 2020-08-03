@@ -42,6 +42,10 @@ const pluginHookRq = {
       configCopy.fail = function fail(err) {
         centralTry(() => {
           if (!isRorterRequest.call(core, configCopy.url)) {
+            const errMsg = res.errMsg || '';
+            if (/fail interrupted/.test(errMsg)) {
+              return;
+            }
             const log = getLog({
               errMsg: err.errMsg || '',
               type: 'RequestError',
