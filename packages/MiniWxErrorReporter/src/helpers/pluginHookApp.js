@@ -5,6 +5,7 @@ import {
 } from '@sniperjs/utils';
 import { parseScriptRuntimeError, parseUnhandleRejectError } from './parseError';
 import centralTry from './centralTry';
+import errorTypeReg from './errorTypeReg';
 
 const pluginHookApp = {
   init(core) {
@@ -32,16 +33,20 @@ const pluginHookApp = {
           const PageNotFoundType = 'PageNotFound';
           // reason 是 Error 的实例才上报, 其他类型逻辑上只是代表是拒绝状态而已。
           if (originParam.reason && originParam.reason instanceof Error) {
-            log = getLog(
-              Object.assign(
-                parseUnhandleRejectError(originParam.reason.stack), 
-                {
-                  type: PromiseType
-                }
-              )
-            );
-            core.addLog(log);
-            core.report();
+            // promise里的 js runtime 错误才上报，其他错误如包装request fail不用在这里上报 ，request劫持已经上报了。
+            // 非request以及非js runtime的不用上报，微信底层又一些莫名奇妙的错误，上报了也没意义
+            if (errorTypeReg.test(originParam.reason.stack)) {
+              log = getLog(
+                Object.assign(
+                  parseUnhandleRejectError(originParam.reason.stack), 
+                  {
+                    type: PromiseType
+                  }
+                )
+              );
+              core.addLog(log);
+              core.report();
+            }
           } else {
             // TODO nanachi进行了一层包装，严格意义上这里应该去劫持navigate，后期处理
             if (isPlainObject(originParam.reason)) {

@@ -1,18 +1,7 @@
 /* eslint-disable key-spacing */
 /* eslint-disable no-multi-spaces */
-const errorTypeReg = new RegExp(
-  '(' + [
-    'EvalError:',
-    'InternalError:',
-    'RangeError:',
-    'ReferenceError:',
-    'SyntaxError:',
-    'TypeError:',
-    'URIError:',
-    'Error:' // new Error
-  ].join('|') + ')',
-  'mi'
-); 
+
+import errorTypeReg from './errorTypeReg';
 
 function parseScriptRuntimeError(stack='') {
   try {

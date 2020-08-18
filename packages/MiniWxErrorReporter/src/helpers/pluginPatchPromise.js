@@ -3,6 +3,8 @@ import {
     getLog
 } from '@sniperjs/utils';
 
+import errorTypeReg from './errorTypeReg';
+
 // 0: "[process] unhandledRejection"
 // 1: {errMsg: "navigateTo:xxx"}
 // 2: Promise {<rejected>: {…}}
@@ -21,13 +23,15 @@ const pluginPatchPromise = {
         ) {
             const originWarn = console.warn;
             console.warn = function(...args) {
-                if (/unhandledRejection/.test(args[0])) {
-                    const log = getLog({
-                        value: args[1].errMsg || args[1],
-                        type: 'PromiseRejectedError'
-                    });
-                    core.addLog(log);
-                    core.report();
+                if (/unhandledRejection/.test(args[0]) && args[1] instanceof Error ) {
+                    if (errorTypeReg.test(args[1].stack)) {
+                        const log = getLog({
+                            value: args[1].stack,
+                            type: 'PromiseRejectedError'
+                        });
+                        core.addLog(log);
+                        core.report();
+                    }
                 }
                 originWarn.apply(null, args);
             };

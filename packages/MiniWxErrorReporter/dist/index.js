@@ -50,11 +50,10 @@ function _objectSpread2(target) {
   return target;
 }
 
-/* eslint-disable key-spacing */
-
-/* eslint-disable no-multi-spaces */
 const errorTypeReg = new RegExp('(' + ['EvalError:', 'InternalError:', 'RangeError:', 'ReferenceError:', 'SyntaxError:', 'TypeError:', 'URIError:', 'Error:' // new Error
 ].join('|') + ')', 'mi');
+
+/* eslint-disable key-spacing */
 
 function parseScriptRuntimeError(stack = '') {
   try {
@@ -133,11 +132,15 @@ const pluginHookApp = {
           const PageNotFoundType = 'PageNotFound'; // reason 是 Error 的实例才上报, 其他类型逻辑上只是代表是拒绝状态而已。
 
           if (originParam.reason && originParam.reason instanceof Error) {
-            log = getLog(Object.assign(parseUnhandleRejectError(originParam.reason.stack), {
-              type: PromiseType
-            }));
-            core.addLog(log);
-            core.report();
+            // promise里的 js runtime 错误才上报，其他错误如包装request fail不用在这里上报 ，request劫持已经上报了。
+            // 非request以及非js runtime的不用上报，微信底层又一些莫名奇妙的错误，上报了也没意义
+            if (errorTypeReg.test(originParam.reason.stack)) {
+              log = getLog(Object.assign(parseUnhandleRejectError(originParam.reason.stack), {
+                type: PromiseType
+              }));
+              core.addLog(log);
+              core.report();
+            }
           } else {
             // TODO nanachi进行了一层包装，严格意义上这里应该去劫持navigate，后期处理
             if (isPlainObject(originParam.reason)) {
@@ -262,13 +265,15 @@ const pluginPatchPromise = {
       const originWarn = console.warn;
 
       console.warn = function (...args) {
-        if (/unhandledRejection/.test(args[0])) {
-          const log = getLog({
-            value: args[1].errMsg || args[1],
-            type: 'PromiseRejectedError'
-          });
-          core.addLog(log);
-          core.report();
+        if (/unhandledRejection/.test(args[0]) && args[1] instanceof Error) {
+          if (errorTypeReg.test(args[1].stack)) {
+            const log = getLog({
+              value: args[1].stack,
+              type: 'PromiseRejectedError'
+            });
+            core.addLog(log);
+            core.report();
+          }
         }
 
         originWarn.apply(null, args);
