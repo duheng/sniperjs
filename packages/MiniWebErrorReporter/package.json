@@ -1,0 +1,18 @@
+{
+  "name": "@sniperjs/miniweb-error-reporter",
+  "version": "0.1.13",
+  "description": "",
+  "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "heng.du",
+  "license": "MIT",
+  "dependencies": {
+    "@sniperjs/error-reporter": "^0.1.13",
+    "@sniperjs/utils": "^0.1.13"
+  }
+}
