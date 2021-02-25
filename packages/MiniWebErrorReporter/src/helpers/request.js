@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
+import axios from 'axios'
 function Request(config) {
-  wx.request(config);
+  axios(config);
 }
 export default Request;

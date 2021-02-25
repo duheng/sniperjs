@@ -42,6 +42,16 @@ function parseScriptRuntimeError(stack='') {
   
 }
 
+function parseStaticError(event, target) {
+  const url = target.src || target.href;
+  return {
+    stack: url,
+    file: url,
+    type: "ReferenceError",
+    value: '资源加载异常'
+  }
+}
+
 function parseRquestError() {
 
 }
@@ -53,5 +63,6 @@ function parseUnhandleRejectError(stack) {
 export {
   parseScriptRuntimeError,
   parseRquestError,
+  parseStaticError,
   parseUnhandleRejectError
 };

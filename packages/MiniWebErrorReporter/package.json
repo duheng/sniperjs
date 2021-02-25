@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@sniperjs/error-reporter": "^0.1.13",
-    "@sniperjs/utils": "^0.1.13"
+    "@sniperjs/utils": "^0.1.13",
+    "axios": "^0.21.1"
   }
 }

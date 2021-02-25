@@ -74,7 +74,8 @@ function generateWebConfig(isBrowser, pkgDirName) {
 }
 
 const CONFIG = pkgDirsNames.map((cName) => {
-    const isWeb = cName === 'WebReporter';
+    console.log('cName------', cName)
+    const isWeb = cName === 'MiniWebErrorReporter';
     return isWeb ? generateWebConfig(true, cName) : generateConfig(cName);
 });
 
