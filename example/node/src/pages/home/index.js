@@ -37,7 +37,7 @@ export default class Home extends Component {
     const { actions } = this.props;
     actions.fetchHomeData();
    
-    //console.log('a--',asadf)
+    console.log('a--',asadf)
   }
   goAbout = () => {
     this.props.history.push('/about')

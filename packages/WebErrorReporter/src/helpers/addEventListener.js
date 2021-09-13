@@ -15,11 +15,11 @@ export default {
         ]);
 
         core.addLog(startLog);
-        console.log('core--',core.logQueue)
+      //  console.log('core--',core.logQueue)
         core.report();
       
         const initEvent = {
-            //load: { fn: theEventLoad },
+            load: { fn: theEventLoad },
             error: { fn: theEventError },
             unhandledrejection: { fn: theEventUnhandledrejection },
             click: { fn: theEventClick },

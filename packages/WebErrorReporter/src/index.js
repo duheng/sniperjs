@@ -1,4 +1,5 @@
 import BehaviorReporter from '@sniperjs/behavior-reporter';
+import ErrorReporter from '@sniperjs/error-reporter';
 import pluginHookWeb from './helpers/pluginHookWeb';
 import pluginHookApp from './helpers/pluginHookApp';
 import pluginHookRq from './helpers/pluginHookRq';
@@ -16,8 +17,8 @@ class Reportor extends BehaviorReporter {
 
   init() {
     // 劫持 App onError
-    this.use(addEventListener);
-   // this.use(pluginHookWeb);
+   // this.use(addEventListener);
+   this.use(pluginHookWeb);
     // // 劫持 Request
     // this.use(pluginHookRq);
    
