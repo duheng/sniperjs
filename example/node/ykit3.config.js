@@ -11,22 +11,22 @@ const copyData = new CopyWebpackPlugin({
 })
 module.exports = {
     webpack (api) {
-        api.configDll(config => {
-            config.lib = {
-                vendors: [
-                    'react',
-                    'react-dom',
-                    'react-redux',
-                    'react-router',
-                    'react-router-dom',
-                    'react-router-redux',
-                    'redux',
-                    'redux-actions',
-                    'redux-logger',
-                    'redux-thunk'
-                ],
-            }
-        })
+        // api.configDll(config => {
+        //     config.lib = {
+        //         vendors: [
+        //             'react',
+        //             'react-dom',
+        //             'react-redux',
+        //             'react-router',
+        //             'react-router-dom',
+        //             'react-router-redux',
+        //             'redux',
+        //             'redux-actions',
+        //             'redux-logger',
+        //             'redux-thunk'
+        //         ],
+        //     }
+        // })
   
         api.extendConfig((config, webpack) => {
             config.entry = {

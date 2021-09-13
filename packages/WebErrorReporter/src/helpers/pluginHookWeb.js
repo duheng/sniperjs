@@ -34,7 +34,7 @@ const pluginHookApp = {
     
       core.addLog(__log);
       console.log('MZ4---',__log)
-      core.report();
+    //  core.report();
       // console.log(`Promise.reject()中的内容，告诉你发生错误的原因:${e.reason}`);
       // console.log(`Promise对象 :${e.promise}`);
     });

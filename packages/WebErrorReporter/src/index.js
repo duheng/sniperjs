@@ -1,10 +1,10 @@
 import BehaviorReporter from '@sniperjs/behavior-reporter';
-import ErrorReporter from '@sniperjs/error-reporter';
+//import ErrorReporter from '@sniperjs/error-reporter';
 import pluginHookWeb from './helpers/pluginHookWeb';
-import pluginHookApp from './helpers/pluginHookApp';
-import pluginHookRq from './helpers/pluginHookRq';
-import pluginPatchPromise from './helpers/pluginPatchPromise';
-import addEventListener from './helpers/addEventListener';
+// import pluginHookApp from './helpers/pluginHookApp';
+// import pluginHookRq from './helpers/pluginHookRq';
+// import pluginPatchPromise from './helpers/pluginPatchPromise';
+// import addEventListener from './helpers/addEventListener';
 import reqeust from './helpers/request';
 class Reportor extends BehaviorReporter {
   

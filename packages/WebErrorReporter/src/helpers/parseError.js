@@ -5,9 +5,8 @@ import errorTypeReg from './errorTypeReg';
 
 function parseScriptRuntimeError(stack='') {
   try {
-    let line = '', col = '', file = '';
+    let line = '', col = '', file = '', url = '';
     const errInfoList = stack.split(/\n\s+/);
-  
     const errMsg = errInfoList[0];
     const errStack = errInfoList.slice(1);
     const type = errMsg.match(errorTypeReg)[0].replace(/:$/, '') || '';
@@ -40,7 +39,7 @@ function parseScriptRuntimeError(stack='') {
       value
     };
   } catch (err) {
-    console.log('errInfoList-3---',errStack)
+    console.log('errInfoList-3---',err)
     return {
       stack,
       type: 'Error'
