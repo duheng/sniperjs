@@ -7,6 +7,7 @@ const cwd = process.cwd();
 const PKGDIR = './packages';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import serve from "rollup-plugin-serve";
 
 const pkgDirsNames = fs.readdirSync(PKGDIR).filter((cName) => {
     const abPath = path.join(cwd, `packages/${cName}`);
@@ -69,6 +70,10 @@ function generateWebConfig(isBrowser, pkgDirName) {
                 browser: isBrowser,
             }),
             commonjs(),
+            process.env.ENV === "development" ? serve({
+                port: 3000,
+                contentBase: ["./"], // 静态资源所在目录
+            }) : null
         ],
     };
 }

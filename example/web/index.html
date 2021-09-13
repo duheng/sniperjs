@@ -9,12 +9,13 @@
         window.__version = Math.random() + '';
     </script>
     <script>
-        document.write('<script src="../../packages/MiniWebErrorReporter/dist/index.js?v='+window.__version+'" crossorigin><\/script>');
+        document.write('<script src="../../packages/WebReporter/dist/index.js?v='+window.__version+'" crossorigin><\/script>');
     </script>
     <script>
-           var sss = new Sniperjs({
-               url:'http://pwapp.qunar.com/api/log/appletError'
-           })
+        console.log('Sniperjs----',Sniperjs)
+        //    var sss = new Sniperjs({
+        //        url:'http://pwapp.qunar.com/api/log/appletError'
+        //    })
     </script>
 </head>
 <body>

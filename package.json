@@ -4,7 +4,7 @@
   "description": "mini program bug reporter",
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "dev": "rollup --config rollup.config.js --watch",
+    "dev": "export ENV=development && rollup --config rollup.config.js --watch",
     "build": "rollup --config rollup.config.js",
     "lint:fix": "eslint --fix ./packages/**/src",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -33,6 +33,7 @@
     "lerna": "^3.5.1",
     "rollup": "^2.0.6",
     "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-eslint": "^7.0.0"
+    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-serve": "^1.1.0"
   }
 }

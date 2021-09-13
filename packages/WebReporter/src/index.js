@@ -1,4 +1,4 @@
-import BehaviorReporter from '@sniperjs/behavior-reporter';
+import ErrorReporter from '@sniperjs/error-reporter';
 // import hooRequest from '../hook/hookXMLHttpRequest';
 // import hookFetch from '../hook/hookFetch';
 // import hookOnPopstate from '../hook/hookOnPopstate';
@@ -6,7 +6,7 @@ import hookHistoryState from '../hook/hookHistoryState';
 import addEventListener from '../helpers/addEventListener';
 import reqeust from '../helpers/request';
 
-class WebReportor extends BehaviorReporter {
+class WebReportor extends ErrorReporter {
     constructor(opts = {}) {
         super(opts);
         // 合并参数
@@ -17,9 +17,9 @@ class WebReportor extends BehaviorReporter {
     init() {
         // this.use(hooRequest);
         // this.use(hookFetch);
-        this.use(addEventListener);
+     //   this.use(addEventListener);
         // this.use(hookOnPopstate);
-        this.use(hookHistoryState);
+      //  this.use(hookHistoryState);
         this.applyRequest(reqeust);
     }
 }
