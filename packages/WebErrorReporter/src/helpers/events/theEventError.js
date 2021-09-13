@@ -21,7 +21,7 @@ export default function (error) {
             errmsg: msg,
         },
     };
-
+    
     const errLog = parseReportLog([`web_error:${JSON.stringify(data)}`]);
 
     this.addLog(errLog);

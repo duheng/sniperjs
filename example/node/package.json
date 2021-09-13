@@ -1,0 +1,36 @@
+{
+    "name": "react_redux",
+    "version": "0.0.1",
+    "description": "react spa",
+    "main": "app.js",
+    "author": "duheng",
+    "license": "ISC",
+    "scripts": {
+        "start": "luban server",
+        "test": "luban test",
+        "release": "luban release",
+        "luban": "luban",
+        "prettier": "prettier --write --config .prettierrc \"src/**/*.{js,css,scss,less}\""
+    },
+    "dependencies": {
+        "@qnpm/skyeye-web": "0.0.3",
+        "axios": "^0.21.1",
+        "babel-polyfill": "^6.26.0",
+        "copy-webpack-plugin": "^6.0.3",
+        "html-loader": "^1.3.2",
+        "prop-types": "^15.6.1",
+        "react": "^16.7.0",
+        "react-dom": "^16.7.0",
+        "react-redux": "^6.0.0",
+        "react-router": "^5.2.0",
+        "react-router-dom": "^5.2.0",
+        "react-router-redux": "^5.0.0-alpha.9",
+        "redux": "^4.0.1",
+        "redux-actions": "^2.6.4",
+        "redux-logger": "^3.0.6",
+        "redux-thunk": "^2.3.0",
+        "reselect": "^4.0.0",
+        "webpack": "^4.44.2"
+    },
+    "devDependencies": {}
+}

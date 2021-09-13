@@ -700,16 +700,6 @@
     return o.join('');
   };
 
-  function theEventLoad () {
-    const url = encodeURIComponent(window.location.href);
-    const commonAttr = getCommonAttribute();
-    const endLog = parseReportLog([`web_end:${JSON.stringify(commonAttr)}`]),
-          pageToLog = parseReportLog(['web_to', 'unknown', url]);
-    this.addLog(endLog);
-    this.addLog(pageToLog);
-    this.report();
-  }
-
   function theEventError (error) {
     // ErrorEvent 捕获异常, Event 资源错误
     const commonAttr = getCommonAttribute();
@@ -818,11 +808,10 @@
       // 页面加载前
       const startLog = parseReportLog([`web_start: ${JSON.stringify(getCommonAttribute())}`]);
       core.addLog(startLog);
+      console.log('core--', core.logQueue);
       core.report();
       const initEvent = {
-        load: {
-          fn: theEventLoad
-        },
+        //load: { fn: theEventLoad },
         error: {
           fn: theEventError
         },

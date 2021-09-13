@@ -1,0 +1,23 @@
+.Panel {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 20px auto 10px auto;
+  &-Item {
+    width: 33%;
+    height: 88px;
+    background-repeat: no-repeat;
+    background-color: pink;
+    margin-bottom: 2px;
+    border-radius: 2px;
+    background-size: 100%;
+    display: flex;
+    justify-content: center;
+    span {
+      font-family: PingFangSC-Medium;
+      font-size: 18px;
+      color: #FFFFFF;
+      margin-top: 8px;
+    }
+  }
+}
