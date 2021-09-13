@@ -85,6 +85,8 @@ function _objectSpread2(target) {
   return target;
 }
 
+var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
 function createCommonjsModule(fn, basedir, module) {
 	return module = {
 	  path: basedir,
@@ -99,14 +101,17 @@ function commonjsRequire () {
 	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
 }
 
-var runtime_1 = createCommonjsModule(function (module) {
+var runtime = createCommonjsModule(function (module) {
   /**
-   * Copyright (c) 2014-present, Facebook, Inc.
+   * Copyright (c) 2014, Facebook, Inc.
+   * All rights reserved.
    *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
+   * This source code is licensed under the BSD-style license found in the
+   * https://raw.github.com/facebook/regenerator/master/LICENSE file. An
+   * additional grant of patent rights can be found in the PATENTS file in
+   * the same directory.
    */
-  var runtime = function (exports) {
+  !function (global) {
 
     var Op = Object.prototype;
     var hasOwn = Op.hasOwnProperty;
@@ -116,6 +121,23 @@ var runtime_1 = createCommonjsModule(function (module) {
     var iteratorSymbol = $Symbol.iterator || "@@iterator";
     var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
     var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+    var runtime = global.regeneratorRuntime;
+
+    if (runtime) {
+      {
+        // If regeneratorRuntime is defined globally and we're in a module,
+        // make the exports object identical to regeneratorRuntime.
+        module.exports = runtime;
+      } // Don't bother evaluating the rest of this file if the runtime was
+      // already defined globally.
+
+
+      return;
+    } // Define the runtime globally (as expected by generated code) as either
+    // module.exports (if we're in a module) or a new, empty object.
+
+
+    runtime = global.regeneratorRuntime =  module.exports ;
 
     function wrap(innerFn, outerFn, self, tryLocsList) {
       // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
@@ -128,7 +150,7 @@ var runtime_1 = createCommonjsModule(function (module) {
       return generator;
     }
 
-    exports.wrap = wrap; // Try/catch helper to minimize deoptimizations. Returns a completion
+    runtime.wrap = wrap; // Try/catch helper to minimize deoptimizations. Returns a completion
     // record like context.tryEntries[i].completion. This interface could
     // have been (and was previously) designed to take a closure to be
     // invoked without arguments, but in all the cases we care about we
@@ -201,14 +223,14 @@ var runtime_1 = createCommonjsModule(function (module) {
       });
     }
 
-    exports.isGeneratorFunction = function (genFun) {
+    runtime.isGeneratorFunction = function (genFun) {
       var ctor = typeof genFun === "function" && genFun.constructor;
       return ctor ? ctor === GeneratorFunction || // For the native GeneratorFunction constructor, the best we can
       // do is to check its .name property.
       (ctor.displayName || ctor.name) === "GeneratorFunction" : false;
     };
 
-    exports.mark = function (genFun) {
+    runtime.mark = function (genFun) {
       if (Object.setPrototypeOf) {
         Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
       } else {
@@ -227,13 +249,13 @@ var runtime_1 = createCommonjsModule(function (module) {
     // meant to be awaited.
 
 
-    exports.awrap = function (arg) {
+    runtime.awrap = function (arg) {
       return {
         __await: arg
       };
     };
 
-    function AsyncIterator(generator, PromiseImpl) {
+    function AsyncIterator(generator) {
       function invoke(method, arg, resolve, reject) {
         var record = tryCatch(generator[method], generator, arg);
 
@@ -244,32 +266,44 @@ var runtime_1 = createCommonjsModule(function (module) {
           var value = result.value;
 
           if (value && typeof value === "object" && hasOwn.call(value, "__await")) {
-            return PromiseImpl.resolve(value.__await).then(function (value) {
+            return Promise.resolve(value.__await).then(function (value) {
               invoke("next", value, resolve, reject);
             }, function (err) {
               invoke("throw", err, resolve, reject);
             });
           }
 
-          return PromiseImpl.resolve(value).then(function (unwrapped) {
+          return Promise.resolve(value).then(function (unwrapped) {
             // When a yielded Promise is resolved, its final value becomes
             // the .value of the Promise<{value,done}> result for the
-            // current iteration.
+            // current iteration. If the Promise is rejected, however, the
+            // result for this iteration will be rejected with the same
+            // reason. Note that rejections of yielded Promises are not
+            // thrown back into the generator function, as is the case
+            // when an awaited Promise is rejected. This difference in
+            // behavior between yield and await is important, because it
+            // allows the consumer to decide what to do with the yielded
+            // rejection (swallow it and continue, manually .throw it back
+            // into the generator, abandon iteration, whatever). With
+            // await, by contrast, there is no opportunity to examine the
+            // rejection reason outside the generator function, so the
+            // only option is to throw it from the await expression, and
+            // let the generator function handle the exception.
             result.value = unwrapped;
             resolve(result);
-          }, function (error) {
-            // If a rejected Promise was yielded, throw the rejection back
-            // into the async generator function so it can be handled there.
-            return invoke("throw", error, resolve, reject);
-          });
+          }, reject);
         }
+      }
+
+      if (typeof global.process === "object" && global.process.domain) {
+        invoke = global.process.domain.bind(invoke);
       }
 
       var previousPromise;
 
       function enqueue(method, arg) {
         function callInvokeWithMethodAndArg() {
-          return new PromiseImpl(function (resolve, reject) {
+          return new Promise(function (resolve, reject) {
             invoke(method, arg, resolve, reject);
           });
         }
@@ -302,14 +336,13 @@ var runtime_1 = createCommonjsModule(function (module) {
       return this;
     };
 
-    exports.AsyncIterator = AsyncIterator; // Note that simple async functions are implemented on top of
+    runtime.AsyncIterator = AsyncIterator; // Note that simple async functions are implemented on top of
     // AsyncIterator objects; they just return a Promise for the value of
     // the final result produced by the iterator.
 
-    exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-      if (PromiseImpl === void 0) PromiseImpl = Promise;
-      var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
-      return exports.isGeneratorFunction(outerFn) ? iter // If outerFn is a generator, return the full iterator.
+    runtime.async = function (innerFn, outerFn, self, tryLocsList) {
+      var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList));
+      return runtime.isGeneratorFunction(outerFn) ? iter // If outerFn is a generator, return the full iterator.
       : iter.next().then(function (result) {
         return result.done ? result.value : iter.next();
       });
@@ -402,8 +435,7 @@ var runtime_1 = createCommonjsModule(function (module) {
         context.delegate = null;
 
         if (context.method === "throw") {
-          // Note: ["return"] must be used for ES3 parsing compatibility.
-          if (delegate.iterator["return"]) {
+          if (delegate.iterator.return) {
             // If the delegate iterator has a return method, give it a
             // chance to clean up.
             context.method = "return";
@@ -521,7 +553,7 @@ var runtime_1 = createCommonjsModule(function (module) {
       this.reset(true);
     }
 
-    exports.keys = function (object) {
+    runtime.keys = function (object) {
       var keys = [];
 
       for (var key in object) {
@@ -588,7 +620,7 @@ var runtime_1 = createCommonjsModule(function (module) {
       };
     }
 
-    exports.values = values;
+    runtime.values = values;
 
     function doneResult() {
       return {
@@ -779,33 +811,35 @@ var runtime_1 = createCommonjsModule(function (module) {
 
         return ContinueSentinel;
       }
-    }; // Regardless of whether this script is executing as a CommonJS module
-    // or not, return the runtime object so that we can declare the variable
-    // regeneratorRuntime in the outer scope, which allows this module to be
-    // injected easily by `bin/regenerator --include-runtime script.js`.
-
-    return exports;
-  }( // If this script is executing as a CommonJS module, use module.exports
-  // as the regeneratorRuntime namespace. Otherwise create a new empty
-  // object. Either way, the resulting object will be used to initialize
-  // the regeneratorRuntime variable at the top of this file.
-   module.exports );
-
-  try {
-    regeneratorRuntime = runtime;
-  } catch (accidentalStrictMode) {
-    // This module should not be running in strict mode, so the above
-    // assignment should always work unless something is misconfigured. Just
-    // in case runtime.js accidentally runs in strict mode, we can escape
-    // strict mode using a global Function call. This could conceivably fail
-    // if a Content Security Policy forbids using Function, but in that case
-    // the proper solution is to fix the accidental strict mode problem. If
-    // you've misconfigured your bundler to force strict mode and applied a
-    // CSP to forbid Function, and you're not willing to fix either of those
-    // problems, please detail your unique predicament in a GitHub issue.
-    Function("r", "regeneratorRuntime = r")(runtime);
-  }
+    };
+  }( // Among the various tricks for obtaining a reference to the global
+  // object, this seems to be the most reliable technique that does not
+  // use indirect eval (which violates Content Security Policy).
+  typeof commonjsGlobal === "object" ? commonjsGlobal : typeof window === "object" ? window : typeof self === "object" ? self : commonjsGlobal);
 });
+
+// kept identical to the way it is obtained in runtime.js
+
+var g = typeof commonjsGlobal === "object" ? commonjsGlobal : typeof window === "object" ? window : typeof self === "object" ? self : commonjsGlobal; // Use `getOwnPropertyNames` because not all browsers support calling
+// `hasOwnProperty` on the global `self` object in a worker. See #183.
+
+var hadRuntime = g.regeneratorRuntime && Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0; // Save the old regeneratorRuntime in case it needs to be restored later.
+
+var oldRuntime = hadRuntime && g.regeneratorRuntime; // Force reevalutation of runtime.js.
+
+g.regeneratorRuntime = undefined;
+
+if (hadRuntime) {
+  // Restore the original runtime.
+  g.regeneratorRuntime = oldRuntime;
+} else {
+  // Remove the global property added by runtime.js.
+  try {
+    delete g.regeneratorRuntime;
+  } catch (e) {
+    g.regeneratorRuntime = undefined;
+  }
+}
 
 function throwErr(err) {
   throw new Error(err);
