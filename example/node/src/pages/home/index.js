@@ -11,7 +11,10 @@ import style from './style';
 import HomeSelector from 'app/selectors/home';
 import * as HomeActions from 'app/actions/home';
 import hocb from './hocb'; //高阶函数的两种封装方式
-
+import Sniperjs from "../../../../../packages/WebErrorReporter/dist/index"
+var sss = new Sniperjs({
+    url:'http://pwapp.qunar.com/api/log/appletError'
+})
 
 
 @connect(HomeSelector, HomeActions)

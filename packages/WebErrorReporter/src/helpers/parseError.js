@@ -14,7 +14,7 @@ function parseScriptRuntimeError(stack='') {
     const value = errMsg.split(/\n/).pop().split(':')[1].trim();
 
     // 有可能没有stack信息，如在app.js生命周期里面throw error
-    console.log('errInfoList-----',errStack)
+  
     if (errStack.length) {
       // :(\d+:\d+) =>  :29:13
       // eslint-disable-next-line
@@ -26,16 +26,21 @@ function parseScriptRuntimeError(stack='') {
       // eslint-disable-next-line
       file = (  /(\w+:\/\/+|https?:\/\/).+:\d+:\d+/.exec(errStack[0])[0] || '')
         .replace(/:\d+:\d+$/, '') || '';
+      url =  (  /(\w+:\/\/+|https?:\/\/).+:\d+:\d+/.exec(errStack[1])[0] || '')
+      .replace(/:\d+:\d+$/, '') || '';
     }
+
     return {
       line,
       col,
       file,
+      url,
       stack,
       type,
       value
     };
   } catch (err) {
+    console.log('errInfoList-3---',errStack)
     return {
       stack,
       type: 'Error'

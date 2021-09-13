@@ -1338,8 +1338,6 @@
       const type = errMsg.match(errorTypeReg)[0].replace(/:$/, '') || '';
       const value = errMsg.split(/\n/).pop().split(':')[1].trim(); // 有可能没有stack信息，如在app.js生命周期里面throw error
 
-      console.log('errInfoList-----', errStack);
-
       if (errStack.length) {
         // :(\d+:\d+) =>  :29:13
         // eslint-disable-next-line
@@ -1348,17 +1346,20 @@
         // eslint-disable-next-line
 
         file = (/(\w+:\/\/+|https?:\/\/).+:\d+:\d+/.exec(errStack[0])[0] || '').replace(/:\d+:\d+$/, '') || '';
+        url = (/(\w+:\/\/+|https?:\/\/).+:\d+:\d+/.exec(errStack[1])[0] || '').replace(/:\d+:\d+$/, '') || '';
       }
 
       return {
         line,
         col,
         file,
+        url,
         stack,
         type,
         value
       };
     } catch (err) {
+      console.log('errInfoList-3---', errStack);
       return {
         stack,
         type: 'Error'
@@ -1381,13 +1382,15 @@
     init(core) {
       // 一：捕获正常错误和资源加载错误
       window.addEventListener('error', event => {
+        console.log('MZ5---', 1);
         const target = event.target || event.srcElement;
         const isElementTarget = target instanceof HTMLScriptElement || target instanceof HTMLLinkElement || target instanceof HTMLImageElement;
+        console.log('MZ6---', 1);
 
         const __log = isElementTarget ? parseStaticError(event, target) : parseScriptRuntimeError(event.error.stack);
 
         core.addLog(__log);
-        core.report();
+        console.log('MZ---', __log); //    core.report();
       }, true); // 二：捕获console.error错误
       // console.error = (func => {
       //   return (...args) => {
@@ -1401,6 +1404,7 @@
         const __log = parseScriptRuntimeError(e.reason.stack);
 
         core.addLog(__log);
+        console.log('MZ4---', __log);
         core.report(); // console.log(`Promise.reject()中的内容，告诉你发生错误的原因:${e.reason}`);
         // console.log(`Promise对象 :${e.promise}`);
       });

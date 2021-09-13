@@ -9,10 +9,7 @@ import { createBrowserHistory } from "history" // URL模式的history
 
 import configureStore from "app/store/configureStore"
 
-import Sniperjs from "../../../../packages/WebErrorReporter/dist/index"
-var sss = new Sniperjs({
-    url:'http://pwapp.qunar.com/api/log/appletError'
-})
+
 const store = configureStore(createBrowserHistory)
 
 import asyncComponent from "utils/asyncComponent"
